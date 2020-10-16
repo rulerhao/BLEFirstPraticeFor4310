@@ -6,9 +6,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface ViewController : UIViewController
-
+#import <CoreBluetooth/CoreBluetooth.h>
+#import "cellData.h"
+@interface ViewController : UIViewController <CBCentralManagerDelegate,CBPeripheralDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
+@property(strong, nonatomic) CBCentralManager *myCBCentralManager;
+@property(strong, nonatomic) CBPeripheral *myCBPeripheral;
+@property(strong, nonatomic) NSMutableArray *Scanned;
+@property(strong, nonatomic) NSMutableArray *StoredDevices;
+@property(strong, nonatomic) NSMutableArray *DevicesInformation;
+@property(strong, nonatomic) NSArray<CBService *> *services;
 
 @end
-

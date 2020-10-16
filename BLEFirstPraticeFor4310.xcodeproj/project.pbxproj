@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		630423302535B7A300E57131 /* baby_card_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 6304232F2535B7A300E57131 /* baby_card_background.png */; };
+		630423362535B7BD00E57131 /* baby_card_boy_photo_background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 630423322535B7BC00E57131 /* baby_card_boy_photo_background2.png */; };
+		630423372535B7BD00E57131 /* baby_card_boy_information_bar_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 630423332535B7BD00E57131 /* baby_card_boy_information_bar_background.png */; };
+		630423382535B7BD00E57131 /* baby_card_warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 630423342535B7BD00E57131 /* baby_card_warning.png */; };
+		630423392535B7BD00E57131 /* baby_card_boy_information_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 630423352535B7BD00E57131 /* baby_card_boy_information_background.png */; };
+		632D1373252F099B00073BC9 /* cellData.m in Sources */ = {isa = PBXBuildFile; fileRef = 632D1372252F099B00073BC9 /* cellData.m */; };
+		633BBB1E252D8AD3003544A1 /* Convert4310Information.m in Sources */ = {isa = PBXBuildFile; fileRef = 633BBB1D252D8AD3003544A1 /* Convert4310Information.m */; };
 		63DB0E4E251DC2E000FA3D39 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB0E4D251DC2E000FA3D39 /* AppDelegate.m */; };
 		63DB0E51251DC2E000FA3D39 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB0E50251DC2E000FA3D39 /* SceneDelegate.m */; };
 		63DB0E54251DC2E000FA3D39 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB0E53251DC2E000FA3D39 /* ViewController.m */; };
@@ -17,6 +24,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6304232F2535B7A300E57131 /* baby_card_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_background.png; path = "../../../MUL OUcare 第二代(KS-4310)/baby_card_background.png"; sourceTree = "<group>"; };
+		630423322535B7BC00E57131 /* baby_card_boy_photo_background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_boy_photo_background2.png; path = "../../../MUL OUcare 第二代(KS-4310)/baby_card_boy_photo_background2.png"; sourceTree = "<group>"; };
+		630423332535B7BD00E57131 /* baby_card_boy_information_bar_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_boy_information_bar_background.png; path = "../../../MUL OUcare 第二代(KS-4310)/baby_card_boy_information_bar_background.png"; sourceTree = "<group>"; };
+		630423342535B7BD00E57131 /* baby_card_warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_warning.png; path = "../../../MUL OUcare 第二代(KS-4310)/baby_card_warning.png"; sourceTree = "<group>"; };
+		630423352535B7BD00E57131 /* baby_card_boy_information_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_boy_information_background.png; path = "../../../MUL OUcare 第二代(KS-4310)/baby_card_boy_information_background.png"; sourceTree = "<group>"; };
+		632D1371252F099B00073BC9 /* cellData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cellData.h; sourceTree = "<group>"; };
+		632D1372252F099B00073BC9 /* cellData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cellData.m; sourceTree = "<group>"; };
+		633BBB1C252D8AD3003544A1 /* Convert4310Information.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Convert4310Information.h; sourceTree = "<group>"; };
+		633BBB1D252D8AD3003544A1 /* Convert4310Information.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Convert4310Information.m; sourceTree = "<group>"; };
 		63DB0E49251DC2E000FA3D39 /* BLEFirstPraticeFor4310.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BLEFirstPraticeFor4310.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63DB0E4C251DC2E000FA3D39 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		63DB0E4D251DC2E000FA3D39 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -61,6 +77,11 @@
 		63DB0E4B251DC2E000FA3D39 /* BLEFirstPraticeFor4310 */ = {
 			isa = PBXGroup;
 			children = (
+				630423332535B7BD00E57131 /* baby_card_boy_information_bar_background.png */,
+				630423352535B7BD00E57131 /* baby_card_boy_information_background.png */,
+				630423322535B7BC00E57131 /* baby_card_boy_photo_background2.png */,
+				630423342535B7BD00E57131 /* baby_card_warning.png */,
+				6304232F2535B7A300E57131 /* baby_card_background.png */,
 				63DB0E4C251DC2E000FA3D39 /* AppDelegate.h */,
 				63DB0E4D251DC2E000FA3D39 /* AppDelegate.m */,
 				63DB0E4F251DC2E000FA3D39 /* SceneDelegate.h */,
@@ -72,6 +93,10 @@
 				63DB0E5A251DC2E200FA3D39 /* LaunchScreen.storyboard */,
 				63DB0E5D251DC2E200FA3D39 /* Info.plist */,
 				63DB0E5E251DC2E200FA3D39 /* main.m */,
+				633BBB1C252D8AD3003544A1 /* Convert4310Information.h */,
+				633BBB1D252D8AD3003544A1 /* Convert4310Information.m */,
+				632D1371252F099B00073BC9 /* cellData.h */,
+				632D1372252F099B00073BC9 /* cellData.m */,
 			);
 			path = BLEFirstPraticeFor4310;
 			sourceTree = "<group>";
@@ -132,9 +157,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				630423382535B7BD00E57131 /* baby_card_warning.png in Resources */,
 				63DB0E5C251DC2E200FA3D39 /* LaunchScreen.storyboard in Resources */,
+				630423362535B7BD00E57131 /* baby_card_boy_photo_background2.png in Resources */,
+				630423302535B7A300E57131 /* baby_card_background.png in Resources */,
 				63DB0E59251DC2E200FA3D39 /* Assets.xcassets in Resources */,
 				63DB0E57251DC2E000FA3D39 /* Main.storyboard in Resources */,
+				630423372535B7BD00E57131 /* baby_card_boy_information_bar_background.png in Resources */,
+				630423392535B7BD00E57131 /* baby_card_boy_information_background.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +179,8 @@
 				63DB0E4E251DC2E000FA3D39 /* AppDelegate.m in Sources */,
 				63DB0E5F251DC2E200FA3D39 /* main.m in Sources */,
 				63DB0E51251DC2E000FA3D39 /* SceneDelegate.m in Sources */,
+				633BBB1E252D8AD3003544A1 /* Convert4310Information.m in Sources */,
+				632D1373252F099B00073BC9 /* cellData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
