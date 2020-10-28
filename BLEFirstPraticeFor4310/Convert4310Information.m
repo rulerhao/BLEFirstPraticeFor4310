@@ -45,7 +45,9 @@
  0~18 之和的補數+1應為[19]
  */
 - (NSInteger) get_Location_X:(NSData *) data_Bytes {
-    NSString *HexString = [self getHEX:data_Bytes];
+    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    
+    NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
 
     NSInteger X1_Position = 4;
@@ -59,11 +61,12 @@
     X2_Range.location = X2_Position * 2;
     X2_Range.length = 2;
     
+    
     NSString *X1_String = [HexString substringWithRange:(X1_Range)];
-    NSInteger X1_Value = [self getIntegerFromHexString:X1_String];
+    NSInteger X1_Value = [CalculateFunc getIntegerFromHexString:X1_String];
     
     NSString *X2_String = [HexString substringWithRange:(X2_Range)];
-    NSInteger X2_Value = [self getIntegerFromHexString:X2_String];
+    NSInteger X2_Value = [CalculateFunc getIntegerFromHexString:X2_String];
     
     NSInteger X_Location = X1_Value / 16 + X2_Value * 16;
      
@@ -71,7 +74,9 @@
 }
 
 - (NSInteger) get_Location_Y:(NSData *) data_Bytes {
-    NSString *HexString = [self getHEX:data_Bytes];
+    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    
+    NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
     NSInteger Y1_Position = 6;
     NSInteger Y2_Position = 7;
@@ -85,10 +90,10 @@
     Y2_Range.length = 2;
     
     NSString *Y1_String = [HexString substringWithRange:(Y1_Range)];
-    NSInteger Y1_Value = [self getIntegerFromHexString:Y1_String];
+    NSInteger Y1_Value = [CalculateFunc getIntegerFromHexString:Y1_String];
     
     NSString *Y2_String = [HexString substringWithRange:(Y2_Range)];
-    NSInteger Y2_Value = [self getIntegerFromHexString:Y2_String];
+    NSInteger Y2_Value = [CalculateFunc getIntegerFromHexString:Y2_String];
     
     NSInteger Y_Location = Y1_Value / 16 + Y2_Value * 16;
      
@@ -96,7 +101,9 @@
 }
 
 - (NSInteger) get_Location_Z:(NSData *) data_Bytes {
-    NSString *HexString = [self getHEX:data_Bytes];
+    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    
+    NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
     
     NSInteger Z1_Position = 8;
@@ -111,18 +118,68 @@
     Z2_Range.length = 2;
     
     NSString *Z1_String = [HexString substringWithRange:(Z1_Range)];
-    NSInteger Z1_Value = [self getIntegerFromHexString:Z1_String];
+    NSInteger Z1_Value = [CalculateFunc getIntegerFromHexString:Z1_String];
     
     NSString *Z2_String = [HexString substringWithRange:(Z2_Range)];
-    NSInteger Z2_Value = [self getIntegerFromHexString:Z2_String];
+    NSInteger Z2_Value = [CalculateFunc getIntegerFromHexString:Z2_String];
     
     NSInteger Z_Location = Z1_Value / 16 + Z2_Value * 16;
      
     return Z_Location;
 }
 
+- (Boolean)
+get_Movement_Status :(NSInteger) X
+y                   :(NSInteger) Y
+z                   :(NSInteger) Z
+previous_x          :(NSInteger) previous_X
+previous_y          :(NSInteger) previous_Y
+previous_z          :(NSInteger) previous_Z {
+    NSInteger Movement_Mode = 1;
+    NSInteger Diff_X = ABS(X - previous_X);
+    NSInteger Diff_Y = ABS(Y - previous_Y);
+    NSInteger Diff_Z = ABS(Z - previous_Z);
+    
+    NSInteger range1, range2, range3;
+    switch (Movement_Mode) {
+        case 0:
+            range1 = 2;
+            range2 = 1;
+            range3 = 3;
+            break;
+        case 1:
+            range1 = 4;
+            range2 = 3;
+            range3 = 7;
+            break;
+        case 2:
+            range1 = 4 * 100;
+            range2 = 3 * 100;
+            range3 = 7 * 100;
+            break;
+        default:
+            range1 = 4;
+            range2 = 3;
+            range3 = 7;
+            break;
+    }
+    
+    Boolean Movement_Boolean;
+    if((Diff_X + Diff_Y > range1 || Diff_Y + Diff_Z > range1 || Diff_X + Diff_Z > range1) ||
+       (Diff_X > range2 || Diff_Y > range2 || Diff_Z > range2) ||
+       (Diff_X + Diff_Y + Diff_Z >= range3)) {
+        Movement_Boolean = true;
+    }
+    else {
+        Movement_Boolean = false;
+    }
+    return Movement_Boolean;
+}
+
 - (float)getTemperature_1:(NSData *) data_Bytes {
-    NSString *HexString = [self getHEX:data_Bytes];
+    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    
+    NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
     
     NSInteger T1_Position = 10;
@@ -137,10 +194,10 @@
     T2_Range.length = 2;
     
     NSString *T1_String = [HexString substringWithRange:(T1_Range)];
-    NSInteger T1_Value = [self getIntegerFromHexString:T1_String];
+    NSInteger T1_Value = [CalculateFunc getIntegerFromHexString:T1_String];
     
     NSString *T2_String = [HexString substringWithRange:(T2_Range)];
-    NSInteger T2_Value = [self getIntegerFromHexString:T2_String];
+    NSInteger T2_Value = [CalculateFunc getIntegerFromHexString:T2_String];
     
     float Temperature_1 = (T1_Value * 256 + T2_Value) / 10.0f;
      
@@ -148,7 +205,9 @@
 }
 
 - (float)getTemperature_2:(NSData *) data_Bytes {
-    NSString *HexString = [self getHEX:data_Bytes];
+    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    
+    NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
     
     NSInteger T1_Position = 12;
@@ -163,10 +222,10 @@
     T2_Range.length = 2;
     
     NSString *T1_String = [HexString substringWithRange:(T1_Range)];
-    NSInteger T1_Value = [self getIntegerFromHexString:T1_String];
+    NSInteger T1_Value = [CalculateFunc getIntegerFromHexString:T1_String];
     
     NSString *T2_String = [HexString substringWithRange:(T2_Range)];
-    NSInteger T2_Value = [self getIntegerFromHexString:T2_String];
+    NSInteger T2_Value = [CalculateFunc getIntegerFromHexString:T2_String];
     
     float Temperature_2 = (T1_Value * 256 + T2_Value) / 10.0f;
      
@@ -174,7 +233,9 @@
 }
 
 - (float)getTemperature_3:(NSData *) data_Bytes {
-    NSString *HexString = [self getHEX:data_Bytes];
+    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    
+    NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
     
     NSInteger T1_Position = 14;
@@ -189,10 +250,10 @@
     T2_Range.length = 2;
     
     NSString *T1_String = [HexString substringWithRange:(T1_Range)];
-    NSInteger T1_Value = [self getIntegerFromHexString:T1_String];
+    NSInteger T1_Value = [CalculateFunc getIntegerFromHexString:T1_String];
     
     NSString *T2_String = [HexString substringWithRange:(T2_Range)];
-    NSInteger T2_Value = [self getIntegerFromHexString:T2_String];
+    NSInteger T2_Value = [CalculateFunc getIntegerFromHexString:T2_String];
     
     float Temperature_3 = (T1_Value * 256 + T2_Value) / 10.0f;
      
@@ -200,7 +261,9 @@
 }
 
 - (float)getTemperature_4:(NSData *) data_Bytes {
-    NSString *HexString = [self getHEX:data_Bytes];
+    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    
+    NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
     
     NSInteger T1_Position = 17;
@@ -215,10 +278,10 @@
     T2_Range.length = 2;
     
     NSString *T1_String = [HexString substringWithRange:(T1_Range)];
-    NSInteger T1_Value = [self getIntegerFromHexString:T1_String];
+    NSInteger T1_Value = [CalculateFunc getIntegerFromHexString:T1_String];
     
     NSString *T2_String = [HexString substringWithRange:(T2_Range)];
-    NSInteger T2_Value = [self getIntegerFromHexString:T2_String];
+    NSInteger T2_Value = [CalculateFunc getIntegerFromHexString:T2_String];
     
     float Temperature_4 = (T1_Value * 256 + T2_Value) / 10.0f;
      
@@ -226,7 +289,9 @@
 }
 
 - (NSUInteger)getBattery_Volume:(NSData *) data_Bytes {
-    NSString *HexString = [self getHEX:data_Bytes];
+    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    
+    NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
     
     NSInteger Battery_Position = 16;
@@ -236,11 +301,64 @@
     Battery_Range.length = 2;
     
     NSString *Battery_String = [HexString substringWithRange:(Battery_Range)];
-    NSInteger Battery_Value = [self getIntegerFromHexString:Battery_String];
+    NSInteger Battery_Value = [CalculateFunc getIntegerFromHexString:Battery_String];
     
     NSUInteger Battery_Volume = Battery_Value;
      
     return Battery_Volume;
+}
+
+- (NSString *) getDeviceName:(NSData *) data_Bytes {
+    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    
+    NSString *HexString = [CalculateFunc getHEX:data_Bytes];
+    
+    NSUInteger Position = 1;
+    NSUInteger Length = 8;
+    
+    NSString *Split_String = [CalculateFunc getSubString:HexString
+                                    length      :Length * 2
+                                    location    :Position * 2];
+    
+    NSString *ASCIIString = [CalculateFunc HexStringToASCIIString:Split_String];
+    
+    return ASCIIString;
+}
+
+- (NSString *) getDeviceID : (NSData *) data_Bytes {
+    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    
+    NSString *HexString = [CalculateFunc getHEX:data_Bytes];
+    
+    NSUInteger Position = 9;
+    NSUInteger Length = 2;
+    
+    NSString *Split_String = [CalculateFunc getSubString:HexString
+                                    length      :Length * 2
+                                    location    :Position * 2];
+    
+    NSString *First_String = [CalculateFunc getSubString:Split_String
+                                    length      :1 * 2
+                                    location    :0 * 2];
+    
+    NSString *Second_String = [CalculateFunc getSubString:Split_String
+                                    length      :1 * 2
+                                    location    :1 * 2];
+    
+    if([First_String  isEqual: @"00"]) {
+        First_String = @"30";
+    }
+    if([Second_String  isEqual: @"00"]) {
+        Second_String = @"30";
+    }
+    
+    NSString *Merged_String = [CalculateFunc MergeTwoString :   First_String
+                                             SecondStr      :   Second_String];
+    
+    NSString *ASCIIString = [CalculateFunc HexStringToASCIIString:Merged_String];
+    
+    
+    return ASCIIString;
 }
 /*
 #pragma mark - Navigation
@@ -252,24 +370,10 @@
 }
 */
 
-/**
- convert NSData to NSString
+/*!
+ * @param data : 要被轉換為 Hex String 的 NSData
+ *  @discussion
+ *      將 NSData 轉換為 HexString
+ *
  */
-- (NSString *)getHEX:(NSData *)data
-{
-    const unsigned char *dataBytes = [data bytes];
-    NSMutableString *ret = [NSMutableString stringWithCapacity:[data length] * 2];
-    for (int i=0; i<[data length]; ++i)
-    [ret appendFormat:@"%02lX", (unsigned long)dataBytes[i]];
-    return ret;
-}
-
-- (NSInteger)getIntegerFromHexString:(NSString *) str{
-    unsigned int outVal;
-    NSScanner* scanner = [NSScanner scannerWithString:str];
-    [scanner scanHexInt:&outVal];
-    NSInteger IntegerValue = outVal;
-    return IntegerValue;
-}
-
 @end

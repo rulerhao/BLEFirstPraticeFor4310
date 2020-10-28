@@ -12,10 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface cellData : UIViewController
 {
     CBPeripheral *peripheral;
-    CBCharacteristic *now_Charact;
-    CBCharacteristic *previous_Charact;
-    CBCharacteristic *now_Baby_Infor;
-    CBCharacteristic *previous_Baby_Infor;
+    NSData *now_Charact;
+    NSData *previous_Charact;
+    NSData *now_Baby_Infor;
+    NSData *current_Characteristic;
+    NSMutableArray *stored_Movemebt_State;
     
     NSString* First_Str;
     NSString* Second_Str;
@@ -26,23 +27,25 @@ NS_ASSUME_NONNULL_BEGIN
  * @param Now_Charact : 這次所 update 的 device 傳輸的資訊，包含 x,y,z 的位置以及四個溫度 senser 和電池以及 check sum
  * @param Previous_Charact : 上次的 characteristic
  * @param Now_Baby_Infor : 這次的嬰兒資訊，如儲存在裝置內的裝置名稱以及性別等等其他資訊
- * @param Previous_Baby_Infor : 上次的嬰兒資訊，先存看看，沒用再刪掉
+ * @param Current_Characteristic : 每次所獲得的 characteristic，目的是為了讓每次 UI 都能做繪圖
  *  @discussion
  *      A back-pointer to the service this characteristic belongs to.
  *
  */
 - (void)
-addObj                  :(nullable CBPeripheral *)   Pheripheral
-nowCharacteristic       :(nullable CBCharacteristic *)         Now_Charact
-previousCharacteristic  :(nullable CBCharacteristic *)         Previous_Charact
-nowBabyInformation      :(nullable CBCharacteristic *)         Now_Baby_Infor
-previousBabyInformation :(nullable CBCharacteristic *)         Previous_Baby_Infor;
+addObj                  :(nullable CBPeripheral *)             Pheripheral
+nowCharacteristic       :(nullable NSData *)         Now_Charact
+previousCharacteristic  :(nullable NSData *)         Previous_Charact
+nowBabyInformation      :(nullable NSData *)         Now_Baby_Infor
+CurrentCharacteristic :(nullable NSData *)         Current_Characteristic
+storedMovementState     :(nullable NSMutableArray *)           Stored_Movement_State;
 
 - (CBPeripheral *) getPheripheral;
-- (CBCharacteristic *) getNowCharacteristic;
-- (CBCharacteristic *) getPreviousCharacteristic;
-- (CBCharacteristic *) getNowBabyInformation;
-- (CBCharacteristic *) getPreviousBabyInformation;
+- (NSData *) getNowCharacteristic;
+- (NSData *) getPreviousCharacteristic;
+- (NSData *) getNowBabyInformation;
+- (NSData *) getCurrentCharacteristic;
+- (NSMutableArray *) getStoredMovementState;
 
 @end
 

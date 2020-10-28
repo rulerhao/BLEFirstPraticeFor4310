@@ -19,36 +19,49 @@
 }
 
 - (void)
-addObj                  :(nullable CBPeripheral *)   Pheripheral
-nowCharacteristic       :(nullable CBCharacteristic *)         Now_Charact
-previousCharacteristic  :(nullable CBCharacteristic *)         Previous_Charact
-nowBabyInformation      :(nullable CBCharacteristic *)         Now_Baby_Infor
-previousBabyInformation :(nullable CBCharacteristic *)         Previous_Baby_Infor {
+addObj                  :(nullable CBPeripheral *)             Pheripheral
+nowCharacteristic       :(nullable NSData *)         Now_Charact
+previousCharacteristic  :(nullable NSData *)         Previous_Charact
+nowBabyInformation      :(nullable NSData *)         Now_Baby_Infor
+CurrentCharacteristic :(nullable NSData *)         Current_Characteristic
+storedMovementState     :(nullable NSMutableArray *)           Stored_Movement_State {
     peripheral = Pheripheral;
     now_Charact = Now_Charact;
     previous_Charact = Previous_Charact;
     now_Baby_Infor = Now_Baby_Infor;
-    previous_Baby_Infor = Previous_Baby_Infor;
+    current_Characteristic = Current_Characteristic;
+    stored_Movemebt_State = Stored_Movement_State;
+    /*
+    NSLog(@"Right_Inside_now_before_char_nice: %p", &Now_Charact);
+    NSLog(@"Right_Inside_pre_before_char_nice: %p", &Previous_Charact);
+    NSLog(@"Inside_now_before_char_nice: %p", &now_Charact);
+    NSLog(@"Inside_pre_before_char_nice: %p", &previous_Charact);
+     */
+    NSLog(@"------------------------------before_char_nice------------------------------------------");
+
 }
 
 - (CBPeripheral *) getPheripheral {
     return peripheral;
 }
 
-- (CBCharacteristic *) getNowCharacteristic {
+- (NSData *) getNowCharacteristic {
     return now_Charact;
 }
 
-- (CBCharacteristic *) getPreviousCharacteristic {
+- (NSData *) getPreviousCharacteristic {
     return previous_Charact;
 }
 
-- (CBCharacteristic *) getNowBabyInformation {
+- (NSData *) getNowBabyInformation {
     return now_Baby_Infor;
 }
 
-- (CBCharacteristic *) getPreviousBabyInformation {
-    return previous_Baby_Infor;
+- (NSData *) getCurrentCharacteristic {
+    return current_Characteristic;
 }
 
+- (NSMutableArray *) getStoredMovementState {
+    return stored_Movemebt_State;
+}
 @end
