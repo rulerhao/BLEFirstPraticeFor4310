@@ -36,7 +36,13 @@
     _HighTemperature = 27;
     
     _LowTemperature = 25;
+    
+    _myCollectionView.dragInteractionEnabled = YES;
+    _myCollectionView.dragDelegate = self;
+    _myCollectionView.dropDelegate = self;
 }
+
+
 /*
 -(CGSize)
 collectionView          :(UICollectionView *) collectionView
@@ -54,6 +60,7 @@ sizeForItemAtIndexPath  :(NSIndexPath *) indexPath {
 
 }
 */
+
 - (void)
 centralManagerDidUpdateState:(CBCentralManager *)central {
     /*
@@ -284,7 +291,6 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     CBCharacteristic *CBChar = [[service characteristics] objectAtIndex:0];
     [peripheral setNotifyValue:true forCharacteristic:CBChar];
 }
-
 /**
  每次 characteristic 上傳時都會 call 這個 function
  也就是說每次 Device 回傳資訊時都會跑一次這個 function

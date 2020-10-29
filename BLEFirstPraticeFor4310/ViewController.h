@@ -11,7 +11,13 @@
 #import "CalFunc.h"
 #import "StringProcessFunc.h"
 
-@interface ViewController : UIViewController <CBCentralManagerDelegate,CBPeripheralDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
+@interface ViewController : UIViewController <
+CBCentralManagerDelegate,
+CBPeripheralDelegate,
+UICollectionViewDataSource,
+UICollectionViewDelegateFlowLayout,
+UICollectionViewDragDelegate,
+UICollectionViewDropDelegate>
 @property(strong, nonatomic) CBCentralManager *myCBCentralManager;
 @property(strong, nonatomic) CBPeripheral *myCBPeripheral;
 @property(strong, nonatomic) NSMutableArray *Scanned;
