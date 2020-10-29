@@ -7,6 +7,7 @@
 
 #import "ViewController.h"
 #import "CalFunc.h"
+#import "StringProcessFunc.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *) getDeviceName : (NSData *) data_Bytes;
 - (NSString *) getDeviceID : (NSData *) data_Bytes;
+- (NSString *) getDeviceSex : (NSData *) data_Bytes;
 
 @end
 

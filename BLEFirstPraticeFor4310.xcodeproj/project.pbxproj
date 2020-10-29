@@ -24,6 +24,7 @@
 		63AF37F02548FE1900D6F804 /* baby_card_boy_photo_background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37E52548FE1900D6F804 /* baby_card_boy_photo_background2.png */; };
 		63AF37F42548FE3900D6F804 /* list_level_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37F22548FE3800D6F804 /* list_level_4.png */; };
 		63AF37F52548FE3900D6F804 /* list_level_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37F32548FE3900D6F804 /* list_level_2.png */; };
+		63AF37F925496D1E00D6F804 /* StringProcessFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AF37F825496D1E00D6F804 /* StringProcessFunc.m */; };
 		63DB0E4E251DC2E000FA3D39 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB0E4D251DC2E000FA3D39 /* AppDelegate.m */; };
 		63DB0E51251DC2E000FA3D39 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB0E50251DC2E000FA3D39 /* SceneDelegate.m */; };
 		63DB0E54251DC2E000FA3D39 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB0E53251DC2E000FA3D39 /* ViewController.m */; };
@@ -53,6 +54,8 @@
 		63AF37E52548FE1900D6F804 /* baby_card_boy_photo_background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_boy_photo_background2.png; path = BLEFirstPraticeFor4310/baby_card_boy_photo_background2.png; sourceTree = SOURCE_ROOT; };
 		63AF37F22548FE3800D6F804 /* list_level_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = list_level_4.png; path = BLEFirstPraticeFor4310/list_level_4.png; sourceTree = SOURCE_ROOT; };
 		63AF37F32548FE3900D6F804 /* list_level_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = list_level_2.png; path = BLEFirstPraticeFor4310/list_level_2.png; sourceTree = SOURCE_ROOT; };
+		63AF37F725496D1E00D6F804 /* StringProcessFunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringProcessFunc.h; sourceTree = "<group>"; };
+		63AF37F825496D1E00D6F804 /* StringProcessFunc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StringProcessFunc.m; sourceTree = "<group>"; };
 		63DB0E49251DC2E000FA3D39 /* BLEFirstPraticeFor4310.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BLEFirstPraticeFor4310.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63DB0E4C251DC2E000FA3D39 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		63DB0E4D251DC2E000FA3D39 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -134,6 +137,8 @@
 				63DB0E58251DC2E200FA3D39 /* Assets.xcassets */,
 				63DB0E5A251DC2E200FA3D39 /* LaunchScreen.storyboard */,
 				63298805253EE16D0024117C /* Main.storyboard */,
+				63AF37F725496D1E00D6F804 /* StringProcessFunc.h */,
+				63AF37F825496D1E00D6F804 /* StringProcessFunc.m */,
 			);
 			path = BLEFirstPraticeFor4310;
 			sourceTree = "<group>";
@@ -220,6 +225,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63AF37F925496D1E00D6F804 /* StringProcessFunc.m in Sources */,
 				63DB0E54251DC2E000FA3D39 /* ViewController.m in Sources */,
 				63DB0E4E251DC2E000FA3D39 /* AppDelegate.m in Sources */,
 				63DB0E5F251DC2E200FA3D39 /* main.m in Sources */,

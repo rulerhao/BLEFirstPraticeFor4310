@@ -19,26 +19,24 @@
 }
 
 - (void)
-addObj                  :(nullable CBPeripheral *)             Pheripheral
+addObj                  :(nullable CBPeripheral *)   Pheripheral
 nowCharacteristic       :(nullable NSData *)         Now_Charact
 previousCharacteristic  :(nullable NSData *)         Previous_Charact
 nowBabyInformation      :(nullable NSData *)         Now_Baby_Infor
-CurrentCharacteristic :(nullable NSData *)         Current_Characteristic
-storedMovementState     :(nullable NSMutableArray *)           Stored_Movement_State {
+CurrentCharacteristic   :(nullable NSData *)         Current_Characteristic
+storedMovementState     :(nullable NSMutableArray *) Stored_Movement_State
+deviceName              :(nullable NSString *)       Device_Name
+deviceID                :(nullable NSString *)       Device_ID
+deviceSex               :(nullable NSString *)       Device_Sex {
     peripheral = Pheripheral;
     now_Charact = Now_Charact;
     previous_Charact = Previous_Charact;
     now_Baby_Infor = Now_Baby_Infor;
     current_Characteristic = Current_Characteristic;
     stored_Movemebt_State = Stored_Movement_State;
-    /*
-    NSLog(@"Right_Inside_now_before_char_nice: %p", &Now_Charact);
-    NSLog(@"Right_Inside_pre_before_char_nice: %p", &Previous_Charact);
-    NSLog(@"Inside_now_before_char_nice: %p", &now_Charact);
-    NSLog(@"Inside_pre_before_char_nice: %p", &previous_Charact);
-     */
-    NSLog(@"------------------------------before_char_nice------------------------------------------");
-
+    device_Name = Device_Name;
+    device_ID = Device_ID;
+    device_Sex = Device_Sex;
 }
 
 - (CBPeripheral *) getPheripheral {
@@ -63,5 +61,17 @@ storedMovementState     :(nullable NSMutableArray *)           Stored_Movement_S
 
 - (NSMutableArray *) getStoredMovementState {
     return stored_Movemebt_State;
+}
+
+- (NSString *) getDeviceName {
+    return device_Name;
+}
+
+- (NSString *) getDeviceID {
+    return device_ID;
+}
+
+- (NSString *) getDeviceSex {
+    return device_Sex;
 }
 @end

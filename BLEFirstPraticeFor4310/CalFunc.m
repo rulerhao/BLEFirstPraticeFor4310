@@ -6,6 +6,7 @@
 //
 
 #import "CalFunc.h"
+#import "StringProcessFunc.h"
 
 @interface CalFunc ()
 
@@ -69,9 +70,11 @@ HexStringToASCIIString:(NSString *)HexString {
     NSString *Merged_String = [[NSString alloc] init];
     
     for(int i = 0; i < [HexString length]; i = i + 2) {
-        NSString *Per_SubString = [self getSubString:HexString
-                                        length      :2
-                                        location    :i];
+        StringProcessFunc *str_Process_Func = [[StringProcessFunc alloc] init];
+        
+        NSString *Per_SubString = [str_Process_Func getSubString:HexString
+                                                    length      :2
+                                                    location    :i];
         /**
          * 假如十六進位為00則不轉換
          */
@@ -84,9 +87,9 @@ HexStringToASCIIString:(NSString *)HexString {
         
         char ASCIIChar = [self getASCIICharThroughInteger:IntegerFromHex];
         NSString *ASCIIString = [self getStringFromChar:ASCIIChar];
-        
         // Merge String
-        Merged_String = [self MergeTwoString:Merged_String SecondStr:ASCIIString];
+        Merged_String = [str_Process_Func MergeTwoString : Merged_String
+                                          SecondStr      : ASCIIString];
     }
     return Merged_String;
 }
@@ -118,38 +121,6 @@ getASCIICharThroughInteger: (NSInteger) Integer {
 getStringFromChar: (char) ch {
     NSString *ASCIIString = [NSString stringWithFormat:@"%c", ch];
     return ASCIIString;
-}
-/*!
- * @param First_Str : 在前方被結合的 String
- * @param Second_Str : 在後方被結合的 String
- *  @discussion
- *   將兩個 String 結合為單一 String
- *
- */
-- (NSString *)
-MergeTwoString: (NSString *) First_Str
-SecondStr     : (NSString *) Second_Str {
-    NSString *Merged_String = [NSString stringWithFormat:@"%@%@", First_Str, Second_Str];
-    return Merged_String;
-}
-/*!
- * @param Ori_String : 要被切的 string
- * @param Length : 切下的長度
- * @param Location : 由第幾個開始切
- *  @discussion
- *      取得指定長度和位置的 Substring of string
- *
- */
-- (NSString *)
-getSubString    : (NSString *) Ori_String
-length          : (NSUInteger) Length
-location        : (NSUInteger) Location {
-    NSRange search_Range;
-    search_Range.length = Length;
-    search_Range.location = Location;
-    NSString *new_String = [Ori_String substringWithRange:search_Range];
-    
-    return new_String;
 }
 
 @end

@@ -9,6 +9,7 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "cellData.h"
 #import "CalFunc.h"
+#import "StringProcessFunc.h"
 
 @interface ViewController : UIViewController <CBCentralManagerDelegate,CBPeripheralDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 @property(strong, nonatomic) CBCentralManager *myCBCentralManager;

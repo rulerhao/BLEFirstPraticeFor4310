@@ -131,7 +131,10 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 previousCharacteristic  :nil
                 nowBabyInformation      :nil
                 CurrentCharacteristic   :nil
-                storedMovementState     :nil];
+                storedMovementState     :nil
+                deviceName              :nil
+                deviceID                :nil
+                deviceSex               :nil];
             
             [_StoredDevices addObject:CD];
             
@@ -198,7 +201,10 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]
                 nowBabyInformation      :[[_StoredDevices objectAtIndex:i] getNowBabyInformation]
                 CurrentCharacteristic   :[[_StoredDevices objectAtIndex:i] getCurrentCharacteristic]
-                storedMovementState     :[[_StoredDevices objectAtIndex:i] getStoredMovementState]];
+                storedMovementState     :[[_StoredDevices objectAtIndex:i] getStoredMovementState]
+                deviceName              :[[_StoredDevices objectAtIndex:i] getDeviceName]
+                deviceID                :[[_StoredDevices objectAtIndex:i] getDeviceID]
+                deviceSex               :[[_StoredDevices objectAtIndex:i] getDeviceSex]];
             
             [_StoredDevices replaceObjectAtIndex:i withObject:CD];
             
@@ -240,7 +246,10 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]
                 nowBabyInformation      :[[_StoredDevices objectAtIndex:i] getNowBabyInformation]
                 CurrentCharacteristic   :[[_StoredDevices objectAtIndex:i] getCurrentCharacteristic]
-                storedMovementState     :[[_StoredDevices objectAtIndex:i] getStoredMovementState]];
+                storedMovementState     :[[_StoredDevices objectAtIndex:i] getStoredMovementState]
+                deviceName              :[[_StoredDevices objectAtIndex:i] getDeviceName]
+                deviceID                :[[_StoredDevices objectAtIndex:i] getDeviceID]
+                deviceSex               :[[_StoredDevices objectAtIndex:i] getDeviceSex]];
             
             [_StoredDevices replaceObjectAtIndex:i withObject:CD];
             
@@ -283,6 +292,10 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
 - (void)    peripheral                          :(CBPeripheral *)       peripheral
             didUpdateValueForCharacteristic     :(CBCharacteristic *)   characteristic
             error                               :(NSError *)            error {
+    Convert4310Information *convert_Characteristic = [[Convert4310Information alloc] init];
+    
+    StringProcessFunc *str_Process_Func = [[StringProcessFunc alloc] init];
+    
     CalFunc *CalculateFunc = [[CalFunc alloc] init];
     
     cellData *CD = [[cellData alloc] init];
@@ -292,23 +305,45 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         NSUUID *now_Identifier = [peripheral identifier];
         
         if([stored_Identifier isEqual:now_Identifier]) {
+            // 如果是第一次進如則先 write 04 讓 device回傳device內資訊
+            // 如果 getNowCharacteristic 還是 nil 的話
+            // 或者接收到 0x0555aa (接收到 0x05 時 update 的值 length = 3)
+            if(![[_StoredDevices objectAtIndex:i] getNowCharacteristic] ||
+               [[characteristic value] length] == 3) {
+                [self write04ToKS4310:_StoredDevices
+                                index:i];
+            }
             
             NSData *characteristic_Value = [characteristic value];
             NSString *characteristic_Str = [CalculateFunc getHEX:characteristic_Value];
-            NSString *cut_Characteristic_Str = [CalculateFunc getSubString:characteristic_Str length:2 location:0];
+            
+            NSString *cut_Characteristic_Str = [str_Process_Func getSubString   :characteristic_Str
+                                                                 length         :2
+                                                                 location       :0];
             
             if([cut_Characteristic_Str isEqual:@"04"]) {
                 
-                NSLog(@"Somethingis04");
+                // Device Name
+                NSString *Device_Name_Str = [convert_Characteristic getDeviceName:[characteristic value]];
+                // Device ID
+                NSString *Device_ID_Str = [convert_Characteristic getDeviceID:[characteristic value]];
+                // Device Sex
+                NSString *Device_Sex_Str = [convert_Characteristic getDeviceSex:[characteristic value]];
+                
+                // 儲存資料至 _StoradDevices
                 [CD addObj                  :peripheral
                     nowCharacteristic       :[[_StoredDevices objectAtIndex:i] getNowCharacteristic]
                     previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]
                     nowBabyInformation      :[characteristic value]
                     CurrentCharacteristic   :[characteristic value]
-                    storedMovementState     :[[_StoredDevices objectAtIndex:i] getStoredMovementState]];
+                    storedMovementState     :[[_StoredDevices objectAtIndex:i] getStoredMovementState]
+                    deviceName              :Device_Name_Str
+                    deviceID                :Device_ID_Str
+                    deviceSex               :Device_Sex_Str];
                 
                 [_StoredDevices replaceObjectAtIndex:i withObject:CD];
                 
+                // reloadItems
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
                 NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
                 [indexPaths addObject:indexPath];
@@ -319,15 +354,14 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 
                 break;
             }
-            else if ([cut_Characteristic_Str isEqual:@"05"]) {
-                break;
-            }
             else if ([cut_Characteristic_Str isEqual:@"00"]) { 
                 NSMutableArray *now_Stored_Movement_State = [[NSMutableArray alloc] init];
                 
                 NSString *setPassword = [CalculateFunc getHEX:[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]] ;
                 if(setPassword.length >= 8) {
-                    setPassword = [CalculateFunc getSubString:setPassword length:8 location:0];
+                    setPassword = [str_Process_Func getSubString    :   setPassword
+                                                    length          :   8
+                                                    location        :   0];
                 }
                 
                 if([[_StoredDevices objectAtIndex:i] getPreviousCharacteristic] != nil && [setPassword isEqual:@"0000F8FA"]) {
@@ -339,12 +373,17 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 /**
                  * 儲存至全域 NSMutableArray StoredDevices
                  */
-                [CD addObj                  :peripheral
+                
+                [CD addObj :peripheral
                     nowCharacteristic       :[characteristic value]
                     previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getNowCharacteristic]
                     nowBabyInformation      :[[_StoredDevices objectAtIndex:i] getNowBabyInformation]
                     CurrentCharacteristic   :[characteristic value]
-                    storedMovementState     :now_Stored_Movement_State];
+                    storedMovementState     :now_Stored_Movement_State
+                    deviceName              :[[_StoredDevices objectAtIndex:i] getDeviceName]
+                    deviceID                :[[_StoredDevices objectAtIndex:i] getDeviceID]
+                    deviceSex               :[[_StoredDevices objectAtIndex:i] getDeviceSex]];
+                
                 
                 [_StoredDevices replaceObjectAtIndex:i withObject:CD];
                 
@@ -410,9 +449,9 @@ numberOfItemsInSection  :(NSInteger)            section {
 - (__kindof UICollectionViewCell *)
 collectionView          :(UICollectionView *)   collectionView
 cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
-    Convert4310Information *convert_Characteristic = [[Convert4310Information alloc] init];
-    
     CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    
+    StringProcessFunc *str_Procecss_Func = [[StringProcessFunc alloc] init];
     
     __kindof UICollectionViewCell *cell;
     
@@ -427,6 +466,7 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
     CD = [_StoredDevices objectAtIndex:[indexPath row]];
     
     NSLog(@"ROWNUMBER:%ld", (long)[indexPath row]);
+    
     NSData *characteristic_Data = [CD getCurrentCharacteristic];
     NSString *characteristic_Str = [CalculateFunc getHEX:characteristic_Data];
     
@@ -438,36 +478,27 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
      *  05 : 上傳 Device 內部記憶體的資訊
      */
     if([characteristic_Str length] > 2) {
-        NSString *cut_Characteristic_Str = [CalculateFunc getSubString:characteristic_Str length:2 location:0];
+        NSString *cut_Characteristic_Str = [str_Procecss_Func getSubString  :   characteristic_Str
+                                                              length        :   2
+                                                              location      :   0];
         
         if([cut_Characteristic_Str isEqual:@"00"]) {
             NSLog(@"Clickclick");
             [self setDeviceReturnInformation    : cell
                   IndexPath                     : indexPath];
              
+            [self setDeviceInformation  :cell
+                  IndexPath             :indexPath];
         }
         
         else if([cut_Characteristic_Str isEqual:@"04"]) {
             
             NSLog(@"Run04");
-            
-            // Device Name
-            NSString *Device_Name_Str = [convert_Characteristic getDeviceName:characteristic_Data];
-            
-            UILabel *Device_Name_Label = [cell viewWithTag:5];
-            Device_Name_Label.text = Device_Name_Str;
-            
-            // Device ID
-            NSString *Device_ID_Str = [convert_Characteristic getDeviceID:characteristic_Data];
-            
-            UILabel *Device_Id_Label = [cell viewWithTag:6];
-            
-            [Device_Id_Label setText:Device_ID_Str];
              
         }
         
         else if([cut_Characteristic_Str isEqual:@"05"]) {
-            
+            NSLog(@"Run05");
         }
     }
     
@@ -486,49 +517,59 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
 collectionView          :(UICollectionView *)   collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
     
-    NSLog(@"YouClickThe:%ld", (long)[indexPath item]);
+    NSString *Device_Name = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceName];
+    NSString *Device_ID = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceID];
+    NSString *Device_Sex = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceSex];
     
-    NSUInteger indexOfClickedItem = [indexPath row];
-    NSLog(@"indexOfClickedItem: %lu", (unsigned long)indexOfClickedItem);
-    
-    CBPeripheral *peri = [[_StoredDevices objectAtIndex:indexOfClickedItem] getPheripheral];
-    CBService *ser = [[peri services] objectAtIndex:2];
-    CBCharacteristic *chara = [[ser characteristics] objectAtIndex:2];
-    NSLog(@"UUID: %@", [chara UUID]);
-    
-    //wirte to get information setting in device.
- 
-    const uint8_t bytes[] = {0x04};
-    
-    NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
-    [peri writeValue:data forCharacteristic:chara type:CBCharacteristicWriteWithResponse];
-    
-    /*
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"My Alert"
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"My Alert"
                                    message:@"This is an alert."
                                    preferredStyle:UIAlertControllerStyleAlert];
      
     [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.placeholder = @"Name";
-        textField.text = @"nice";
+        textField.text = Device_Name;
     }];
     
     [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.placeholder = @"ID";
+        textField.text = Device_ID;
     }];
     
     [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.placeholder = @"Sex";
+        textField.text = Device_Sex;
     }];
     
-    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+    // Cancel按鍵的部分
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault
        handler:^(UIAlertAction * action) {
-        NSLog(@"TestTextFromAlert: %@", [[[alert textFields] objectAtIndex:1] text]);
+        NSLog(@"TestTextFromAlert: %@", [[[alert textFields] objectAtIndex:0] text]);
     }];
     
-    [alert addAction:defaultAction];
+    // OK按鍵的部分
+    UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+       handler:^(UIAlertAction * action) {
+        
+        NSMutableData *Merged_InformationsAgain = [self getWriteStringThroughAlertView:alert];
+        
+        NSLog(@"Merged_InformationsAgain : %@", Merged_InformationsAgain);
+        
+        // write 05 和要賦予的裝置資訊
+        CBPeripheral *peri = [[self->_StoredDevices objectAtIndex:[indexPath row]] getPheripheral];
+        CBService *ser = [[peri services] objectAtIndex:2];
+        CBCharacteristic *chara = [[ser characteristics] objectAtIndex:2];
+        
+        //wirte to get information setting in device.
+        [peri writeValue:Merged_InformationsAgain
+       forCharacteristic:chara
+                    type:CBCharacteristicWriteWithResponse];
+    }];
+    
+    [alert addAction:cancelAction];
+    [alert addAction:okAction];
+    
     [self presentViewController:alert animated:YES completion:nil];
-    */
+    
 }
 
 - (void)
@@ -817,4 +858,204 @@ index : (NSUInteger) index {
         }
     return now_Stored_Movement_State;
 }
+
+- (void)
+setDeviceInformation            : (__kindof UICollectionViewCell *)    cell
+IndexPath                       : (NSIndexPath *)                      Index_Path {
+    if(cell == nil) {
+        cell = [[UICollectionViewCell alloc] init];
+    }
+    
+    cellData *CD = [[cellData alloc] init];
+    
+    CD = [_StoredDevices objectAtIndex:[Index_Path row]];
+    
+    NSInteger index = [Index_Path row];
+    // Device Name
+    NSString *Device_Name_Str = [[_StoredDevices objectAtIndex:index] getDeviceName];
+    
+    UILabel *Device_Name_Label = [cell viewWithTag:5];
+    
+    [Device_Name_Label setText : Device_Name_Str];
+    
+    // Device ID
+    NSString *Device_ID_Str = [[_StoredDevices objectAtIndex:index] getDeviceID];
+    
+    UILabel *Device_Id_Label = [cell viewWithTag:6];
+    
+    [Device_Id_Label setText:Device_ID_Str];
+    
+    // Device Sex
+    NSString *Device_Sex_Str = [[_StoredDevices objectAtIndex:index] getDeviceSex];
+    
+    // 預設圖片
+    UIImage *PhotoBackground_Image = [UIImage imageNamed:@"baby_card_girl_photo_background2.png"];
+    UIImage *Information_Bar_Image = [UIImage imageNamed:@"baby_card_girl_information_bar_background.png"];
+    
+    NSLog(@"Sexis:%@", Device_Sex_Str);
+    if([Device_Sex_Str isEqual:@"0"]) {
+        PhotoBackground_Image = [UIImage imageNamed:@"baby_card_girl_photo_background2.png"];
+        Information_Bar_Image = [UIImage imageNamed:@"baby_card_girl_information_bar_background.png"];
+    }
+    else {
+        PhotoBackground_Image = [UIImage imageNamed:@"baby_card_boy_photo_background2.png"];
+        Information_Bar_Image = [UIImage imageNamed:@"baby_card_boy_information_bar_background.png"];
+    }
+    UIImageView *Device_PhotoBackground_ImageView = [cell viewWithTag:7];
+    
+    [Device_PhotoBackground_ImageView setImage:PhotoBackground_Image];
+    
+    UIImageView *Device_Bar_ImageView;
+    
+    for(int i = 8; i <= 10; i++) {
+        Device_Bar_ImageView = [cell viewWithTag:i];
+        [Device_Bar_ImageView setImage:Information_Bar_Image];
+    }
+}
+
+- (void)
+write04ToKS4310     : (NSMutableArray *)    mutable_Array
+index               : (NSUInteger)          Index {
+    
+    CBPeripheral *peri = [[mutable_Array objectAtIndex:Index] getPheripheral];
+    CBService *ser = [[peri services] objectAtIndex:2];
+    CBCharacteristic *chara = [[ser characteristics] objectAtIndex:2];
+    
+    //wirte to get information setting in device.
+ 
+    const uint8_t bytes[] = {0x04};
+    
+    NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
+    [peri writeValue:data forCharacteristic:chara type:CBCharacteristicWriteWithResponse];
+}
+
+- (NSString *)
+getWriteStringByAlertView : (UIAlertController *) alert {
+    StringProcessFunc *Str_Process_Func = [[StringProcessFunc alloc] init];
+    
+    NSString *New_Device_Name = [[[alert textFields] objectAtIndex:0] text];
+    NSString *New_Device_ID = [[[alert textFields] objectAtIndex:1] text];
+    NSString *New_Device_Sex = [[[alert textFields] objectAtIndex:2] text];
+    
+    NSString *Merged_Information = @"";
+    
+    if(     !([New_Device_Name length] > 8)        &&
+            !([New_Device_ID length] > 2)          &&
+            ([New_Device_Sex isEqual:@"0"]      ||
+            [New_Device_Sex isEqual:@"1"])      ) {
+        
+        NSUInteger Length_Of_Information = 17 * 2;
+        NSUInteger Length_Of_Head_String = 1 * 2;
+        NSUInteger Length_Of_Device_Name = 8 * 2;
+        NSUInteger Length_Of_Device_ID = 2 * 2;
+        NSUInteger Length_Of_Device_Sex = 1 * 2;
+        
+        NSString *Head_String = @"05";
+        Merged_Information = [Str_Process_Func MergeTwoString    :  Merged_Information
+                                               SecondStr         :  Head_String ];
+        NSString *string = @"A";
+        NSInteger asc = [string characterAtIndex:0];
+        NSString *ascHex = [[NSString alloc] initWithFormat:@"%lx", (long) asc];
+        NSLog(@"StringToASCiiHex:%@", ascHex);
+        
+        for(int i = 0; i < [New_Device_Name length]; i++) {
+            NSInteger Split_Str_Int = [New_Device_Name characterAtIndex:i];
+            NSString *Split_Str = [[NSString alloc] initWithFormat:@"%lx", (long) Split_Str_Int];
+            Merged_Information = [Str_Process_Func MergeTwoString   :   Merged_Information
+                                                   SecondStr        :   Split_Str];
+        }
+        
+        while([Merged_Information length] < Length_Of_Head_String + Length_Of_Device_Name) {
+            Merged_Information = [Str_Process_Func MergeTwoString   :   Merged_Information
+                                                   SecondStr        :   @"00"];
+        }
+        
+        for(int i = 0; i < [New_Device_ID length]; i++) {
+            NSInteger Split_Str_Int = [New_Device_ID characterAtIndex:i];
+            NSString *Split_Str = [[NSString alloc] initWithFormat:@"%lx", (long) Split_Str_Int];
+            Merged_Information = [Str_Process_Func MergeTwoString   :   Merged_Information
+                                                   SecondStr        :   Split_Str];
+        }
+        
+        while([Merged_Information length] < Length_Of_Head_String + Length_Of_Device_Name + Length_Of_Device_ID) {
+            Merged_Information = [Str_Process_Func MergeTwoString   :   Merged_Information
+                                                   SecondStr        :   @"00"];
+        }
+        
+        for(int i = 0; i < [New_Device_Sex length]; i++) {
+            NSInteger Split_Str_Int = [New_Device_Sex characterAtIndex:i];
+            NSString *Split_Str = [[NSString alloc] initWithFormat:@"%lx", (long) Split_Str_Int];
+            Merged_Information = [Str_Process_Func MergeTwoString   :   Merged_Information
+                                                   SecondStr        :   Split_Str];
+        }
+        
+        while([Merged_Information length] < Length_Of_Information) {
+            Merged_Information = [Str_Process_Func MergeTwoString   :   Merged_Information
+                                                   SecondStr        :   @"00"];
+        }
+        
+        NSLog(@"Merged_Information:%@", Merged_Information);
+        
+    }
+    return Merged_Information;
+}
+
+- (NSMutableData *)
+getWriteStringThroughAlertView : (UIAlertController *) alert {
+    NSMutableData *Merged_Information_MutableData = [[NSMutableData alloc] initWithCapacity:0];
+    
+    NSString *New_Device_Name = [[[alert textFields] objectAtIndex:0] text];
+    NSString *New_Device_ID = [[[alert textFields] objectAtIndex:1] text];
+    NSString *New_Device_Sex = [[[alert textFields] objectAtIndex:2] text];
+    
+    if(     !([New_Device_Name length] > 8)        &&
+            !([New_Device_ID length] > 2)          &&
+            ([New_Device_Sex isEqual:@"0"]      ||
+            [New_Device_Sex isEqual:@"1"])      ) {
+        //
+        NSUInteger Length_Of_Information = 17;
+        NSUInteger Length_Of_Head_Bytes = 1;
+        NSUInteger Length_Of_Device_Name = 8;
+        NSUInteger Length_Of_Device_ID = 2;
+        //NSUInteger Length_Of_Device_Sex = 1 * 2;
+        
+        //
+        
+        const uint8_t Head_Bytes[] = {0x05};
+        NSMutableData *Head_Bytes_Mutable_Data = [NSMutableData dataWithBytes:Head_Bytes
+                                                               length:sizeof(Head_Bytes)];
+        const uint8_t Zero_Bytes[] = {0x00};
+        NSMutableData *Zero_Bytes_Mutable_Data = [NSMutableData dataWithBytes:Zero_Bytes
+                                                               length:sizeof(Zero_Bytes)];
+        
+        NSData *Device_Name_Data = [New_Device_Name dataUsingEncoding:NSUTF8StringEncoding];
+        NSMutableData *Device_Name_Mutable_Data = [Device_Name_Data mutableCopy];
+        
+        NSData *Device_ID_Data = [New_Device_ID dataUsingEncoding:NSUTF8StringEncoding];
+        NSMutableData *Device_ID_Mutable_Data = [Device_ID_Data mutableCopy];
+        
+        NSData *Device_Sex_Data = [New_Device_Sex dataUsingEncoding:NSUTF8StringEncoding];
+        NSMutableData *Device_Sex_Mutable_Data = [Device_Sex_Data mutableCopy];
+        
+        [Merged_Information_MutableData appendData:Head_Bytes_Mutable_Data];
+        [Merged_Information_MutableData appendData:Device_Name_Mutable_Data];
+        
+        while([Merged_Information_MutableData length] < Length_Of_Head_Bytes + Length_Of_Device_Name) {
+            [Merged_Information_MutableData appendData:Zero_Bytes_Mutable_Data];
+        }
+        [Merged_Information_MutableData appendData:Device_ID_Mutable_Data];
+        while(Merged_Information_MutableData.length < Length_Of_Head_Bytes + Length_Of_Device_Name + Length_Of_Device_ID) {
+            [Merged_Information_MutableData appendData:Zero_Bytes_Mutable_Data];
+        }
+        [Merged_Information_MutableData appendData:Device_Sex_Mutable_Data];
+        while(Merged_Information_MutableData.length < Length_Of_Information) {
+            [Merged_Information_MutableData appendData:Zero_Bytes_Mutable_Data];
+        }
+        
+        NSLog(@"Merged_Information_MutableData:%@", Merged_Information_MutableData);
+         
+    }
+    return Merged_Information_MutableData;
+}
+
 @end

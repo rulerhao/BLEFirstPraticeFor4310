@@ -6,25 +6,21 @@
 //
 
 #import "ViewController.h"
+#import "StringProcessFunc.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CalFunc : UIViewController
 
 - (NSString *) getHEX:(NSData *) data_Bytes;
-- (NSInteger) getIntegerFromHexString:(NSString *) str;
-- (NSString *) HexStringToASCIIString:(NSString *) HexString;
-- (char) getASCIICharThroughInteger:(NSInteger) Integer;
-- (NSString *) getStringFromChar :(char) ch;
-- (NSString *)
-MergeTwoString  : (NSString *) First_Str
-SecondStr       : (NSString *) Second_Str;
-- (NSString *)
-getSubString    : (NSString *) Ori_String
-length          : (NSUInteger) Length
-location        : (NSUInteger) Location
-;
 
+- (NSInteger) getIntegerFromHexString:(NSString *) str;
+
+- (NSString *) HexStringToASCIIString:(NSString *) HexString;
+
+- (char) getASCIICharThroughInteger:(NSInteger) Integer;
+
+- (NSString *) getStringFromChar :(char) ch;
 @end
 
 NS_ASSUME_NONNULL_END

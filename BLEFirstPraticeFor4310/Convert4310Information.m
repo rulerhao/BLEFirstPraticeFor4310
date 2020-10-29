@@ -6,6 +6,7 @@
 //
 
 #import "Convert4310Information.h"
+#import "StringProcessFunc.h"
 
 @interface Convert4310Information ()
 
@@ -309,14 +310,16 @@ previous_z          :(NSInteger) previous_Z {
 }
 
 - (NSString *) getDeviceName:(NSData *) data_Bytes {
+    StringProcessFunc *str_Process_Func = [[StringProcessFunc alloc] init];
+    
     CalFunc *CalculateFunc = [[CalFunc alloc] init];
     
     NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
     NSUInteger Position = 1;
     NSUInteger Length = 8;
-    
-    NSString *Split_String = [CalculateFunc getSubString:HexString
+    NSLog(@"Merged_InformationsAgain:%@", HexString);
+    NSString *Split_String = [str_Process_Func getSubString:HexString
                                     length      :Length * 2
                                     location    :Position * 2];
     
@@ -326,6 +329,8 @@ previous_z          :(NSInteger) previous_Z {
 }
 
 - (NSString *) getDeviceID : (NSData *) data_Bytes {
+    StringProcessFunc *str_Process_Func = [[StringProcessFunc alloc] init];
+    
     CalFunc *CalculateFunc = [[CalFunc alloc] init];
     
     NSString *HexString = [CalculateFunc getHEX:data_Bytes];
@@ -333,15 +338,15 @@ previous_z          :(NSInteger) previous_Z {
     NSUInteger Position = 9;
     NSUInteger Length = 2;
     
-    NSString *Split_String = [CalculateFunc getSubString:HexString
+    NSString *Split_String = [str_Process_Func getSubString:HexString
                                     length      :Length * 2
                                     location    :Position * 2];
     
-    NSString *First_String = [CalculateFunc getSubString:Split_String
+    NSString *First_String = [str_Process_Func getSubString:Split_String
                                     length      :1 * 2
                                     location    :0 * 2];
     
-    NSString *Second_String = [CalculateFunc getSubString:Split_String
+    NSString *Second_String = [str_Process_Func getSubString:Split_String
                                     length      :1 * 2
                                     location    :1 * 2];
     
@@ -352,7 +357,7 @@ previous_z          :(NSInteger) previous_Z {
         Second_String = @"30";
     }
     
-    NSString *Merged_String = [CalculateFunc MergeTwoString :   First_String
+    NSString *Merged_String = [str_Process_Func MergeTwoString :   First_String
                                              SecondStr      :   Second_String];
     
     NSString *ASCIIString = [CalculateFunc HexStringToASCIIString:Merged_String];
@@ -360,6 +365,33 @@ previous_z          :(NSInteger) previous_Z {
     
     return ASCIIString;
 }
+
+- (NSString *) getDeviceSex : (NSData *) data_Bytes {
+    StringProcessFunc *str_Process_Func = [[StringProcessFunc alloc] init];
+    
+    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    
+    NSString *HexString = [CalculateFunc getHEX:data_Bytes];
+    
+    NSUInteger Position = 11;
+    NSUInteger Length = 1;
+    
+    NSString *Split_String = [str_Process_Func getSubString:HexString
+                                               length      :Length * 2
+                                               location    :Position * 2];
+    
+    if(![Split_String  isEqual: @"30"] && ![Split_String  isEqual: @"31"]) {
+        Split_String = @"30";
+    }
+    
+    if([Split_String isEqual:@"30"]) {
+        return @"0";
+    }
+    else {
+        return @"1";
+    }
+}
+
 /*
 #pragma mark - Navigation
 
