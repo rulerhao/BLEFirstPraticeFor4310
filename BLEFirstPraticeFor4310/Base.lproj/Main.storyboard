@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -48,7 +48,7 @@
                                     <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" translatesAutoresizingMaskIntoConstraints="NO" id="gtr-Ge-4Wn">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" reuseIdentifier="cell" translatesAutoresizingMaskIntoConstraints="NO" id="gtr-Ge-4Wn">
                                         <rect key="frame" x="10" y="10" width="172" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="NHw-s8-BlX">
@@ -62,7 +62,7 @@
                                                         <constraint firstAttribute="width" secondItem="XnY-C1-neU" secondAttribute="height" multiplier="43:50" id="dnQ-bo-XVe"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="4" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="baby_card_warning.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ex3-E0-GGZ" userLabel="Warning_Imageview">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="4" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ex3-E0-GGZ" userLabel="Warning_Imageview">
                                                     <rect key="frame" x="6" y="6" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="1oH-56-caf"/>
@@ -70,7 +70,7 @@
                                                         <constraint firstAttribute="width" secondItem="Ex3-E0-GGZ" secondAttribute="height" multiplier="1:1" id="esS-UF-OB3"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="7" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="baby_card_boy_photo_background2.png" translatesAutoresizingMaskIntoConstraints="NO" id="WdV-3q-WSb" userLabel="Photo_Background_Imageview">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="7" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WdV-3q-WSb" userLabel="Photo_Background_Imageview">
                                                     <rect key="frame" x="49" y="6" width="74" height="74"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="WdV-3q-WSb" secondAttribute="height" multiplier="1:1" id="Rjj-Yk-EnY"/>
@@ -78,17 +78,17 @@
                                                         <constraint firstAttribute="height" constant="74" id="keL-os-PWP"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="6" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bHe-Sz-Wqw" userLabel="ID_Textview">
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="6" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bHe-Sz-Wqw" userLabel="ID_Textview">
                                                     <rect key="frame" x="123" y="8" width="41.5" height="21.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="41.5" id="eMk-dg-QTQ"/>
                                                         <constraint firstAttribute="width" secondItem="bHe-Sz-Wqw" secondAttribute="height" multiplier="41:21" id="f1r-6d-8Cr"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.1669732045" green="0.80835087439999997" blue="0.44550656179999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ep-GU-QQq" userLabel="Name_Textview">
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ep-GU-QQq" userLabel="Name_Textview">
                                                     <rect key="frame" x="65" y="83" width="42" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="0AW-co-tMP"/>
@@ -99,7 +99,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="8" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="baby_card_boy_information_bar_background.png" translatesAutoresizingMaskIntoConstraints="NO" id="W18-zj-8Ws" userLabel="Movement_Bar_Imageview">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="8" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="W18-zj-8Ws" userLabel="Movement_Bar_Imageview">
                                                     <rect key="frame" x="-20.5" y="110" width="213" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="213" id="KpY-6D-jdL"/>
@@ -107,7 +107,7 @@
                                                         <constraint firstAttribute="width" secondItem="W18-zj-8Ws" secondAttribute="height" multiplier="71:8" id="aGL-qN-65l"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="9" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="baby_card_boy_information_bar_background.png" translatesAutoresizingMaskIntoConstraints="NO" id="yBR-jF-zVu" userLabel="Temperature_Bar_Imageview">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="9" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yBR-jF-zVu" userLabel="Temperature_Bar_Imageview">
                                                     <rect key="frame" x="-20.5" y="138" width="213" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="yBR-jF-zVu" secondAttribute="height" multiplier="71:8" id="CRt-zB-ALc"/>
@@ -115,7 +115,7 @@
                                                         <constraint firstAttribute="width" constant="213" id="eJg-6G-w03"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="baby_card_boy_information_bar_background.png" translatesAutoresizingMaskIntoConstraints="NO" id="6f4-6P-Rlc" userLabel="Battery_Bar_Imageview">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6f4-6P-Rlc" userLabel="Battery_Bar_Imageview">
                                                     <rect key="frame" x="-20.5" y="166" width="213" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="24" id="GmV-BT-Fdt"/>
@@ -146,16 +146,23 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="list_level_2.png" translatesAutoresizingMaskIntoConstraints="NO" id="DyB-uS-axb" userLabel="Movement_Imageview">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DyB-uS-axb" userLabel="Movement_Imageview">
                                                     <rect key="frame" x="98" y="110" width="70" height="23"/>
                                                 </imageView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Battery-1-Bak.png" translatesAutoresizingMaskIntoConstraints="NO" id="0Vy-QC-6YH" userLabel="Battery_Imageview">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0Vy-QC-6YH" userLabel="Battery_Imageview">
                                                     <rect key="frame" x="110" y="166" width="46" height="23"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="93f-Ka-9A0" userLabel="Temperature_Textview">
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="93f-Ka-9A0" userLabel="Temperature_Textview">
                                                     <rect key="frame" x="110" y="140" width="42.5" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.48665883609999999" green="0.67669203369999997" blue="0.38473145190000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Loading" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ywj-ZV-4Uo">
+                                                    <rect key="frame" x="0.0" y="72" width="172" height="39"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                                    <color key="textColor" systemColor="systemGreenColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -272,15 +279,13 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Battery-1-Bak.png" width="96.480003356933594" height="49.919998168945312"/>
         <image name="baby_card_background.png" width="221.75999450683594" height="249.1199951171875"/>
-        <image name="baby_card_boy_information_bar_background.png" width="204" height="30.239999771118164"/>
-        <image name="baby_card_boy_photo_background2.png" width="99.360000610351562" height="99.360000610351562"/>
-        <image name="baby_card_warning.png" width="71" height="71"/>
         <image name="background.png" width="480" height="800"/>
-        <image name="list_level_2.png" width="84" height="33"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

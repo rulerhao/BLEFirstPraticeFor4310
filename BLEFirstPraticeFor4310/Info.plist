@@ -24,6 +24,10 @@
 	<string>Play with BLE Compatible devices</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Play with BLE Compatible devices</string>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) camera use</string>
+	<key>Privacy - Photo Library Usage Description </key>
+	<string>$(PRODUCT_NAME) photo use</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

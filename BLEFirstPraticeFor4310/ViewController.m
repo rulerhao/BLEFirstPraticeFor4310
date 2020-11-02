@@ -14,7 +14,7 @@
 @property (readonly, assign) NSUInteger MovementScanTime;
 @property (readonly, assign) float HighTemperature;
 @property (readonly, assign) float LowTemperature;
-
+@property (readwrite, assign) NSIndexPath *NowClickIndexPath;
 @end
 
 @implementation ViewController
@@ -40,6 +40,7 @@
     _myCollectionView.dragInteractionEnabled = YES;
     _myCollectionView.dragDelegate = self;
     _myCollectionView.dropDelegate = self;
+    
 }
 
 
@@ -349,6 +350,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 
                 [_StoredDevices replaceObjectAtIndex:i withObject:CD];
                 
+                //NSLog(@"RunTimes:%d", i);
                 // reloadItems
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
                 NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
@@ -360,7 +362,8 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 
                 break;
             }
-            else if ([cut_Characteristic_Str isEqual:@"00"]) { 
+            else if ([cut_Characteristic_Str isEqual:@"00"]) {
+                //NSLog(@"RunTimes2:%d", i);
                 NSMutableArray *now_Stored_Movement_State = [[NSMutableArray alloc] init];
                 
                 NSString *setPassword = [CalculateFunc getHEX:[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]] ;
@@ -402,7 +405,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 [indexPaths addObject:indexPath];
                 
                 [UIView performWithoutAnimation:^{
-                    [_myCollectionView reloadItemsAtIndexPaths:indexPaths];
+                    //[_myCollectionView reloadItemsAtIndexPaths:indexPaths];
                 }];
                 break;
             }
@@ -410,26 +413,6 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         }
     }
 }
-/**
-    按按鍵寫入04
- */
-/*
-- (IBAction)
-    ReadFirstObjInfor   :(id)           sender
-    forEvent            :(UIEvent *)    event {
-    CBPeripheral *peri = [[_StoredDevices objectAtIndex:0] getPheripheral];
-    CBService *ser = [[peri services] objectAtIndex:2];
-    CBCharacteristic *chara = [[ser characteristics] objectAtIndex:2];
-    NSLog(@"UUID: %@", [chara UUID]);
-    
-    //wirte to get information setting in device.
- 
-    const uint8_t bytes[] = {0x04};
-    NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
-    [peri writeValue:data forCharacteristic:chara type:CBCharacteristicWriteWithResponse];
-    //CBCharacteristic *CBChar = [[peri characteristics] objectAtIndex:0];
-}
-*/
 
 -(void)     centralManager          :(CBCentralManager *)       central
             didDisconnectPeripheral :(CBPeripheral *)           peripheral
@@ -493,12 +476,11 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
             [self setDeviceReturnInformation    : cell
                   IndexPath                     : indexPath];
              
-            [self setDeviceInformation  :cell
-                  IndexPath             :indexPath];
         }
         
         else if([cut_Characteristic_Str isEqual:@"04"]) {
-            
+            [self setDeviceInformation  :       cell
+                  IndexPath             :       indexPath];
             NSLog(@"Run04");
              
         }
@@ -522,15 +504,16 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
 -(void)
 collectionView          :(UICollectionView *)   collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
+    _NowClickIndexPath = indexPath;
     
     NSString *Device_Name = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceName];
     NSString *Device_ID = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceID];
     NSString *Device_Sex = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceSex];
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"My Alert"
-                                   message:@"This is an alert."
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Modify Information"
+                                   message:nil
                                    preferredStyle:UIAlertControllerStyleAlert];
-     
+    
     [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.placeholder = @"Name";
         textField.text = Device_Name;
@@ -547,35 +530,33 @@ didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
     }];
     
     // Cancel按鍵的部分
-    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                           style:UIAlertActionStyleDefault
        handler:^(UIAlertAction * action) {
-        NSLog(@"TestTextFromAlert: %@", [[[alert textFields] objectAtIndex:0] text]);
+    }];
+    
+    // 拍照按鍵部份
+    UIAlertAction* CameraAction = [UIAlertAction actionWithTitle:@"Camera"
+                                                           style:UIAlertActionStyleDefault
+       handler:^(UIAlertAction * action) {
+        [self initCamera : indexPath];
     }];
     
     // OK按鍵的部分
     UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
        handler:^(UIAlertAction * action) {
-        
-        NSMutableData *Merged_InformationsAgain = [self getWriteStringThroughAlertView:alert];
-        
-        NSLog(@"Merged_InformationsAgain : %@", Merged_InformationsAgain);
-        
-        // write 05 和要賦予的裝置資訊
-        CBPeripheral *peri = [[self->_StoredDevices objectAtIndex:[indexPath row]] getPheripheral];
-        CBService *ser = [[peri services] objectAtIndex:2];
-        CBCharacteristic *chara = [[ser characteristics] objectAtIndex:2];
-        
-        //wirte to get information setting in device.
-        [peri writeValue:Merged_InformationsAgain
-       forCharacteristic:chara
-                    type:CBCharacteristicWriteWithResponse];
+        // 按了 OK 之後
+        [self clickOKButton : alert
+                   IndexPath:indexPath];
     }];
     
     [alert addAction:cancelAction];
+    [alert addAction:CameraAction];
     [alert addAction:okAction];
     
     [self presentViewController:alert animated:YES completion:nil];
-    
+     
+    NSLog(@"finish");
 }
 
 - (void)
@@ -592,9 +573,9 @@ movementStatus          : (BOOL)                Movement_Status {
 }
 
 - (void)
-setTempoeratureLabel : (UILabel *) textLabel
-temperature : (float) Temperature
-temperatureStatus : (NSInteger) Temp_Status {
+setTempoeratureLabel    : (UILabel *)   textLabel
+temperature             : (float)       Temperature
+temperatureStatus       : (NSInteger)   Temp_Status {
     NSString *T1_String = [[NSString alloc] initWithFormat:@"%0.1f", Temperature];
     switch (Temp_Status) {
             /**
@@ -649,7 +630,7 @@ temperatureStatus : (NSInteger) Temp_Status {
     /**
      * 檢查時間內如果有超過三分之二呼吸不正常則設為 Movement Abnormal = true;
      */
-    // TODO: 修改為每次進入再增加而不是每次都從零開始重算
+    // TODO: 修改為每次進入再增加而不是每次都從零開始重算 進而增加效能
     
     BOOL Total_Normal = false;
     NSUInteger Total_Normal_Count = 0;
@@ -739,7 +720,7 @@ IndexPath                    : (NSIndexPath *)                      Index_Path {
     BOOL Movement_Normal = false;
     BOOL Temperature_Normal = false;
     
-    for(int i = 1;i <= 4;i++) {
+    for(int i = 1;i <= 11;i++) {
         switch (i) {
                 /**
                  * Movement 的燈號判斷
@@ -820,6 +801,20 @@ IndexPath                    : (NSIndexPath *)                      Index_Path {
                 }
                 break;
             }
+            case 7 : {
+                /*
+                NSLog(@"IntoPicture");
+                UIImageView *Photo_Label = [cell viewWithTag:7];
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"temp_Image.png"];
+                UIImage *img = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",filePath]];
+                [Photo_Label setImage:img];
+                 */
+            }
+            case 11 : {
+                UILabel *Temperature_Label = [cell viewWithTag:11];
+                Temperature_Label.hidden = YES;
+            }
         }
     }
 }
@@ -865,6 +860,9 @@ index : (NSUInteger) index {
     return now_Stored_Movement_State;
 }
 
+/// <#Description#>
+/// @param cell <#cell description#>
+/// @param Index_Path <#Index_Path description#>
 - (void)
 setDeviceInformation            : (__kindof UICollectionViewCell *)    cell
 IndexPath                       : (NSIndexPath *)                      Index_Path {
@@ -880,12 +878,17 @@ IndexPath                       : (NSIndexPath *)                      Index_Pat
     // Device Name
     NSString *Device_Name_Str = [[_StoredDevices objectAtIndex:index] getDeviceName];
     
+    NSLog(@"Write05DeviceName:%@", Device_Name_Str);
     UILabel *Device_Name_Label = [cell viewWithTag:5];
     
     [Device_Name_Label setText : Device_Name_Str];
     
     // Device ID
     NSString *Device_ID_Str = [[_StoredDevices objectAtIndex:index] getDeviceID];
+    
+    StringProcessFunc *StrProcessFunc = [[StringProcessFunc alloc] init];
+    
+    Device_ID_Str = [StrProcessFunc MergeTwoString:@"A0" SecondStr:Device_ID_Str];
     
     UILabel *Device_Id_Label = [cell viewWithTag:6];
     
@@ -907,10 +910,28 @@ IndexPath                       : (NSIndexPath *)                      Index_Pat
         PhotoBackground_Image = [UIImage imageNamed:@"baby_card_boy_photo_background2.png"];
         Information_Bar_Image = [UIImage imageNamed:@"baby_card_boy_information_bar_background.png"];
     }
-    UIImageView *Device_PhotoBackground_ImageView = [cell viewWithTag:7];
     
-    [Device_PhotoBackground_ImageView setImage:PhotoBackground_Image];
+    // 讀取圖片並放入圖片
+    UIImageView *Photo_ImageView = [cell viewWithTag:7];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
+    NSString *Image_Name = [StrProcessFunc MergeTwoString:Device_Name_Str SecondStr:@".png"];
+    
+    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Image_Name];
+    
+    UIImage *PhotoImage = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",filePath]];
+    
+    if(PhotoImage.size.height == 0 & PhotoImage.size.width == 0) {
+        PhotoImage = [UIImage imageNamed:@"Baby_1.jpg"];
+    }
+    
+    [Photo_ImageView setImage:PhotoImage];
+    
+    Photo_ImageView.layer.cornerRadius = 30;
+    Photo_ImageView.layer.bounds = CGRectMake(0, 0, 60, 60);
+    
+    
+    // BarImageView
     UIImageView *Device_Bar_ImageView;
     
     for(int i = 8; i <= 10; i++) {
@@ -959,10 +980,6 @@ getWriteStringByAlertView : (UIAlertController *) alert {
         NSString *Head_String = @"05";
         Merged_Information = [Str_Process_Func MergeTwoString    :  Merged_Information
                                                SecondStr         :  Head_String ];
-        NSString *string = @"A";
-        NSInteger asc = [string characterAtIndex:0];
-        NSString *ascHex = [[NSString alloc] initWithFormat:@"%lx", (long) asc];
-        NSLog(@"StringToASCiiHex:%@", ascHex);
         
         for(int i = 0; i < [New_Device_Name length]; i++) {
             NSInteger Split_Str_Int = [New_Device_Name characterAtIndex:i];
@@ -1062,6 +1079,119 @@ getWriteStringThroughAlertView : (UIAlertController *) alert {
          
     }
     return Merged_Information_MutableData;
+}
+
+- (void) initCamera : (NSIndexPath *)        indexPath {
+    
+    NSLog(@"initCamera");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        
+        //檢查是否支援此Source Type(相機)
+        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            NSLog(@"Access Camera Device");
+            
+            //設定影像來源為相機
+            imagePicker.sourceType =  UIImagePickerControllerSourceTypeCamera;
+            imagePicker.delegate = self;
+            imagePicker.allowsEditing = YES;
+            
+            // 顯示UIImagePickerController
+            [self presentViewController:imagePicker animated:YES completion:nil];
+        }
+        else {
+            //提示使用者，目前設備不支援相機
+            NSLog(@"No Camera Device");
+        }
+
+    });
+    
+}
+
+//使用者按下確定時
+- (void)
+imagePickerController           :   (UIImagePickerController *) picker
+didFinishPickingMediaWithInfo   :   (NSDictionary *)            info {
+    //取得剛拍攝的相片(或是由相簿中所選擇的相片)
+    UIImage *image=[info objectForKey:UIImagePickerControllerEditedImage];
+    
+    NSLog(@"NicePicture");
+    
+    // Create path.
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    NSString *Now_Device_Name = [[_StoredDevices objectAtIndex:[_NowClickIndexPath row]] getDeviceName];
+    
+    StringProcessFunc *Str_Process_Func = [[StringProcessFunc alloc] init];
+    NSString *Now_Device_Name_With_Extension = [Str_Process_Func MergeTwoString:Now_Device_Name SecondStr:@".png"];
+    
+    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Now_Device_Name_With_Extension];
+ 
+    NSLog(@"Picture_Directory:%lu", (unsigned long)NSDocumentDirectory);
+    NSLog(@"Picture_Mask:%lu", (unsigned long)NSUserDomainMask);
+    NSLog(@"Picture_Path:%@", filePath);
+    
+    // Save image.
+    [UIImagePNGRepresentation(image) writeToFile:filePath atomically:YES];
+    
+    [picker dismissViewControllerAnimated:YES completion:^{}];
+}
+
+//使用者按下取消時
+- (void)
+imagePickerControllerDidCancel  :   (UIImagePickerController *) picker {
+    //一般情況下沒有什麼特別要做的事情
+    
+    [picker dismissViewControllerAnimated:YES completion:^{}];
+
+}
+
+- (void ) clickOKButton : (UIAlertController *) alert
+              IndexPath : (NSIndexPath *) indexPath {
+    NSLog(@"Write05");
+    StringProcessFunc *Str_Process_Func = [[StringProcessFunc alloc] init];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    NSString *Previous_Device_Name = [[self->_StoredDevices objectAtIndex:[self->_NowClickIndexPath row]] getDeviceName];
+    
+    NSString *Previous_Device_Name_With_Extension = [Str_Process_Func MergeTwoString:Previous_Device_Name SecondStr:@".png"];
+    
+    NSString *Previous_filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Previous_Device_Name_With_Extension];
+ 
+    UIImage *PhotoImage = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",Previous_filePath]];
+    
+    // 由 alert view 中取得輸入資訊
+    NSMutableData *Merged_InformationsAgain = [self getWriteStringThroughAlertView:alert];
+    
+    // 開始儲存檔名
+    NSString *Now_Device_name = [[[alert textFields] objectAtIndex:0] text];
+    
+    NSString *Now_Device_Name_With_Extension = [Str_Process_Func MergeTwoString:Now_Device_name SecondStr:@".png"];
+    
+    NSString *Now_filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Now_Device_Name_With_Extension];
+    
+    // 儲存現在檔名的圖片
+    
+    [UIImagePNGRepresentation(PhotoImage) writeToFile:Now_filePath atomically:YES];
+    
+    if(![Previous_filePath isEqual:Now_filePath]) {
+        // 刪除之前檔名的圖片
+        [[NSFileManager defaultManager ] removeItemAtPath:Previous_filePath
+                                                    error:nil];
+    }
+    
+    NSLog(@"Merged_InformationsAgain : %@", Merged_InformationsAgain);
+    
+    // write 05 和要賦予的裝置資訊
+    CBPeripheral *peri = [[self->_StoredDevices objectAtIndex:[indexPath row]] getPheripheral];
+    CBService *ser = [[peri services] objectAtIndex:2];
+    CBCharacteristic *chara = [[ser characteristics] objectAtIndex:2];
+    
+    //wirte to get information setting in device.
+    [peri writeValue:Merged_InformationsAgain
+   forCharacteristic:chara
+                type:CBCharacteristicWriteWithResponse];
 }
 
 @end
