@@ -408,4 +408,46 @@ previous_z          :(NSInteger) previous_Z {
  *      將 NSData 轉換為 HexString
  *
  */
+
+- (NSMutableArray *)
+getMovementStatus       : (CBCharacteristic*)   characteristic
+nowStoredMovementState  : (NSMutableArray *)    now_Stored_Movement_State
+storedDevices           : (NSMutableArray *)    StoredDevices
+movementScanTime        : (NSInteger)           MovementScanTime
+index                   : (NSUInteger)          index {
+    
+        
+        NSInteger Location_X = [self get_Location_X:[characteristic value]];
+        NSInteger Location_Y = [self get_Location_Y:[characteristic value]];
+        NSInteger Location_Z = [self get_Location_Z:[characteristic value]];
+        
+        NSData *Previous_Characteristic = [[StoredDevices objectAtIndex:index] getPreviousCharacteristic];
+        
+        NSInteger Previous_Location_X = [self get_Location_X:Previous_Characteristic];
+        NSInteger Previous_Location_Y = [self get_Location_Y:Previous_Characteristic];
+        NSInteger Previous_Location_Z = [self get_Location_Z:Previous_Characteristic];
+        
+        Boolean now_Movement_Status = [self get_Movement_Status    :Location_X
+                                               y                      :Location_Y
+                                               z                      :Location_Z
+                                               previous_x             :Previous_Location_X
+                                               previous_y             :Previous_Location_Y
+                                               previous_z             :Previous_Location_Z];
+        
+        now_Stored_Movement_State = [[StoredDevices objectAtIndex:index] getStoredMovementState];
+        
+        /**
+         * 建立一個儲存十五秒位置變化是否正常的 array
+         */
+        if([now_Stored_Movement_State count] < MovementScanTime) {
+            [now_Stored_Movement_State addObject: [NSNumber numberWithBool:now_Movement_Status]];
+        }
+        else {
+            for(NSInteger i = 0;i < [now_Stored_Movement_State count] - 1;i++) {
+                [now_Stored_Movement_State replaceObjectAtIndex:i withObject:[now_Stored_Movement_State objectAtIndex:i + 1]];
+            }
+            [now_Stored_Movement_State replaceObjectAtIndex:[now_Stored_Movement_State count] - 1 withObject:[NSNumber numberWithBool:now_Movement_Status]];
+        }
+    return now_Stored_Movement_State;
+}
 @end

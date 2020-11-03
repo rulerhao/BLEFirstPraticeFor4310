@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CameraFunc : ViewController
+@interface CameraFunc : UIViewController
 
 @end
 

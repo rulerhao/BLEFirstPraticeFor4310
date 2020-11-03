@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Convert4310Information : ViewController
+@interface Convert4310Information : UIViewController
 
 - (NSInteger) get_Location_X:(NSData *) data_Bytes;
 - (NSInteger) get_Location_Y:(NSData *) data_Bytes;
@@ -35,6 +35,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *) getDeviceID : (NSData *) data_Bytes;
 - (NSString *) getDeviceSex : (NSData *) data_Bytes;
 
+- (NSMutableArray *)
+getMovementStatus       : (CBCharacteristic*)   characteristic
+nowStoredMovementState  : (NSMutableArray *)    now_Stored_Movement_State
+storedDevices           : (NSMutableArray *)    StoredDevices
+movementScanTime        : (NSInteger)           MovementScanTime
+index                   : (NSUInteger)          index;
+    
 @end
 
 NS_ASSUME_NONNULL_END

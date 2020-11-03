@@ -10,6 +10,8 @@
 #import "cellData.h"
 #import "CalFunc.h"
 #import "StringProcessFunc.h"
+#import "CameraFunc.h"
+#import "SketchView.h"
 
 @interface ViewController : UIViewController <
 CBCentralManagerDelegate,
@@ -17,7 +19,9 @@ CBPeripheralDelegate,
 UICollectionViewDataSource,
 UICollectionViewDelegateFlowLayout,
 UICollectionViewDragDelegate,
-UICollectionViewDropDelegate>
+UICollectionViewDropDelegate,
+UINavigationControllerDelegate,
+UIImagePickerControllerDelegate>
 @property(strong, nonatomic) CBCentralManager *myCBCentralManager;
 @property(strong, nonatomic) CBPeripheral *myCBPeripheral;
 @property(strong, nonatomic) NSMutableArray *Scanned;

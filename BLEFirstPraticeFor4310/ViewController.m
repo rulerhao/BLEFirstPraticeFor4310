@@ -97,7 +97,6 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
            CBCentralManagerScanOptionAllowDuplicatesKey : @YES
        };
        [_myCBCentralManager scanForPeripheralsWithServices:nil options:opt];
-       //[myCBCentralManager connectPeripheral:myCBPeripheral options:nil];
    }
 }
 
@@ -107,8 +106,6 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         didDiscoverPeripheral   :(CBPeripheral *)                   peripheral
         advertisementData       :(NSDictionary<NSString *,id> *)    advertisementData
         RSSI                    :(NSNumber *)                       RSSI {
-    //NSLog(@"Discovered %@", peripheral.name);
-    
     /**
      篩選出 Device name 為 KS-4310 的裝置
      */
@@ -158,44 +155,13 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
             NSLog(@"size of StoredDevice: %lu", [_StoredDevices count]);
             [_myCBCentralManager connectPeripheral:peripheral options:nil];
         }
-        /*
-        NSLog(@"Wow. It's %@", peripheral.name);
-        
-        self.myCBPeripheral = peripheral;
-
-        [self.DevicesInfor addObject:self.myCBPeripheral];
-        
-        NSLog(@"name: %@", [peripheral name]);
-        NSLog(@"identifier: %@", [peripheral identifier]);
-        
-        ScannedData *SD = [[ScannedData alloc] init];
-        [SD setCellValue:[peripheral name]
-        deviceIdentifier:[peripheral identifier]];
-        [_StoredDevices addObject:SD];
-        
-        NSLog(@"SizeOfSD: %lu", [_StoredDevices count]);
-        
-        
-        //[MA addObject:[self.myCBPeripheral services]];
-                
-        //self.myCBPeripheral = peripheral;
-        [_myCBCentralManager connectPeripheral:peripheral options:nil];
-        */
     }
-    //NSLog(@"Services: %@",peripheral.services);
-    //NSUInteger ServiceCount = peripheral.services.count;
-    /*
-    for(NSUInteger i = 0;i < ServiceCount;i++) {
-        [peripheral.services indexOfObject:0];
-        NSLog(@"Service Strint: %@", ServiceStr);
-    }
-     */
 }
 
 - (void)
         centralManager          :(CBCentralManager *)               central
         didConnectPeripheral    :(CBPeripheral *)                   peripheral {
-    
+      
     cellData *CD = [[cellData alloc] init];
     NSLog(@"peripheral 1st: %@", peripheral);
     for(int i = 0;i < [_StoredDevices count];i++) {
@@ -329,7 +295,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                                                                  location       :0];
             
             if([cut_Characteristic_Str isEqual:@"04"]) {
-                
+                NSLog(@"RunInto04");
                 // Device Name
                 NSString *Device_Name_Str = [convert_Characteristic getDeviceName:[characteristic value]];
                 // Device ID
@@ -374,9 +340,12 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 }
                 
                 if([[_StoredDevices objectAtIndex:i] getPreviousCharacteristic] != nil && [setPassword isEqual:@"0000F8FA"]) {
-                    now_Stored_Movement_State = [self getMovementStatus         :   characteristic
-                                                      nowStoredMovementState    :   now_Stored_Movement_State
-                                                      index                     :   i];
+                    Convert4310Information *convert = [[Convert4310Information alloc] init];
+                    now_Stored_Movement_State = [convert getMovementStatus         :   characteristic
+                                                         nowStoredMovementState    :   now_Stored_Movement_State
+                                                         storedDevices             :   _StoredDevices
+                                                         movementScanTime          :   _MovementScanTime
+                                                         index                     :   i];
                 }
 
                 /**
@@ -405,15 +374,41 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 [indexPaths addObject:indexPath];
                 
                 [UIView performWithoutAnimation:^{
-                    //[_myCollectionView reloadItemsAtIndexPaths:indexPaths];
+                    [_myCollectionView reloadItemsAtIndexPaths:indexPaths];
                 }];
                 break;
+            }
+            else if ([cut_Characteristic_Str isEqual:@"05"]){
+                NSLog(@"GotA05");
+                
+                // 儲存資料至 _StoradDevices
+                [CD addObj                  :peripheral
+                    nowCharacteristic       :[[_StoredDevices objectAtIndex:i] getNowCharacteristic]
+                    previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]
+                    nowBabyInformation      :[[_StoredDevices objectAtIndex:i] getNowBabyInformation]
+                    CurrentCharacteristic   :[characteristic value]
+                    storedMovementState     :[[_StoredDevices objectAtIndex:i] getStoredMovementState]
+                    deviceName              :[[_StoredDevices objectAtIndex:i] getDeviceName]
+                    deviceID                :[[_StoredDevices objectAtIndex:i] getDeviceID]
+                    deviceSex               :[[_StoredDevices objectAtIndex:i] getDeviceSex]];
+                
+                [_StoredDevices replaceObjectAtIndex:i withObject:CD];
+                
+                // reload 05
+                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+                NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+                [indexPaths addObject:indexPath];
+                
+                [UIView performWithoutAnimation:^{
+                    [_myCollectionView reloadItemsAtIndexPaths:indexPaths];
+                }];
             }
             break;
         }
     }
 }
 
+// 裝置斷線時
 -(void)     centralManager          :(CBCentralManager *)       central
             didDisconnectPeripheral :(CBPeripheral *)           peripheral
             error                   :(NSError *)                error {
@@ -435,6 +430,7 @@ numberOfItemsInSection  :(NSInteger)            section {
     return [_StoredDevices count];
 }
 
+// 在 load 和 reload 指定的 cell 會執行此
 - (__kindof UICollectionViewCell *)
 collectionView          :(UICollectionView *)   collectionView
 cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
@@ -458,7 +454,7 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
     
     NSData *characteristic_Data = [CD getCurrentCharacteristic];
     NSString *characteristic_Str = [CalculateFunc getHEX:characteristic_Data];
-    
+    NSLog(@"ItemChar:%@", characteristic_Str);
     /**
      *  依據前兩碼為00, 04, 05
      *  判斷寫入的目的
@@ -470,23 +466,36 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
         NSString *cut_Characteristic_Str = [str_Procecss_Func getSubString  :   characteristic_Str
                                                               length        :   2
                                                               location      :   0];
+        SketchView *sketchView = [[SketchView alloc] init];
         
         if([cut_Characteristic_Str isEqual:@"00"]) {
             NSLog(@"Clickclick");
-            [self setDeviceReturnInformation    : cell
-                  IndexPath                     : indexPath];
-             
+            // 每秒 4310 所回傳的資訊
+            // 確認名字非 nil
+            if([[CD getDeviceName] length] != 0) {
+                [sketchView setNotLoadingView:cell];
+                
+                [sketchView setDeviceReturnInformation:cell
+                                         storedDevices:_StoredDevices
+                                      movementScanTime:_MovementScanTime
+                                       highTemperature:_HighTemperature
+                                        lowTemperature:_LowTemperature
+                                             IndexPath:indexPath];
+                // 4310 受 write 0x04 或 0x05 後的資訊
+                [sketchView setDeviceInformation:cell
+                                   storedDevices:_StoredDevices
+                                       indexPath: indexPath];
+            }
+            
         }
         
         else if([cut_Characteristic_Str isEqual:@"04"]) {
-            [self setDeviceInformation  :       cell
-                  IndexPath             :       indexPath];
             NSLog(@"Run04");
-             
         }
         
         else if([cut_Characteristic_Str isEqual:@"05"]) {
             NSLog(@"Run05");
+            [sketchView setLoadingView:cell];
         }
     }
     
@@ -536,6 +545,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
     }];
     
     // 拍照按鍵部份
+    
     UIAlertAction* CameraAction = [UIAlertAction actionWithTitle:@"Camera"
                                                            style:UIAlertActionStyleDefault
        handler:^(UIAlertAction * action) {
@@ -559,386 +569,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
     NSLog(@"finish");
 }
 
-- (void)
-setMovementImageView    : (UIImageView *)       imageView
-movementStatus          : (BOOL)                Movement_Status {
-    UIImage *Ima;
-    if(Movement_Status) {
-        Ima = [UIImage imageNamed:@"list_level_2.png"];
-    }
-    else {
-        Ima = [UIImage imageNamed:@"list_level_4.png"];
-    }
-    [imageView setImage:Ima];
-}
-
-- (void)
-setTempoeratureLabel    : (UILabel *)   textLabel
-temperature             : (float)       Temperature
-temperatureStatus       : (NSInteger)   Temp_Status {
-    NSString *T1_String = [[NSString alloc] initWithFormat:@"%0.1f", Temperature];
-    switch (Temp_Status) {
-            /**
-             * 高於發燒溫度視為發燒 轉為紅字
-             */
-        case 1:
-            textLabel.textColor = [UIColor redColor];
-            break;
-            /**
-             * 高於冷冷溫度和低於發燒溫度視為正常 轉為橘色
-             */
-        case 2:
-            textLabel.textColor = [UIColor brownColor];
-            break;
-            /**
-             * 低於冷冷溫度視為冷冷 轉為藍色
-             */
-        case 3:
-            textLabel.textColor = [UIColor blueColor];
-            break;
-    }
-    
-    textLabel.text = T1_String;
-    textLabel.adjustsFontSizeToFitWidth = YES;
-}
-
-- (BOOL)
-    getMovementNormal       : (NSMutableArray *)    Movement_Recode_Array
-    ScanTime                : (NSUInteger)          ScanTime {
-    /**
-     * 檢查時間內如果連續三分之一呼吸不正常則設 Movement Abnormal = true;
-     */
-    BOOL Continue_Normal = false;
-    NSUInteger Total_Continue_Normal_Count = 0;
-    
-    NSUInteger ContinueScanLength = ScanTime / 3;
-    
-    if([Movement_Recode_Array count] > ContinueScanLength) {
-        for(NSUInteger j = [Movement_Recode_Array count] - 1; j >= [Movement_Recode_Array count] - ContinueScanLength;j--) {
-            if([[Movement_Recode_Array objectAtIndex:j] isEqualToNumber:[NSNumber numberWithBool:true]]) {
-                Total_Continue_Normal_Count++;
-            }
-            else {
-                Total_Continue_Normal_Count = 0;
-                break;
-            }
-            if(Total_Continue_Normal_Count >= ContinueScanLength) {
-                Continue_Normal = true;
-            }
-        }
-    }
-    /**
-     * 檢查時間內如果有超過三分之二呼吸不正常則設為 Movement Abnormal = true;
-     */
-    // TODO: 修改為每次進入再增加而不是每次都從零開始重算 進而增加效能
-    
-    BOOL Total_Normal = false;
-    NSUInteger Total_Normal_Count = 0;
-    
-    for(NSUInteger j = 0; j < [Movement_Recode_Array count];j++) {
-        if([[Movement_Recode_Array objectAtIndex:j] isEqualToNumber:[NSNumber numberWithBool:true]]) {
-            Total_Normal_Count++;
-        }
-    }
-    if(Total_Normal_Count >= ScanTime * 2 / 3) {
-        Total_Normal = true;
-    }
-    
-    if(Continue_Normal && Total_Normal) {
-        return true;
-    }
-    
-    else {
-        return false;
-    }
-}
-
-- (NSInteger)
-temperatureStatus : (float) Temperature
-highTemperature   : (float) HighTemperature
-lowTemperature    : (float) LowTemperature {
-    if (Temperature > _HighTemperature) {
-        return 1;
-    }
-    else if(Temperature >_LowTemperature) {
-        return 2;
-    }
-    else {
-        return 3;
-    }
-}
-
-- (BOOL)
-temperatureNormal : (NSInteger) Temperature_Status {
-    switch (Temperature_Status) {
-        case 2:
-            return true;
-            break;
-        default:
-            return false;
-    }
-}
-
-- (void)
-setBatteryImage : (UIImageView *) ImageView
-battery_Volume  : (NSUInteger) Battery_Volume{
-    UIImage *Ima;
-    if (Battery_Volume >= 75) {
-        Ima = [UIImage imageNamed:@"Battery-1-Bak.png"];
-    }
-    else if (Battery_Volume >= 50) {
-        Ima = [UIImage imageNamed:@"Battery-2-Bak.png"];
-    }
-    else if(Battery_Volume >= 25) {
-        Ima = [UIImage imageNamed:@"Battery-3-Bak.png"];
-    }
-    else {
-        Ima = [UIImage imageNamed:@"Battery-4-Bak.png"];
-    }
-    [ImageView setImage:Ima];
-}
-
-- (void)
-setDeviceReturnInformation   : (__kindof UICollectionViewCell *)    cell
-IndexPath                    : (NSIndexPath *)                      Index_Path {
-    
-    NSLog(@"setDevicereturnInformation");
-    Convert4310Information *convert_Characteristic = [[Convert4310Information alloc] init];
-    
-    if(cell == nil) {
-        cell = [[UICollectionViewCell alloc] init];
-    }
-    
-    cellData *CD = [[cellData alloc] init];
-    
-    CD = [_StoredDevices objectAtIndex:[Index_Path row]];
-    
-    NSData *characteristic_Data = [CD getCurrentCharacteristic];
-    
-    NSLog(@"NSDataCharac:%@", characteristic_Data);
-    
-    BOOL Movement_Normal = false;
-    BOOL Temperature_Normal = false;
-    
-    for(int i = 1;i <= 11;i++) {
-        switch (i) {
-                /**
-                 * Movement 的燈號判斷
-                 */
-            case 1: {
-                UIImageView *Movement_ImageView = [cell viewWithTag:1];
-                
-                NSMutableArray *MovementRecordArray = [CD getStoredMovementState];
-                
-                // 取得移動正常或異常
-                BOOL Movement_Normal = [self getMovementNormal :   MovementRecordArray
-                                             ScanTime          :   _MovementScanTime];
-                
-                // 設定移動紅燈或綠燈
-                [self setMovementImageView  :Movement_ImageView
-                      movementStatus        :Movement_Normal];
-                
-                break;
-            }
-                /**
-                 * 溫度字串顏色和 string 顯示
-                 */
-            case 2: {
-                UILabel *Temperature_Label = [cell viewWithTag:2];
-                
-                float T1 = [convert_Characteristic getTemperature_1:characteristic_Data];
-                
-                NSInteger Temperature_Status;
-            
-                /**
-                 * 取得目前溫度狀況
-                 * 1 : 過高
-                 * 2 : 正常
-                 * 3 : 過低
-                 */
-                
-                Temperature_Status = [self temperatureStatus    :   T1
-                                           highTemperature      :   _HighTemperature
-                                           lowTemperature       :   _LowTemperature];
-                
-                // 設定溫度 Label 的溫度和顏色
-                
-                [self setTempoeratureLabel  :   Temperature_Label
-                      temperature           :   T1
-                      temperatureStatus     :   Temperature_Status];
-                
-                Temperature_Normal = [self temperatureNormal:Temperature_Status];
-                
-                break;
-            }
-                /**
-                 * 顯示裝置電池電量 以25%為區間分為四等份
-                 */
-            case 3: {
-                UIImageView *Battery_ImageView = [cell viewWithTag:3];
-
-                NSUInteger Battery_Volume = [convert_Characteristic getBattery_Volume:characteristic_Data];
-                
-                // 設定電池圖片
-                [self setBatteryImage   : Battery_ImageView
-                      battery_Volume    : Battery_Volume];
-                
-                break;
-            }
-                
-            case 4: {
-                UIImageView *Warning_ImageView = [cell viewWithTag:4];
-                UIImage *Ima = [UIImage imageNamed:@"baby_card_warning.png"];
-                [Warning_ImageView setImage:Ima];
-                /**
-                 * 當呼吸和溫度都為正常時使警告消失
-                 */
-                if(Movement_Normal && Temperature_Normal) {
-                    [Warning_ImageView setHidden:true];
-                }
-                else {
-                    [Warning_ImageView setHidden:false];
-                }
-                break;
-            }
-            case 7 : {
-                /*
-                NSLog(@"IntoPicture");
-                UIImageView *Photo_Label = [cell viewWithTag:7];
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"temp_Image.png"];
-                UIImage *img = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",filePath]];
-                [Photo_Label setImage:img];
-                 */
-            }
-            case 11 : {
-                UILabel *Temperature_Label = [cell viewWithTag:11];
-                Temperature_Label.hidden = YES;
-            }
-        }
-    }
-}
-
-- (NSMutableArray *)
-getMovementStatus : (CBCharacteristic*) characteristic
-nowStoredMovementState : (NSMutableArray *) now_Stored_Movement_State
-index : (NSUInteger) index {
-    
-        Convert4310Information *convert = [[Convert4310Information alloc] init];
-        
-        NSInteger Location_X = [convert get_Location_X:[characteristic value]];
-        NSInteger Location_Y = [convert get_Location_Y:[characteristic value]];
-        NSInteger Location_Z = [convert get_Location_Z:[characteristic value]];
-        
-        NSData *Previous_Characteristic = [[_StoredDevices objectAtIndex:index] getPreviousCharacteristic];
-        
-        NSInteger Previous_Location_X = [convert get_Location_X:Previous_Characteristic];
-        NSInteger Previous_Location_Y = [convert get_Location_Y:Previous_Characteristic];
-        NSInteger Previous_Location_Z = [convert get_Location_Z:Previous_Characteristic];
-        
-        Boolean now_Movement_Status = [convert get_Movement_Status    :Location_X
-                                               y                      :Location_Y
-                                               z                      :Location_Z
-                                               previous_x             :Previous_Location_X
-                                               previous_y             :Previous_Location_Y
-                                               previous_z             :Previous_Location_Z];
-        
-        now_Stored_Movement_State = [[_StoredDevices objectAtIndex:index] getStoredMovementState];
-        
-        /**
-         * 建立一個儲存十五秒位置變化是否正常的 array
-         */
-        if([now_Stored_Movement_State count] < _MovementScanTime) {
-            [now_Stored_Movement_State addObject: [NSNumber numberWithBool:now_Movement_Status]];
-        }
-        else {
-            for(NSInteger i = 0;i < [now_Stored_Movement_State count] - 1;i++) {
-                [now_Stored_Movement_State replaceObjectAtIndex:i withObject:[now_Stored_Movement_State objectAtIndex:i + 1]];
-            }
-            [now_Stored_Movement_State replaceObjectAtIndex:[now_Stored_Movement_State count] - 1 withObject:[NSNumber numberWithBool:now_Movement_Status]];
-        }
-    return now_Stored_Movement_State;
-}
-
-/// <#Description#>
-/// @param cell <#cell description#>
-/// @param Index_Path <#Index_Path description#>
-- (void)
-setDeviceInformation            : (__kindof UICollectionViewCell *)    cell
-IndexPath                       : (NSIndexPath *)                      Index_Path {
-    if(cell == nil) {
-        cell = [[UICollectionViewCell alloc] init];
-    }
-    
-    cellData *CD = [[cellData alloc] init];
-    
-    CD = [_StoredDevices objectAtIndex:[Index_Path row]];
-    
-    NSInteger index = [Index_Path row];
-    // Device Name
-    NSString *Device_Name_Str = [[_StoredDevices objectAtIndex:index] getDeviceName];
-    
-    NSLog(@"Write05DeviceName:%@", Device_Name_Str);
-    UILabel *Device_Name_Label = [cell viewWithTag:5];
-    
-    [Device_Name_Label setText : Device_Name_Str];
-    
-    // Device ID
-    NSString *Device_ID_Str = [[_StoredDevices objectAtIndex:index] getDeviceID];
-    
-    StringProcessFunc *StrProcessFunc = [[StringProcessFunc alloc] init];
-    
-    Device_ID_Str = [StrProcessFunc MergeTwoString:@"A0" SecondStr:Device_ID_Str];
-    
-    UILabel *Device_Id_Label = [cell viewWithTag:6];
-    
-    [Device_Id_Label setText:Device_ID_Str];
-    
-    // Device Sex
-    NSString *Device_Sex_Str = [[_StoredDevices objectAtIndex:index] getDeviceSex];
-    
-    // 預設圖片
-    UIImage *PhotoBackground_Image = [UIImage imageNamed:@"baby_card_girl_photo_background2.png"];
-    UIImage *Information_Bar_Image = [UIImage imageNamed:@"baby_card_girl_information_bar_background.png"];
-    
-    NSLog(@"Sexis:%@", Device_Sex_Str);
-    if([Device_Sex_Str isEqual:@"0"]) {
-        PhotoBackground_Image = [UIImage imageNamed:@"baby_card_girl_photo_background2.png"];
-        Information_Bar_Image = [UIImage imageNamed:@"baby_card_girl_information_bar_background.png"];
-    }
-    else {
-        PhotoBackground_Image = [UIImage imageNamed:@"baby_card_boy_photo_background2.png"];
-        Information_Bar_Image = [UIImage imageNamed:@"baby_card_boy_information_bar_background.png"];
-    }
-    
-    // 讀取圖片並放入圖片
-    UIImageView *Photo_ImageView = [cell viewWithTag:7];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    NSString *Image_Name = [StrProcessFunc MergeTwoString:Device_Name_Str SecondStr:@".png"];
-    
-    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Image_Name];
-    
-    UIImage *PhotoImage = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",filePath]];
-    
-    if(PhotoImage.size.height == 0 & PhotoImage.size.width == 0) {
-        PhotoImage = [UIImage imageNamed:@"Baby_1.jpg"];
-    }
-    
-    [Photo_ImageView setImage:PhotoImage];
-    
-    Photo_ImageView.layer.cornerRadius = 30;
-    Photo_ImageView.layer.bounds = CGRectMake(0, 0, 60, 60);
-    
-    
-    // BarImageView
-    UIImageView *Device_Bar_ImageView;
-    
-    for(int i = 8; i <= 10; i++) {
-        Device_Bar_ImageView = [cell viewWithTag:i];
-        [Device_Bar_ImageView setImage:Information_Bar_Image];
-    }
-}
 
 - (void)
 write04ToKS4310     : (NSMutableArray *)    mutable_Array
@@ -954,73 +584,6 @@ index               : (NSUInteger)          Index {
     
     NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
     [peri writeValue:data forCharacteristic:chara type:CBCharacteristicWriteWithResponse];
-}
-
-- (NSString *)
-getWriteStringByAlertView : (UIAlertController *) alert {
-    StringProcessFunc *Str_Process_Func = [[StringProcessFunc alloc] init];
-    
-    NSString *New_Device_Name = [[[alert textFields] objectAtIndex:0] text];
-    NSString *New_Device_ID = [[[alert textFields] objectAtIndex:1] text];
-    NSString *New_Device_Sex = [[[alert textFields] objectAtIndex:2] text];
-    
-    NSString *Merged_Information = @"";
-    
-    if(     !([New_Device_Name length] > 8)        &&
-            !([New_Device_ID length] > 2)          &&
-            ([New_Device_Sex isEqual:@"0"]      ||
-            [New_Device_Sex isEqual:@"1"])      ) {
-        
-        NSUInteger Length_Of_Information = 17 * 2;
-        NSUInteger Length_Of_Head_String = 1 * 2;
-        NSUInteger Length_Of_Device_Name = 8 * 2;
-        NSUInteger Length_Of_Device_ID = 2 * 2;
-        NSUInteger Length_Of_Device_Sex = 1 * 2;
-        
-        NSString *Head_String = @"05";
-        Merged_Information = [Str_Process_Func MergeTwoString    :  Merged_Information
-                                               SecondStr         :  Head_String ];
-        
-        for(int i = 0; i < [New_Device_Name length]; i++) {
-            NSInteger Split_Str_Int = [New_Device_Name characterAtIndex:i];
-            NSString *Split_Str = [[NSString alloc] initWithFormat:@"%lx", (long) Split_Str_Int];
-            Merged_Information = [Str_Process_Func MergeTwoString   :   Merged_Information
-                                                   SecondStr        :   Split_Str];
-        }
-        
-        while([Merged_Information length] < Length_Of_Head_String + Length_Of_Device_Name) {
-            Merged_Information = [Str_Process_Func MergeTwoString   :   Merged_Information
-                                                   SecondStr        :   @"00"];
-        }
-        
-        for(int i = 0; i < [New_Device_ID length]; i++) {
-            NSInteger Split_Str_Int = [New_Device_ID characterAtIndex:i];
-            NSString *Split_Str = [[NSString alloc] initWithFormat:@"%lx", (long) Split_Str_Int];
-            Merged_Information = [Str_Process_Func MergeTwoString   :   Merged_Information
-                                                   SecondStr        :   Split_Str];
-        }
-        
-        while([Merged_Information length] < Length_Of_Head_String + Length_Of_Device_Name + Length_Of_Device_ID) {
-            Merged_Information = [Str_Process_Func MergeTwoString   :   Merged_Information
-                                                   SecondStr        :   @"00"];
-        }
-        
-        for(int i = 0; i < [New_Device_Sex length]; i++) {
-            NSInteger Split_Str_Int = [New_Device_Sex characterAtIndex:i];
-            NSString *Split_Str = [[NSString alloc] initWithFormat:@"%lx", (long) Split_Str_Int];
-            Merged_Information = [Str_Process_Func MergeTwoString   :   Merged_Information
-                                                   SecondStr        :   Split_Str];
-        }
-        
-        while([Merged_Information length] < Length_Of_Information) {
-            Merged_Information = [Str_Process_Func MergeTwoString   :   Merged_Information
-                                                   SecondStr        :   @"00"];
-        }
-        
-        NSLog(@"Merged_Information:%@", Merged_Information);
-        
-    }
-    return Merged_Information;
 }
 
 - (NSMutableData *)
@@ -1079,6 +642,58 @@ getWriteStringThroughAlertView : (UIAlertController *) alert {
          
     }
     return Merged_Information_MutableData;
+}
+
+- (void ) clickOKButton : (UIAlertController *) alert
+              IndexPath : (NSIndexPath *) indexPath {
+    NSLog(@"Write05");
+    StringProcessFunc *Str_Process_Func = [[StringProcessFunc alloc] init];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    NSString *Previous_Device_Name = [[self->_StoredDevices objectAtIndex:[self->_NowClickIndexPath row]] getDeviceName];
+    
+    NSString *Previous_Device_Name_With_Extension = [Str_Process_Func MergeTwoString:Previous_Device_Name SecondStr:@".png"];
+    
+    NSString *Previous_filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Previous_Device_Name_With_Extension];
+ 
+    UIImage *PhotoImage = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",Previous_filePath]];
+    
+    // 由 alert view 中取得輸入資訊
+    NSMutableData *Merged_InformationsAgain = [self getWriteStringThroughAlertView:alert];
+    
+    // 開始儲存檔名
+    NSString *Now_Device_name = [[[alert textFields] objectAtIndex:0] text];
+    
+    NSString *Now_Device_Name_With_Extension = [Str_Process_Func MergeTwoString:Now_Device_name SecondStr:@".png"];
+    
+    NSString *Now_filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Now_Device_Name_With_Extension];
+    
+    // 儲存現在檔名的圖片
+    
+    [UIImagePNGRepresentation(PhotoImage) writeToFile:Now_filePath atomically:YES];
+    
+    if(![Previous_filePath isEqual:Now_filePath]) {
+        // 刪除之前檔名的圖片
+        [[NSFileManager defaultManager ] removeItemAtPath:Previous_filePath
+                                                    error:nil];
+    }
+    
+    NSLog(@"Merged_InformationsAgain : %@", Merged_InformationsAgain);
+    
+    // write 05 和要賦予的裝置資訊
+    CBPeripheral *peri = [[self->_StoredDevices objectAtIndex:[indexPath row]] getPheripheral];
+    CBService *ser = [[peri services] objectAtIndex:2];
+    CBCharacteristic *chara = [[ser characteristics] objectAtIndex:2];
+
+    
+    //wirte to get information setting in device.
+    [peri writeValue:Merged_InformationsAgain
+   forCharacteristic:chara
+                type:CBCharacteristicWriteWithResponse];
+    
+
+    
 }
 
 - (void) initCamera : (NSIndexPath *)        indexPath {
@@ -1144,54 +759,6 @@ imagePickerControllerDidCancel  :   (UIImagePickerController *) picker {
     
     [picker dismissViewControllerAnimated:YES completion:^{}];
 
-}
-
-- (void ) clickOKButton : (UIAlertController *) alert
-              IndexPath : (NSIndexPath *) indexPath {
-    NSLog(@"Write05");
-    StringProcessFunc *Str_Process_Func = [[StringProcessFunc alloc] init];
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    NSString *Previous_Device_Name = [[self->_StoredDevices objectAtIndex:[self->_NowClickIndexPath row]] getDeviceName];
-    
-    NSString *Previous_Device_Name_With_Extension = [Str_Process_Func MergeTwoString:Previous_Device_Name SecondStr:@".png"];
-    
-    NSString *Previous_filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Previous_Device_Name_With_Extension];
- 
-    UIImage *PhotoImage = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",Previous_filePath]];
-    
-    // 由 alert view 中取得輸入資訊
-    NSMutableData *Merged_InformationsAgain = [self getWriteStringThroughAlertView:alert];
-    
-    // 開始儲存檔名
-    NSString *Now_Device_name = [[[alert textFields] objectAtIndex:0] text];
-    
-    NSString *Now_Device_Name_With_Extension = [Str_Process_Func MergeTwoString:Now_Device_name SecondStr:@".png"];
-    
-    NSString *Now_filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Now_Device_Name_With_Extension];
-    
-    // 儲存現在檔名的圖片
-    
-    [UIImagePNGRepresentation(PhotoImage) writeToFile:Now_filePath atomically:YES];
-    
-    if(![Previous_filePath isEqual:Now_filePath]) {
-        // 刪除之前檔名的圖片
-        [[NSFileManager defaultManager ] removeItemAtPath:Previous_filePath
-                                                    error:nil];
-    }
-    
-    NSLog(@"Merged_InformationsAgain : %@", Merged_InformationsAgain);
-    
-    // write 05 和要賦予的裝置資訊
-    CBPeripheral *peri = [[self->_StoredDevices objectAtIndex:[indexPath row]] getPheripheral];
-    CBService *ser = [[peri services] objectAtIndex:2];
-    CBCharacteristic *chara = [[ser characteristics] objectAtIndex:2];
-    
-    //wirte to get information setting in device.
-    [peri writeValue:Merged_InformationsAgain
-   forCharacteristic:chara
-                type:CBCharacteristicWriteWithResponse];
 }
 
 @end

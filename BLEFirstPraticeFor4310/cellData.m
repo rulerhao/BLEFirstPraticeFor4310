@@ -74,4 +74,5 @@ deviceSex               :(nullable NSString *)       Device_Sex {
 - (NSString *) getDeviceSex {
     return device_Sex;
 }
+
 @end
