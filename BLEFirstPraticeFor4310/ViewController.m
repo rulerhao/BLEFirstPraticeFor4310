@@ -9,17 +9,44 @@
 #import "Convert4310Information.h"
 #import "cellData.h"
 
+
 @interface ViewController ()
 @property (strong, nonatomic) IBOutlet UICollectionView *myCollectionView;
+@property (strong, nonatomic) IBOutlet UIButton *Bool_Order_Button;
 @property (readonly, assign) NSUInteger MovementScanTime;
 @property (readonly, assign) float HighTemperature;
 @property (readonly, assign) float LowTemperature;
+@property (readwrite, assign) BOOL EnabledOrder;
 @property (readwrite, assign) NSIndexPath *NowClickIndexPath;
 @end
 
 @implementation ViewController
 
-
+BOOL EnabledOrder;
+// 按下啟動/關閉排序按鈕
+// Touch button to turn on/off order function
+- (IBAction)Touch_Bool_Order:(id)sender {
+    // 切換 EnabledOrder 狀態
+    if(EnabledOrder == true) {
+        NSLog(@"EnabledOrder:Off");
+        EnabledOrder = false;
+    }
+    else {
+        NSLog(@"EnabledOrder:On");
+        EnabledOrder = true;
+    }
+    UIImage *image;
+    if(EnabledOrder == true) {
+        image = [UIImage imageNamed:@"Exchanging.png"];
+    }
+    else {
+        image = [UIImage imageNamed:@"Change_Icon.png"];
+        // 清除 Order_Items_Index
+        [_Order_Items_Index removeAllObjects];
+    }
+    [_Bool_Order_Button setImage:image forState:normal];
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -41,6 +68,15 @@
     _myCollectionView.dragDelegate = self;
     _myCollectionView.dropDelegate = self;
     
+    EnabledOrder = false;
+    if(EnabledOrder == false) {
+        NSLog(@"EnabledOrder:nice");
+    }
+    else {
+        NSLog(@"EnabledOrder:NotNIce");
+    }
+    
+    _Order_Items_Index = [[NSMutableArray alloc] init];
 }
 
 
@@ -369,6 +405,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                  * 叫 collection view 刷新指定的 index
                  */
                 
+                //NSLog(@"IndexOfIP:%d", i);
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
                 NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
                 [indexPaths addObject:indexPath];
@@ -378,7 +415,8 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 }];
                 break;
             }
-            else if ([cut_Characteristic_Str isEqual:@"05"]){
+            else if ([cut_Characteristic_Str isEqual:@"05"]) {
+                NSLog(@"05Chara:%@", characteristic_Str);
                 NSLog(@"GotA05");
                 
                 // 儲存資料至 _StoradDevices
@@ -418,6 +456,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         
         if([Stored_UUID isEqual:[peripheral identifier]]) {
             [_StoredDevices removeObjectAtIndex:i];
+            [_Order_Items_Index removeAllObjects];
             break;
         }
     }
@@ -431,6 +470,7 @@ numberOfItemsInSection  :(NSInteger)            section {
 }
 
 // 在 load 和 reload 指定的 cell 會執行此
+// 在此要注意 cell 如果不被設定則會使用他人的 cell view 會很怪異
 - (__kindof UICollectionViewCell *)
 collectionView          :(UICollectionView *)   collectionView
 cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
@@ -445,7 +485,7 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
     if(cell == nil) {
         cell = [[UICollectionViewCell alloc] init];
     }
-    
+        
     cellData *CD = [[cellData alloc] init];
     
     CD = [_StoredDevices objectAtIndex:[indexPath row]];
@@ -454,7 +494,7 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
     
     NSData *characteristic_Data = [CD getCurrentCharacteristic];
     NSString *characteristic_Str = [CalculateFunc getHEX:characteristic_Data];
-    NSLog(@"ItemChar:%@", characteristic_Str);
+    NSLog(@"ItemChar:%@ index:%ld",characteristic_Str,(long)[indexPath row]);
     /**
      *  依據前兩碼為00, 04, 05
      *  判斷寫入的目的
@@ -462,18 +502,34 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
      *  04 : 接收 Device 內部記憶體的資訊
      *  05 : 上傳 Device 內部記憶體的資訊
      */
+    SketchView *sketchView = [[SketchView alloc] init];
+    
     if([characteristic_Str length] > 2) {
         NSString *cut_Characteristic_Str = [str_Procecss_Func getSubString  :   characteristic_Str
                                                               length        :   2
                                                               location      :   0];
-        SketchView *sketchView = [[SketchView alloc] init];
         
         if([cut_Characteristic_Str isEqual:@"00"]) {
             NSLog(@"Clickclick");
             // 每秒 4310 所回傳的資訊
             // 確認名字非 nil
+            NSLog(@"ItemCharDeviceName:%@", [CD getDeviceName]);
             if([[CD getDeviceName] length] != 0) {
+                //NSLog(@"ItemCharDeviceName:%@", [CD getDeviceName]);
                 [sketchView setNotLoadingView:cell];
+                
+                BOOL cellShouldBeTransparent = false;
+                for( NSUInteger i = 0; i < [_Order_Items_Index count]; i++) {
+                    if([[_Order_Items_Index objectAtIndex:i] row] == [indexPath row]) {
+                        cellShouldBeTransparent = true;
+                    }
+                }
+                if(cellShouldBeTransparent) {
+                    [sketchView setTrasparentView:cell];
+                }
+                else {
+                    [sketchView setNotTrasparentView:cell];
+                }
                 
                 [sketchView setDeviceReturnInformation:cell
                                          storedDevices:_StoredDevices
@@ -486,23 +542,22 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
                                    storedDevices:_StoredDevices
                                        indexPath: indexPath];
             }
-            
+            else {
+                [sketchView setNotTrasparentView:cell];
+                [sketchView setLoadingView:cell];
+            }
         }
-        
-        else if([cut_Characteristic_Str isEqual:@"04"]) {
-            NSLog(@"Run04");
-        }
-        
-        else if([cut_Characteristic_Str isEqual:@"05"]) {
-            NSLog(@"Run05");
+        // 0x04 0x05
+        else {
+            [sketchView setNotTrasparentView:cell];
             [sketchView setLoadingView:cell];
         }
     }
     
-    if([[CD getNowCharacteristic] isEqual:nil]) {
-        NSLog(@"It's Nil!");
+    else {
+        [sketchView setNotTrasparentView:cell];
+        [sketchView setLoadingView:cell];
     }
-
     
     return cell;
 }
@@ -513,60 +568,124 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
 -(void)
 collectionView          :(UICollectionView *)   collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
-    _NowClickIndexPath = indexPath;
+    /*
+    id object = [_StoredDevices objectAtIndex:0];
+    [_StoredDevices removeObjectAtIndex:0];
+    [_StoredDevices insertObject:object atIndex:1];
+     */
     
-    NSString *Device_Name = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceName];
-    NSString *Device_ID = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceID];
-    NSString *Device_Sex = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceSex];
+    __kindof UICollectionViewCell *cell;
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Modify Information"
-                                   message:nil
-                                   preferredStyle:UIAlertControllerStyleAlert];
+    cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell"
+                                                     forIndexPath:indexPath];
+    if(cell == nil) {
+        cell = [[UICollectionViewCell alloc] init];
+    }
     
-    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"Name";
-        textField.text = Device_Name;
-    }];
-    
-    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"ID";
-        textField.text = Device_ID;
-    }];
-    
-    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"Sex";
-        textField.text = Device_Sex;
-    }];
-    
-    // Cancel按鍵的部分
-    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
-                                                           style:UIAlertActionStyleDefault
-       handler:^(UIAlertAction * action) {
-    }];
-    
-    // 拍照按鍵部份
-    
-    UIAlertAction* CameraAction = [UIAlertAction actionWithTitle:@"Camera"
-                                                           style:UIAlertActionStyleDefault
-       handler:^(UIAlertAction * action) {
-        [self initCamera : indexPath];
-    }];
-    
-    // OK按鍵的部分
-    UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-       handler:^(UIAlertAction * action) {
-        // 按了 OK 之後
-        [self clickOKButton : alert
-                   IndexPath:indexPath];
-    }];
-    
-    [alert addAction:cancelAction];
-    [alert addAction:CameraAction];
-    [alert addAction:okAction];
-    
-    [self presentViewController:alert animated:YES completion:nil];
-     
-    NSLog(@"finish");
+    if(EnabledOrder == true) {
+        NSLog(@"[Order_Items_Index]:%lu", (unsigned long)[_Order_Items_Index count]);
+        switch ([_Order_Items_Index count]) {
+            case 0:
+                [_Order_Items_Index addObject:indexPath];
+                break;
+            case 1:
+                [_Order_Items_Index addObject:indexPath];
+                
+                // 交換兩個
+                NSInteger First_Index = [[_Order_Items_Index objectAtIndex:0] row];
+                NSInteger Second_Index = [[_Order_Items_Index objectAtIndex:1] row];
+                id First_Object = [_StoredDevices objectAtIndex:First_Index];
+                id Second_Object = [_StoredDevices objectAtIndex:Second_Index];
+                [_StoredDevices removeObjectAtIndex:First_Index];
+                [_StoredDevices insertObject:Second_Object atIndex:First_Index];
+                [_StoredDevices removeObjectAtIndex:Second_Index];
+                [_StoredDevices insertObject:First_Object atIndex:Second_Index];
+                 
+                [_Order_Items_Index removeAllObjects];
+                
+                break;
+        }
+        [UIView performWithoutAnimation:^{
+            [_myCollectionView reloadData];
+        }];
+    }
+    else {
+        _NowClickIndexPath = indexPath;
+        StringProcessFunc *StrProcessFunc = [[StringProcessFunc alloc] init];
+        
+        NSString *Device_Name = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceName];
+        
+        NSString *Device_ID = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceID];
+        NSString *First_ID_Str = [StrProcessFunc getSubString:Device_ID
+                                                       length:1
+                                                     location:0];
+        NSString *Second_ID_Str = [StrProcessFunc getSubString:Device_ID
+                                                        length:1
+                                                      location:1];
+        if([First_ID_Str isEqual:@"0"]) {
+            NSLog(@"FirstEqual");
+            Device_ID = Second_ID_Str;
+        }
+        
+        NSString *Device_Sex = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceSex];
+        if([Device_Sex isEqual:@"0"]) {
+            Device_Sex = @"G";
+        }
+        else if ([Device_Sex isEqual:@"1"]) {
+            Device_Sex = @"B";
+        }
+        else {
+            Device_Sex = @"G";
+        }
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Modify Information"
+                                       message:nil
+                                       preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+            textField.placeholder = @"Name";
+            textField.text = Device_Name;
+        }];
+        
+        [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+            textField.placeholder = @"ID";
+            textField.text = Device_ID;
+        }];
+        
+        [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+            textField.placeholder = @"Sex";
+            textField.text = Device_Sex;
+        }];
+        
+        // Cancel按鍵的部分
+        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                               style:UIAlertActionStyleDefault
+           handler:^(UIAlertAction * action) {
+        }];
+        
+        // 拍照按鍵部份
+        
+        UIAlertAction* CameraAction = [UIAlertAction actionWithTitle:@"Camera"
+                                                               style:UIAlertActionStyleDefault
+           handler:^(UIAlertAction * action) {
+            [self initCamera : indexPath];
+        }];
+        
+        // OK按鍵的部分
+        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+           handler:^(UIAlertAction * action) {
+            // 按了 OK 之後
+            [self clickOKButton : alert
+                       IndexPath:indexPath];
+        }];
+        
+        [alert addAction:cancelAction];
+        [alert addAction:CameraAction];
+        [alert addAction:okAction];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+         
+        NSLog(@"finish");
+    }
 }
 
 
@@ -586,114 +705,84 @@ index               : (NSUInteger)          Index {
     [peri writeValue:data forCharacteristic:chara type:CBCharacteristicWriteWithResponse];
 }
 
-- (NSMutableData *)
-getWriteStringThroughAlertView : (UIAlertController *) alert {
-    NSMutableData *Merged_Information_MutableData = [[NSMutableData alloc] initWithCapacity:0];
-    
-    NSString *New_Device_Name = [[[alert textFields] objectAtIndex:0] text];
-    NSString *New_Device_ID = [[[alert textFields] objectAtIndex:1] text];
-    NSString *New_Device_Sex = [[[alert textFields] objectAtIndex:2] text];
-    
-    if(     !([New_Device_Name length] > 8)        &&
-            !([New_Device_ID length] > 2)          &&
-            ([New_Device_Sex isEqual:@"0"]      ||
-            [New_Device_Sex isEqual:@"1"])      ) {
-        //
-        NSUInteger Length_Of_Information = 17;
-        NSUInteger Length_Of_Head_Bytes = 1;
-        NSUInteger Length_Of_Device_Name = 8;
-        NSUInteger Length_Of_Device_ID = 2;
-        //NSUInteger Length_Of_Device_Sex = 1 * 2;
-        
-        //
-        
-        const uint8_t Head_Bytes[] = {0x05};
-        NSMutableData *Head_Bytes_Mutable_Data = [NSMutableData dataWithBytes:Head_Bytes
-                                                               length:sizeof(Head_Bytes)];
-        const uint8_t Zero_Bytes[] = {0x00};
-        NSMutableData *Zero_Bytes_Mutable_Data = [NSMutableData dataWithBytes:Zero_Bytes
-                                                               length:sizeof(Zero_Bytes)];
-        
-        NSData *Device_Name_Data = [New_Device_Name dataUsingEncoding:NSUTF8StringEncoding];
-        NSMutableData *Device_Name_Mutable_Data = [Device_Name_Data mutableCopy];
-        
-        NSData *Device_ID_Data = [New_Device_ID dataUsingEncoding:NSUTF8StringEncoding];
-        NSMutableData *Device_ID_Mutable_Data = [Device_ID_Data mutableCopy];
-        
-        NSData *Device_Sex_Data = [New_Device_Sex dataUsingEncoding:NSUTF8StringEncoding];
-        NSMutableData *Device_Sex_Mutable_Data = [Device_Sex_Data mutableCopy];
-        
-        [Merged_Information_MutableData appendData:Head_Bytes_Mutable_Data];
-        [Merged_Information_MutableData appendData:Device_Name_Mutable_Data];
-        
-        while([Merged_Information_MutableData length] < Length_Of_Head_Bytes + Length_Of_Device_Name) {
-            [Merged_Information_MutableData appendData:Zero_Bytes_Mutable_Data];
-        }
-        [Merged_Information_MutableData appendData:Device_ID_Mutable_Data];
-        while(Merged_Information_MutableData.length < Length_Of_Head_Bytes + Length_Of_Device_Name + Length_Of_Device_ID) {
-            [Merged_Information_MutableData appendData:Zero_Bytes_Mutable_Data];
-        }
-        [Merged_Information_MutableData appendData:Device_Sex_Mutable_Data];
-        while(Merged_Information_MutableData.length < Length_Of_Information) {
-            [Merged_Information_MutableData appendData:Zero_Bytes_Mutable_Data];
-        }
-        
-        NSLog(@"Merged_Information_MutableData:%@", Merged_Information_MutableData);
-         
-    }
-    return Merged_Information_MutableData;
-}
-
 - (void ) clickOKButton : (UIAlertController *) alert
               IndexPath : (NSIndexPath *) indexPath {
     NSLog(@"Write05");
-    StringProcessFunc *Str_Process_Func = [[StringProcessFunc alloc] init];
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    NSString *Previous_Device_Name = [[self->_StoredDevices objectAtIndex:[self->_NowClickIndexPath row]] getDeviceName];
-    
-    NSString *Previous_Device_Name_With_Extension = [Str_Process_Func MergeTwoString:Previous_Device_Name SecondStr:@".png"];
-    
-    NSString *Previous_filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Previous_Device_Name_With_Extension];
- 
-    UIImage *PhotoImage = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",Previous_filePath]];
     
     // 由 alert view 中取得輸入資訊
-    NSMutableData *Merged_InformationsAgain = [self getWriteStringThroughAlertView:alert];
+    ChangeBetweenWriteStringViewController *ChangeWriteReadString = [[ChangeBetweenWriteStringViewController alloc] init];
     
-    // 開始儲存檔名
-    NSString *Now_Device_name = [[[alert textFields] objectAtIndex:0] text];
+    NSMutableData *Merged_InformationsAgain = [ChangeWriteReadString getWriteStringThroughAlertView:alert];
     
-    NSString *Now_Device_Name_With_Extension = [Str_Process_Func MergeTwoString:Now_Device_name SecondStr:@".png"];
-    
-    NSString *Now_filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Now_Device_Name_With_Extension];
-    
-    // 儲存現在檔名的圖片
-    
-    [UIImagePNGRepresentation(PhotoImage) writeToFile:Now_filePath atomically:YES];
-    
-    if(![Previous_filePath isEqual:Now_filePath]) {
-        // 刪除之前檔名的圖片
-        [[NSFileManager defaultManager ] removeItemAtPath:Previous_filePath
-                                                    error:nil];
+    InformationRunAvailable *InformationRunnable = [[InformationRunAvailable alloc ]init];
+    if([InformationRunnable InformationRunnable:alert])
+    {
+        NSLog(@"Merged_InformationsAgain : %@", Merged_InformationsAgain);
+        
+        // write 05 和要賦予的裝置資訊
+        CBPeripheral *peri = [[_StoredDevices objectAtIndex:[indexPath row]] getPheripheral];
+        CBService *ser = [[peri services] objectAtIndex:2];
+        CBCharacteristic *chara = [[ser characteristics] objectAtIndex:2];
+
+        //wirte to get information setting in device.
+        [peri writeValue:Merged_InformationsAgain
+       forCharacteristic:chara
+                    type:CBCharacteristicWriteWithResponse];
+        
+        NSString *Now_Device_name = [[[alert textFields] objectAtIndex:0] text];
+        
+        NSString *Previous_Device_Name = [[self->_StoredDevices objectAtIndex:[self->_NowClickIndexPath row]] getDeviceName];
+        [self SaveChangedNameImage:Now_Device_name
+                Delete_Device_Name:Previous_Device_Name];
     }
-    
-    NSLog(@"Merged_InformationsAgain : %@", Merged_InformationsAgain);
-    
-    // write 05 和要賦予的裝置資訊
-    CBPeripheral *peri = [[self->_StoredDevices objectAtIndex:[indexPath row]] getPheripheral];
-    CBService *ser = [[peri services] objectAtIndex:2];
-    CBCharacteristic *chara = [[ser characteristics] objectAtIndex:2];
-
-    
-    //wirte to get information setting in device.
-    [peri writeValue:Merged_InformationsAgain
-   forCharacteristic:chara
-                type:CBCharacteristicWriteWithResponse];
-    
-
-    
+    else
+    {
+        if(![InformationRunnable NameRunnable:alert])
+        {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Name Input Formate Error!"
+                                           message:nil
+                                           preferredStyle:UIAlertControllerStyleAlert];
+            // Cancel按鍵的部分
+            UIAlertAction* CloseAction = [UIAlertAction actionWithTitle:@"Close"
+                                                                   style:UIAlertActionStyleDefault
+               handler:^(UIAlertAction * action) {
+            }];
+            
+            [alertController addAction:CloseAction];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
+        if(![InformationRunnable IDRunnable:alert])
+        {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"ID Input Formate Error!"
+                                           message:nil
+                                           preferredStyle:UIAlertControllerStyleAlert];
+            // Cancel按鍵的部分
+            UIAlertAction* CloseAction = [UIAlertAction actionWithTitle:@"Close"
+                                                                   style:UIAlertActionStyleDefault
+               handler:^(UIAlertAction * action) {
+            }];
+            
+            [alertController addAction:CloseAction];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
+        if(![InformationRunnable SexRunnable:alert])
+        {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Sex Input Formate Error!"
+                                           message:nil
+                                           preferredStyle:UIAlertControllerStyleAlert];
+            // Cancel按鍵的部分
+            UIAlertAction* CloseAction = [UIAlertAction actionWithTitle:@"Close"
+                                                                   style:UIAlertActionStyleDefault
+               handler:^(UIAlertAction * action) {
+            }];
+            
+            [alertController addAction:CloseAction];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
+    }
 }
 
 - (void) initCamera : (NSIndexPath *)        indexPath {
@@ -724,6 +813,7 @@ getWriteStringThroughAlertView : (UIAlertController *) alert {
 }
 
 //使用者按下確定時
+
 - (void)
 imagePickerController           :   (UIImagePickerController *) picker
 didFinishPickingMediaWithInfo   :   (NSDictionary *)            info {
@@ -752,6 +842,8 @@ didFinishPickingMediaWithInfo   :   (NSDictionary *)            info {
     [picker dismissViewControllerAnimated:YES completion:^{}];
 }
 
+
+
 //使用者按下取消時
 - (void)
 imagePickerControllerDidCancel  :   (UIImagePickerController *) picker {
@@ -761,4 +853,38 @@ imagePickerControllerDidCancel  :   (UIImagePickerController *) picker {
 
 }
 
+- (void) SaveChangedNameImage : (NSString *) now_Device_Name
+           Delete_Device_Name : (NSString *) delete_Device_Name
+{
+    StringProcessFunc *Str_Process_Func = [[StringProcessFunc alloc] init];
+    
+    // 開始儲存檔名
+    
+    // 照片更名功能
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    // NSString *Previous_Device_Name = [[self->_StoredDevices objectAtIndex:[self->_NowClickIndexPath row]] getDeviceName];
+    NSString *Previous_Device_Name = delete_Device_Name;
+    
+    NSString *Previous_Device_Name_With_Extension = [Str_Process_Func MergeTwoString:Previous_Device_Name SecondStr:@".png"];
+    
+    NSString *Previous_filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Previous_Device_Name_With_Extension];
+ 
+    UIImage *PhotoImage = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",Previous_filePath]];
+    
+    NSString *Now_Device_Name_With_Extension = [Str_Process_Func MergeTwoString:now_Device_Name SecondStr:@".png"];
+    
+    NSString *Now_filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Now_Device_Name_With_Extension];
+    
+    // 儲存現在檔名的圖片
+    
+    [UIImagePNGRepresentation(PhotoImage) writeToFile:Now_filePath atomically:YES];
+    
+    if(![Previous_filePath isEqual:Now_filePath]) {
+        // 刪除之前檔名的圖片
+        [[NSFileManager defaultManager ] removeItemAtPath:Previous_filePath
+                                                    error:nil];
+    }
+}
 @end

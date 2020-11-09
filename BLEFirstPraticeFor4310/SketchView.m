@@ -6,7 +6,6 @@
 //
 
 #import "SketchView.h"
-
 @interface SketchView ()
 
 @end
@@ -26,13 +25,8 @@ movementScanTime             : (NSInteger)                          MovementScan
 highTemperature              : (float)                              HighTemperature
 lowTemperature               : (float)                              LowTemperature
 IndexPath                    : (NSIndexPath *)                      Index_Path {
-    
     NSLog(@"setDevicereturnInformation");
     Convert4310Information *convert_Characteristic = [[Convert4310Information alloc] init];
-    
-    if(cell == nil) {
-        cell = [[UICollectionViewCell alloc] init];
-    }
     
     cellData *CD = [[cellData alloc] init];
     
@@ -156,15 +150,13 @@ IndexPath                    : (NSIndexPath *)                      Index_Path {
 setDeviceInformation            : (__kindof UICollectionViewCell *)    cell
 storedDevices                   : (NSMutableArray *)                   StoredDevices
 indexPath                       : (NSIndexPath *)                      Index_Path {
-    if(cell == nil) {
-        cell = [[UICollectionViewCell alloc] init];
-    }
     
     cellData *CD = [[cellData alloc] init];
     
     CD = [StoredDevices objectAtIndex:[Index_Path row]];
     
     NSInteger index = [Index_Path row];
+    
     // Device Name
     NSString *Device_Name_Str = [[StoredDevices objectAtIndex:index] getDeviceName];
     
@@ -217,9 +209,8 @@ indexPath                       : (NSIndexPath *)                      Index_Pat
     
     [Photo_ImageView setImage:PhotoImage];
     
-    Photo_ImageView.layer.cornerRadius = 30;
-    Photo_ImageView.layer.bounds = CGRectMake(0, 0, 60, 60);
-    
+    Photo_ImageView.layer.cornerRadius = 35;
+    //Photo_ImageView.layer.bounds = CGRectMake(0, 0, 70, 70);
     
     // BarImageView
     UIImageView *Device_Bar_ImageView;
@@ -455,5 +446,99 @@ setLoadingView   : (__kindof UICollectionViewCell *)    cell {
     [Temperature_Title_ImageView setHidden:false];
     UIImageView *Battery_Title_ImageView = [cell viewWithTag:14];
     [Battery_Title_ImageView setHidden:false];
+}
+
+- (void) setTrasparentView   : (__kindof UICollectionViewCell *)    cell {
+    // 顯示資訊
+    UIImageView *Movement_Light_ImageView = [cell viewWithTag:1];
+    [Movement_Light_ImageView setAlpha:0.8];
+    UILabel *Temperature_Label = [cell viewWithTag:2];
+    [Temperature_Label setAlpha:0.8];
+    UIImageView *Battery_Light_ImageView = [cell viewWithTag:3];
+    [Battery_Light_ImageView setAlpha:0.8];
+
+    // 警告特效
+    UIImageView *Warning_ImageView = [cell viewWithTag:4];
+    [Warning_ImageView setAlpha:0.8];
+    
+    UILabel *Name_Label = [cell viewWithTag:5];
+    [Name_Label setAlpha:0.8];
+    UILabel *ID_Label = [cell viewWithTag:6];
+    [ID_Label setAlpha:0.8];
+    
+    // 照片背景
+    UIImageView *Photo_Background_ImageView = [cell viewWithTag:7];
+    [Photo_Background_ImageView setAlpha:0.8];
+    
+    // 資訊欄背景
+    UIImageView *Movement_Bar_ImageView = [cell viewWithTag:8];
+    [Movement_Bar_ImageView setAlpha:0.8];
+    UIImageView *Temperature_Bar_ImageView = [cell viewWithTag:9];
+    [Temperature_Bar_ImageView setAlpha:0.8];
+    UIImageView *Battery_Bar_ImageView = [cell viewWithTag:10];
+    [Battery_Bar_ImageView setAlpha:0.8];
+    
+    // 讀取中圖示
+    UILabel *Loading_Label = [cell viewWithTag:11];
+    [Loading_Label setAlpha:0.8];
+    
+    // 資訊欄標題
+    UIImageView *Movement_Title_ImageView = [cell viewWithTag:12];
+    [Movement_Title_ImageView setAlpha:0.8];
+    UIImageView *Temperature_Title_ImageView = [cell viewWithTag:13];
+    [Temperature_Title_ImageView setAlpha:0.8];
+    UIImageView *Battery_Title_ImageView = [cell viewWithTag:14];
+    [Battery_Title_ImageView setAlpha:0.8];
+    
+    // 背景
+    UIImageView *Background_ImageView = [cell viewWithTag:15];
+    [Background_ImageView setAlpha:0.8];
+}
+
+- (void) setNotTrasparentView   : (__kindof UICollectionViewCell *)    cell {
+    // 顯示資訊
+    UIImageView *Movement_Light_ImageView = [cell viewWithTag:1];
+    [Movement_Light_ImageView setAlpha:1];
+    UILabel *Temperature_Label = [cell viewWithTag:2];
+    [Temperature_Label setAlpha:1];
+    UIImageView *Battery_Light_ImageView = [cell viewWithTag:3];
+    [Battery_Light_ImageView setAlpha:1];
+
+    // 警告特效
+    UIImageView *Warning_ImageView = [cell viewWithTag:4];
+    [Warning_ImageView setAlpha:1];
+    
+    UILabel *Name_Label = [cell viewWithTag:5];
+    [Name_Label setAlpha:1];
+    UILabel *ID_Label = [cell viewWithTag:6];
+    [ID_Label setAlpha:1];
+    
+    // 照片背景
+    UIImageView *Photo_Background_ImageView = [cell viewWithTag:7];
+    [Photo_Background_ImageView setAlpha:1];
+    
+    // 資訊欄背景
+    UIImageView *Movement_Bar_ImageView = [cell viewWithTag:8];
+    [Movement_Bar_ImageView setAlpha:1];
+    UIImageView *Temperature_Bar_ImageView = [cell viewWithTag:9];
+    [Temperature_Bar_ImageView setAlpha:1];
+    UIImageView *Battery_Bar_ImageView = [cell viewWithTag:10];
+    [Battery_Bar_ImageView setAlpha:1];
+    
+    // 讀取中圖示
+    UILabel *Loading_Label = [cell viewWithTag:11];
+    [Loading_Label setAlpha:1];
+    
+    // 資訊欄標題
+    UIImageView *Movement_Title_ImageView = [cell viewWithTag:12];
+    [Movement_Title_ImageView setAlpha:1];
+    UIImageView *Temperature_Title_ImageView = [cell viewWithTag:13];
+    [Temperature_Title_ImageView setAlpha:1];
+    UIImageView *Battery_Title_ImageView = [cell viewWithTag:14];
+    [Battery_Title_ImageView setAlpha:1];
+    
+    // 背景
+    UIImageView *Background_ImageView = [cell viewWithTag:15];
+    [Background_ImageView setAlpha:1];
 }
 @end

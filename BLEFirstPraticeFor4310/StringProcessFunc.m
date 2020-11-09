@@ -50,4 +50,23 @@ location        : (NSUInteger) Location {
     return new_String;
 }
 
+- (BOOL) getIntegerForAll    : (NSString *) Str {
+    BOOL IntegerForAll = true;
+    for(NSInteger i = 0;i < [Str length]; i++) {
+        NSString *Now_Char = [self getSubString:Str length:1 location:i];
+        if(![Now_Char  isEqual: @"0"] &&
+           ![Now_Char  isEqual: @"1"] &&
+           ![Now_Char  isEqual: @"2"] &&
+           ![Now_Char  isEqual: @"3"] &&
+           ![Now_Char  isEqual: @"4"] &&
+           ![Now_Char  isEqual: @"5"] &&
+           ![Now_Char  isEqual: @"6"] &&
+           ![Now_Char  isEqual: @"7"] &&
+           ![Now_Char  isEqual: @"8"] &&
+           ![Now_Char  isEqual: @"9"]) {
+            IntegerForAll = false;
+        }
+    }
+    return IntegerForAll;
+}
 @end

@@ -30,6 +30,10 @@ setLoadingView   : (__kindof UICollectionViewCell *)    cell;
 
 - (void)
 setNotLoadingView   : (__kindof UICollectionViewCell *)    cell ;
-@end
 
+- (void) setTrasparentView   : (__kindof UICollectionViewCell *)    cell;
+
+- (void) setNotTrasparentView   : (__kindof UICollectionViewCell *)    cell;
+
+@end
 NS_ASSUME_NONNULL_END

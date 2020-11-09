@@ -353,6 +353,7 @@ previous_z          :(NSInteger) previous_Z {
     if([First_String  isEqual: @"00"]) {
         First_String = @"30";
     }
+    
     if([Second_String  isEqual: @"00"]) {
         Second_String = @"30";
     }

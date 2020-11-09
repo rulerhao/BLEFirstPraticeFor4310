@@ -12,6 +12,8 @@
 #import "StringProcessFunc.h"
 #import "CameraFunc.h"
 #import "SketchView.h"
+#import "ChangeBetweenWriteStringViewController.h"
+#import "InformationRunAvailable.h"
 
 @interface ViewController : UIViewController <
 CBCentralManagerDelegate,
@@ -22,12 +24,14 @@ UICollectionViewDragDelegate,
 UICollectionViewDropDelegate,
 UINavigationControllerDelegate,
 UIImagePickerControllerDelegate>
-@property(strong, nonatomic) CBCentralManager *myCBCentralManager;
-@property(strong, nonatomic) CBPeripheral *myCBPeripheral;
-@property(strong, nonatomic) NSMutableArray *Scanned;
-@property(strong, nonatomic) NSMutableArray *StoredDevices;
-@property(strong, nonatomic) NSMutableArray *DevicesInformation;
-@property(strong, nonatomic) NSArray<CBService *> *services;
+@property (strong, nonatomic) CBCentralManager *myCBCentralManager;
+@property (strong, nonatomic) CBPeripheral *myCBPeripheral;
+@property (strong, nonatomic) NSMutableArray *Scanned;
+@property (strong, nonatomic) NSMutableArray *StoredDevices;
+@property (strong, nonatomic) NSMutableArray *DevicesInformation;
+@property (strong, nonatomic) NSArray<CBService *> *services;
+@property (strong, nonatomic) NSMutableArray *Order_Items_Index;
+
 
 
 @end

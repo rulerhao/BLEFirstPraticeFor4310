@@ -20,6 +20,7 @@ getSubString    : (NSString *) Ori_String
 length          : (NSUInteger) Length
 location        : (NSUInteger) Location;
 
+- (BOOL) getIntegerForAll    : (NSString *) Str;
 @end
 
 NS_ASSUME_NONNULL_END
