@@ -24,6 +24,7 @@ UICollectionViewDragDelegate,
 UICollectionViewDropDelegate,
 UINavigationControllerDelegate,
 UIImagePickerControllerDelegate>
+
 @property (strong, nonatomic) CBCentralManager *myCBCentralManager;
 @property (strong, nonatomic) CBPeripheral *myCBPeripheral;
 @property (strong, nonatomic) NSMutableArray *Scanned;
@@ -31,7 +32,7 @@ UIImagePickerControllerDelegate>
 @property (strong, nonatomic) NSMutableArray *DevicesInformation;
 @property (strong, nonatomic) NSArray<CBService *> *services;
 @property (strong, nonatomic) NSMutableArray *Order_Items_Index;
-
+@property (readwrite, assign) NSIndexPath *NowClickIndexPath;
 
 
 @end

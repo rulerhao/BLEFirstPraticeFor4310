@@ -17,7 +17,6 @@
 @property (readonly, assign) float HighTemperature;
 @property (readonly, assign) float LowTemperature;
 @property (readwrite, assign) BOOL EnabledOrder;
-@property (readwrite, assign) NSIndexPath *NowClickIndexPath;
 @end
 
 @implementation ViewController
@@ -350,11 +349,13 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                     deviceID                :Device_ID_Str
                     deviceSex               :Device_Sex_Str];
                 
-                [_StoredDevices replaceObjectAtIndex:i withObject:CD];
+                [_StoredDevices replaceObjectAtIndex:i
+                                          withObject:CD];
                 
                 //NSLog(@"RunTimes:%d", i);
                 // reloadItems
-                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i
+                                                             inSection:0];
                 NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
                 [indexPaths addObject:indexPath];
                 
@@ -375,7 +376,8 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                                                     location        :   0];
                 }
                 
-                if([[_StoredDevices objectAtIndex:i] getPreviousCharacteristic] != nil && [setPassword isEqual:@"0000F8FA"]) {
+                if([[_StoredDevices objectAtIndex:i] getPreviousCharacteristic] != nil && [setPassword isEqual:@"0000F8FA"])
+                {
                     Convert4310Information *convert = [[Convert4310Information alloc] init];
                     now_Stored_Movement_State = [convert getMovementStatus         :   characteristic
                                                          nowStoredMovementState    :   now_Stored_Movement_State
@@ -388,7 +390,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                  * 儲存至全域 NSMutableArray StoredDevices
                  */
                 
-                [CD addObj :peripheral
+                [CD addObj                  :peripheral
                     nowCharacteristic       :[characteristic value]
                     previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getNowCharacteristic]
                     nowBabyInformation      :[[_StoredDevices objectAtIndex:i] getNowBabyInformation]
@@ -708,12 +710,13 @@ index               : (NSUInteger)          Index {
 - (void ) clickOKButton : (UIAlertController *) alert
               IndexPath : (NSIndexPath *) indexPath {
     NSLog(@"Write05");
-    
+
     // 由 alert view 中取得輸入資訊
     ChangeBetweenWriteStringViewController *ChangeWriteReadString = [[ChangeBetweenWriteStringViewController alloc] init];
     
     NSMutableData *Merged_InformationsAgain = [ChangeWriteReadString getWriteStringThroughAlertView:alert];
     
+    //  判斷輸入格式是否正確
     InformationRunAvailable *InformationRunnable = [[InformationRunAvailable alloc ]init];
     if([InformationRunnable InformationRunnable:alert])
     {
@@ -732,8 +735,11 @@ index               : (NSUInteger)          Index {
         NSString *Now_Device_name = [[[alert textFields] objectAtIndex:0] text];
         
         NSString *Previous_Device_Name = [[self->_StoredDevices objectAtIndex:[self->_NowClickIndexPath row]] getDeviceName];
-        [self SaveChangedNameImage:Now_Device_name
-                Delete_Device_Name:Previous_Device_Name];
+        
+        CameraFunc *cameraFunc = [[CameraFunc alloc] init];
+        
+        [cameraFunc SaveChangedNameImage:Now_Device_name
+                      Delete_Device_Name:Previous_Device_Name];
     }
     else
     {
@@ -851,40 +857,5 @@ imagePickerControllerDidCancel  :   (UIImagePickerController *) picker {
     
     [picker dismissViewControllerAnimated:YES completion:^{}];
 
-}
-
-- (void) SaveChangedNameImage : (NSString *) now_Device_Name
-           Delete_Device_Name : (NSString *) delete_Device_Name
-{
-    StringProcessFunc *Str_Process_Func = [[StringProcessFunc alloc] init];
-    
-    // 開始儲存檔名
-    
-    // 照片更名功能
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    // NSString *Previous_Device_Name = [[self->_StoredDevices objectAtIndex:[self->_NowClickIndexPath row]] getDeviceName];
-    NSString *Previous_Device_Name = delete_Device_Name;
-    
-    NSString *Previous_Device_Name_With_Extension = [Str_Process_Func MergeTwoString:Previous_Device_Name SecondStr:@".png"];
-    
-    NSString *Previous_filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Previous_Device_Name_With_Extension];
- 
-    UIImage *PhotoImage = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",Previous_filePath]];
-    
-    NSString *Now_Device_Name_With_Extension = [Str_Process_Func MergeTwoString:now_Device_Name SecondStr:@".png"];
-    
-    NSString *Now_filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Now_Device_Name_With_Extension];
-    
-    // 儲存現在檔名的圖片
-    
-    [UIImagePNGRepresentation(PhotoImage) writeToFile:Now_filePath atomically:YES];
-    
-    if(![Previous_filePath isEqual:Now_filePath]) {
-        // 刪除之前檔名的圖片
-        [[NSFileManager defaultManager ] removeItemAtPath:Previous_filePath
-                                                    error:nil];
-    }
 }
 @end

@@ -11,6 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CameraFunc : UIViewController
 
+- (void) SaveChangedNameImage : (NSString *) now_Device_Name
+           Delete_Device_Name : (NSString *) delete_Device_Name;
+
 @end
 
 NS_ASSUME_NONNULL_END
