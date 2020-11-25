@@ -78,25 +78,6 @@ BOOL EnabledOrder;
     _Order_Items_Index = [[NSMutableArray alloc] init];
 }
 
-
-/*
--(CGSize)
-collectionView          :(UICollectionView *) collectionView
-layout                  :(UICollectionViewLayout *) collectionViewLayout
-sizeForItemAtIndexPath  :(NSIndexPath *) indexPath {
-    //NSUInteger myWidth = _myCollectionView.bounds.size.width / 2 - 5;
-    //NSUInteger myHeight = _myCollectionView.bounds.size.height / 2 - 5;
-    
-    NSLog(@"size_width: %f", _myCollectionView.bounds.size.width);
-    NSLog(@"size_height: %f", _myCollectionView.bounds.size.height);
-    CGSize size;
-    size.width = _myCollectionView.bounds.size.width;
-    size.height = _myCollectionView.bounds.size.height;
-    return size;
-
-}
-*/
-
 - (void)
 centralManagerDidUpdateState:(CBCentralManager *)central {
     /*
@@ -199,12 +180,12 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
       
     cellData *CD = [[cellData alloc] init];
     NSLog(@"peripheral 1st: %@", peripheral);
-    for(int i = 0;i < [_StoredDevices count];i++) {
+    for(int i = 0;i < [_StoredDevices count];i++)
+    {
         NSUUID *stored_Identifier = [[[_StoredDevices objectAtIndex:i] getPheripheral] identifier];
         NSUUID *now_Identifier = [peripheral identifier];
-        if([stored_Identifier isEqual:now_Identifier]) {
-            NSLog(@"DUPLICATED");
-            
+        if([stored_Identifier isEqual:now_Identifier])
+        {
             [CD addObj                  :peripheral
                 nowCharacteristic       :[[_StoredDevices objectAtIndex:i] getNowCharacteristic]
                 previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]
@@ -224,20 +205,6 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     NSLog(@"didConn");
     peripheral.delegate = self;
     [peripheral discoverServices:nil];
-    
-    /*
-    //[_StoredDevices addObject:peripheral];
-    NSLog(@"name: %@", peripheral.name);
-    NSLog(@"identifier: %@", peripheral.identifier);
-    NSLog(@"Peripheral: %@", peripheral);
-    _services = [peripheral services];
-    NSLog(@"_services: %@", _services);
-    NSLog(@"Service size: %lu", (unsigned long)[[peripheral services] count]);
-    for(int i = 0;i < [_services count]; i++) {
-        CBService* service = [_services objectAtIndex:i];
-        NSLog(@"UUID: %@", [service UUID]);
-    }
-     */
 }
 
 /**
@@ -669,7 +636,15 @@ didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
         UIAlertAction* CameraAction = [UIAlertAction actionWithTitle:@"Camera"
                                                                style:UIAlertActionStyleDefault
            handler:^(UIAlertAction * action) {
-            [self initCamera : indexPath];
+            CameraController *cameraFunc = [[CameraController alloc] init];
+            ViewController *viewController = self;
+            
+            cameraFunc.NowClickIndexPath = self->_NowClickIndexPath;
+            cameraFunc.StoredDevices = self->_StoredDevices;
+            
+            [viewController presentViewController:cameraFunc
+                                         animated:false
+                                       completion:nil];
         }];
         
         // OK按鍵的部分
@@ -736,10 +711,10 @@ index               : (NSUInteger)          Index {
         
         NSString *Previous_Device_Name = [[self->_StoredDevices objectAtIndex:[self->_NowClickIndexPath row]] getDeviceName];
         
-        CameraFunc *cameraFunc = [[CameraFunc alloc] init];
+        CameraController *cameraFunc = [[CameraController alloc] init];
         
-        [cameraFunc SaveChangedNameImage:Now_Device_name
-                      Delete_Device_Name:Previous_Device_Name];
+        [cameraFunc saveChangedNameImage:Now_Device_name
+                      delete_Device_Name:Previous_Device_Name];
     }
     else
     {
@@ -789,73 +764,5 @@ index               : (NSUInteger)          Index {
             [self presentViewController:alertController animated:YES completion:nil];
         }
     }
-}
-
-- (void) initCamera : (NSIndexPath *)        indexPath {
-    
-    NSLog(@"initCamera");
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-        
-        //檢查是否支援此Source Type(相機)
-        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            NSLog(@"Access Camera Device");
-            
-            //設定影像來源為相機
-            imagePicker.sourceType =  UIImagePickerControllerSourceTypeCamera;
-            imagePicker.delegate = self;
-            imagePicker.allowsEditing = YES;
-            
-            // 顯示UIImagePickerController
-            [self presentViewController:imagePicker animated:YES completion:nil];
-        }
-        else {
-            //提示使用者，目前設備不支援相機
-            NSLog(@"No Camera Device");
-        }
-
-    });
-    
-}
-
-//使用者按下確定時
-
-- (void)
-imagePickerController           :   (UIImagePickerController *) picker
-didFinishPickingMediaWithInfo   :   (NSDictionary *)            info {
-    //取得剛拍攝的相片(或是由相簿中所選擇的相片)
-    UIImage *image=[info objectForKey:UIImagePickerControllerEditedImage];
-    
-    NSLog(@"NicePicture");
-    
-    // Create path.
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    NSString *Now_Device_Name = [[_StoredDevices objectAtIndex:[_NowClickIndexPath row]] getDeviceName];
-    
-    StringProcessFunc *Str_Process_Func = [[StringProcessFunc alloc] init];
-    NSString *Now_Device_Name_With_Extension = [Str_Process_Func MergeTwoString:Now_Device_Name SecondStr:@".png"];
-    
-    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:Now_Device_Name_With_Extension];
- 
-    NSLog(@"Picture_Directory:%lu", (unsigned long)NSDocumentDirectory);
-    NSLog(@"Picture_Mask:%lu", (unsigned long)NSUserDomainMask);
-    NSLog(@"Picture_Path:%@", filePath);
-    
-    // Save image.
-    [UIImagePNGRepresentation(image) writeToFile:filePath atomically:YES];
-    
-    [picker dismissViewControllerAnimated:YES completion:^{}];
-}
-
-
-
-//使用者按下取消時
-- (void)
-imagePickerControllerDidCancel  :   (UIImagePickerController *) picker {
-    //一般情況下沒有什麼特別要做的事情
-    
-    [picker dismissViewControllerAnimated:YES completion:^{}];
-
 }
 @end

@@ -10,7 +10,7 @@
 #import "cellData.h"
 #import "CalFunc.h"
 #import "StringProcessFunc.h"
-#import "CameraFunc.h"
+#import "CameraController.h"
 #import "SketchView.h"
 #import "ChangeBetweenWriteStringViewController.h"
 #import "InformationRunAvailable.h"
@@ -23,7 +23,8 @@ UICollectionViewDelegateFlowLayout,
 UICollectionViewDragDelegate,
 UICollectionViewDropDelegate,
 UINavigationControllerDelegate,
-UIImagePickerControllerDelegate>
+UIImagePickerControllerDelegate,
+UINavigationControllerDelegate>
 
 @property (strong, nonatomic) CBCentralManager *myCBCentralManager;
 @property (strong, nonatomic) CBPeripheral *myCBPeripheral;

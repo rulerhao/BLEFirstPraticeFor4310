@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		631E68772546AAEB00C1B051 /* CalFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = 631E68762546AAEB00C1B051 /* CalFunc.m */; };
-		6322A7AC254FB792007ACEF0 /* CameraFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = 6322A7AB254FB792007ACEF0 /* CameraFunc.m */; };
+		6322A7AC254FB792007ACEF0 /* CameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6322A7AB254FB792007ACEF0 /* CameraController.m */; };
 		6322A7B8255001B1007ACEF0 /* SketchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6322A7B7255001B1007ACEF0 /* SketchView.m */; };
 		63298807253EE16D0024117C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63298805253EE16D0024117C /* Main.storyboard */; };
 		632D1373252F099B00073BC9 /* cellData.m in Sources */ = {isa = PBXBuildFile; fileRef = 632D1372252F099B00073BC9 /* cellData.m */; };
@@ -46,8 +46,8 @@
 /* Begin PBXFileReference section */
 		631E68752546AAEB00C1B051 /* CalFunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalFunc.h; sourceTree = "<group>"; };
 		631E68762546AAEB00C1B051 /* CalFunc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalFunc.m; sourceTree = "<group>"; };
-		6322A7AA254FB792007ACEF0 /* CameraFunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraFunc.h; sourceTree = "<group>"; };
-		6322A7AB254FB792007ACEF0 /* CameraFunc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraFunc.m; sourceTree = "<group>"; };
+		6322A7AA254FB792007ACEF0 /* CameraController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraController.h; sourceTree = "<group>"; };
+		6322A7AB254FB792007ACEF0 /* CameraController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraController.m; sourceTree = "<group>"; };
 		6322A7B6255001B1007ACEF0 /* SketchView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SketchView.h; sourceTree = "<group>"; };
 		6322A7B7255001B1007ACEF0 /* SketchView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SketchView.m; sourceTree = "<group>"; };
 		63298806253EE16D0024117C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -171,8 +171,8 @@
 				63DB0E53251DC2E000FA3D39 /* ViewController.m */,
 				63AF37F725496D1E00D6F804 /* StringProcessFunc.h */,
 				63AF37F825496D1E00D6F804 /* StringProcessFunc.m */,
-				6322A7AA254FB792007ACEF0 /* CameraFunc.h */,
-				6322A7AB254FB792007ACEF0 /* CameraFunc.m */,
+				6322A7AA254FB792007ACEF0 /* CameraController.h */,
+				6322A7AB254FB792007ACEF0 /* CameraController.m */,
 				6352680B2558D2A90071F655 /* ChangeBetweenWriteStringViewController.h */,
 				6352680C2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m */,
 				6352680F2558E49F0071F655 /* InformationRunAvailable.h */,
@@ -278,7 +278,7 @@
 				633BBB1E252D8AD3003544A1 /* Convert4310Information.m in Sources */,
 				631E68772546AAEB00C1B051 /* CalFunc.m in Sources */,
 				635268112558E49F0071F655 /* InformationRunAvailable.m in Sources */,
-				6322A7AC254FB792007ACEF0 /* CameraFunc.m in Sources */,
+				6322A7AC254FB792007ACEF0 /* CameraController.m in Sources */,
 				6322A7B8255001B1007ACEF0 /* SketchView.m in Sources */,
 				632D1373252F099B00073BC9 /* cellData.m in Sources */,
 			);
