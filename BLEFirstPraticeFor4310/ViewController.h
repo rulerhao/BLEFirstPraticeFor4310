@@ -13,7 +13,10 @@
 #import "CameraController.h"
 #import "SketchView.h"
 #import "ChangeBetweenWriteStringViewController.h"
-#import "InformationRunAvailable.h"
+#import "InformationRunnable.h"
+#import "SaveInformationFunc.h"
+#import "KS4310Setting.h"
+#import "SwitchDevices.h"
 
 @interface ViewController : UIViewController <
 CBCentralManagerDelegate,

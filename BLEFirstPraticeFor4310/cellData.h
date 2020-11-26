@@ -37,9 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)
 addObj                  :(nullable CBPeripheral *)   Pheripheral
-nowCharacteristic       :(nullable NSData *)         Now_Charact
+nowDeviceInformationCharacteristic       :(nullable NSData *)         Now_Charact
 previousCharacteristic  :(nullable NSData *)         Previous_Charact
-nowBabyInformation      :(nullable NSData *)         Now_Baby_Infor
+nowBabyInformationCharacteristic      :(nullable NSData *)         Now_Baby_Infor
 CurrentCharacteristic   :(nullable NSData *)         Current_Characteristic
 storedMovementState     :(nullable NSMutableArray *) Stored_Movement_State
 deviceName              :(nullable NSString *)       Device_Name
@@ -47,9 +47,9 @@ deviceID                :(nullable NSString *)       Device_ID
 deviceSex               :(nullable NSString *)       Device_Sex;
 
 - (CBPeripheral *) getPheripheral;
-- (NSData *) getNowCharacteristic;
+- (NSData *) getNowDeviceInformationCharacteristic;
 - (NSData *) getPreviousCharacteristic;
-- (NSData *) getNowBabyInformation;
+- (NSData *) getNowBabyInformationCharacteristic;
 - (NSData *) getCurrentCharacteristic;
 - (NSMutableArray *) getStoredMovementState;
 - (NSString *) getDeviceName;

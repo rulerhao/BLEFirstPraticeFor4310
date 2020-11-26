@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		630720B5256E3FC70000F7C7 /* SaveInformationFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = 630720B4256E3FC70000F7C7 /* SaveInformationFunc.m */; };
+		630720BB256E463B0000F7C7 /* KS4310Setting.m in Sources */ = {isa = PBXBuildFile; fileRef = 630720BA256E463B0000F7C7 /* KS4310Setting.m */; };
 		631E68772546AAEB00C1B051 /* CalFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = 631E68762546AAEB00C1B051 /* CalFunc.m */; };
 		6322A7AC254FB792007ACEF0 /* CameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6322A7AB254FB792007ACEF0 /* CameraController.m */; };
 		6322A7B8255001B1007ACEF0 /* SketchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6322A7B7255001B1007ACEF0 /* SketchView.m */; };
@@ -20,7 +22,7 @@
 		635268052558CCA70071F655 /* Change_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 635268042558CCA70071F655 /* Change_Icon.png */; };
 		635268082558CD520071F655 /* Exchanging.png in Resources */ = {isa = PBXBuildFile; fileRef = 635268072558CD520071F655 /* Exchanging.png */; };
 		6352680D2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6352680C2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m */; };
-		635268112558E49F0071F655 /* InformationRunAvailable.m in Sources */ = {isa = PBXBuildFile; fileRef = 635268102558E49F0071F655 /* InformationRunAvailable.m */; };
+		635268112558E49F0071F655 /* InformationRunnable.m in Sources */ = {isa = PBXBuildFile; fileRef = 635268102558E49F0071F655 /* InformationRunnable.m */; };
 		63AF37E62548FE1900D6F804 /* baby_card_girl_photo_background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37DB2548FE1900D6F804 /* baby_card_girl_photo_background2.png */; };
 		63AF37E72548FE1900D6F804 /* baby_card_boy_information_bar_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37DC2548FE1900D6F804 /* baby_card_boy_information_bar_background.png */; };
 		63AF37E82548FE1900D6F804 /* baby_card_warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37DD2548FE1900D6F804 /* baby_card_warning.png */; };
@@ -35,6 +37,8 @@
 		63AF37F42548FE3900D6F804 /* list_level_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37F22548FE3800D6F804 /* list_level_4.png */; };
 		63AF37F52548FE3900D6F804 /* list_level_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37F32548FE3900D6F804 /* list_level_2.png */; };
 		63AF37F925496D1E00D6F804 /* StringProcessFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AF37F825496D1E00D6F804 /* StringProcessFunc.m */; };
+		63B153B0256F897B00FD435F /* SwitchDevices.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B153AF256F897B00FD435F /* SwitchDevices.m */; };
+		63B153B4256F904900FD435F /* DeviceSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B153B3256F904900FD435F /* DeviceSettingController.m */; };
 		63DB0E4E251DC2E000FA3D39 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB0E4D251DC2E000FA3D39 /* AppDelegate.m */; };
 		63DB0E51251DC2E000FA3D39 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB0E50251DC2E000FA3D39 /* SceneDelegate.m */; };
 		63DB0E54251DC2E000FA3D39 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB0E53251DC2E000FA3D39 /* ViewController.m */; };
@@ -44,6 +48,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		630720B3256E3FC70000F7C7 /* SaveInformationFunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SaveInformationFunc.h; sourceTree = "<group>"; };
+		630720B4256E3FC70000F7C7 /* SaveInformationFunc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaveInformationFunc.m; sourceTree = "<group>"; };
+		630720B9256E463B0000F7C7 /* KS4310Setting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KS4310Setting.h; sourceTree = "<group>"; };
+		630720BA256E463B0000F7C7 /* KS4310Setting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KS4310Setting.m; sourceTree = "<group>"; };
 		631E68752546AAEB00C1B051 /* CalFunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalFunc.h; sourceTree = "<group>"; };
 		631E68762546AAEB00C1B051 /* CalFunc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalFunc.m; sourceTree = "<group>"; };
 		6322A7AA254FB792007ACEF0 /* CameraController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraController.h; sourceTree = "<group>"; };
@@ -63,8 +71,8 @@
 		635268072558CD520071F655 /* Exchanging.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Exchanging.png; path = "../../../../MUL OUcare 第二代(KS-4310)/Exchanging.png"; sourceTree = "<group>"; };
 		6352680B2558D2A90071F655 /* ChangeBetweenWriteStringViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChangeBetweenWriteStringViewController.h; sourceTree = "<group>"; };
 		6352680C2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChangeBetweenWriteStringViewController.m; sourceTree = "<group>"; };
-		6352680F2558E49F0071F655 /* InformationRunAvailable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InformationRunAvailable.h; sourceTree = "<group>"; };
-		635268102558E49F0071F655 /* InformationRunAvailable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InformationRunAvailable.m; sourceTree = "<group>"; };
+		6352680F2558E49F0071F655 /* InformationRunnable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InformationRunnable.h; sourceTree = "<group>"; };
+		635268102558E49F0071F655 /* InformationRunnable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InformationRunnable.m; sourceTree = "<group>"; };
 		63AF37DB2548FE1900D6F804 /* baby_card_girl_photo_background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_girl_photo_background2.png; path = BLEFirstPraticeFor4310/baby_card_girl_photo_background2.png; sourceTree = SOURCE_ROOT; };
 		63AF37DC2548FE1900D6F804 /* baby_card_boy_information_bar_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_boy_information_bar_background.png; path = BLEFirstPraticeFor4310/baby_card_boy_information_bar_background.png; sourceTree = SOURCE_ROOT; };
 		63AF37DD2548FE1900D6F804 /* baby_card_warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_warning.png; path = BLEFirstPraticeFor4310/baby_card_warning.png; sourceTree = SOURCE_ROOT; };
@@ -80,6 +88,10 @@
 		63AF37F32548FE3900D6F804 /* list_level_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = list_level_2.png; path = BLEFirstPraticeFor4310/list_level_2.png; sourceTree = SOURCE_ROOT; };
 		63AF37F725496D1E00D6F804 /* StringProcessFunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringProcessFunc.h; sourceTree = "<group>"; };
 		63AF37F825496D1E00D6F804 /* StringProcessFunc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StringProcessFunc.m; sourceTree = "<group>"; };
+		63B153AE256F897B00FD435F /* SwitchDevices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwitchDevices.h; sourceTree = "<group>"; };
+		63B153AF256F897B00FD435F /* SwitchDevices.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SwitchDevices.m; sourceTree = "<group>"; };
+		63B153B2256F904900FD435F /* DeviceSettingController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceSettingController.h; sourceTree = "<group>"; };
+		63B153B3256F904900FD435F /* DeviceSettingController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceSettingController.m; sourceTree = "<group>"; };
 		63DB0E49251DC2E000FA3D39 /* BLEFirstPraticeFor4310.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BLEFirstPraticeFor4310.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63DB0E4C251DC2E000FA3D39 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		63DB0E4D251DC2E000FA3D39 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -175,8 +187,16 @@
 				6322A7AB254FB792007ACEF0 /* CameraController.m */,
 				6352680B2558D2A90071F655 /* ChangeBetweenWriteStringViewController.h */,
 				6352680C2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m */,
-				6352680F2558E49F0071F655 /* InformationRunAvailable.h */,
-				635268102558E49F0071F655 /* InformationRunAvailable.m */,
+				6352680F2558E49F0071F655 /* InformationRunnable.h */,
+				635268102558E49F0071F655 /* InformationRunnable.m */,
+				630720B3256E3FC70000F7C7 /* SaveInformationFunc.h */,
+				630720B4256E3FC70000F7C7 /* SaveInformationFunc.m */,
+				630720B9256E463B0000F7C7 /* KS4310Setting.h */,
+				630720BA256E463B0000F7C7 /* KS4310Setting.m */,
+				63B153AE256F897B00FD435F /* SwitchDevices.h */,
+				63B153AF256F897B00FD435F /* SwitchDevices.m */,
+				63B153B2256F904900FD435F /* DeviceSettingController.h */,
+				63B153B3256F904900FD435F /* DeviceSettingController.m */,
 			);
 			path = BLEFirstPraticeFor4310;
 			sourceTree = "<group>";
@@ -275,11 +295,15 @@
 				6352680D2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m in Sources */,
 				63DB0E5F251DC2E200FA3D39 /* main.m in Sources */,
 				63DB0E51251DC2E000FA3D39 /* SceneDelegate.m in Sources */,
+				63B153B4256F904900FD435F /* DeviceSettingController.m in Sources */,
 				633BBB1E252D8AD3003544A1 /* Convert4310Information.m in Sources */,
 				631E68772546AAEB00C1B051 /* CalFunc.m in Sources */,
-				635268112558E49F0071F655 /* InformationRunAvailable.m in Sources */,
+				635268112558E49F0071F655 /* InformationRunnable.m in Sources */,
+				63B153B0256F897B00FD435F /* SwitchDevices.m in Sources */,
+				630720B5256E3FC70000F7C7 /* SaveInformationFunc.m in Sources */,
 				6322A7AC254FB792007ACEF0 /* CameraController.m in Sources */,
 				6322A7B8255001B1007ACEF0 /* SketchView.m in Sources */,
+				630720BB256E463B0000F7C7 /* KS4310Setting.m in Sources */,
 				632D1373252F099B00073BC9 /* cellData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

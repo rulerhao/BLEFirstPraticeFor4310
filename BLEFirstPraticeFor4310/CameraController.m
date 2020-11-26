@@ -85,6 +85,7 @@ didFinishPickingMediaWithInfo   :   (NSDictionary *)            info {
     [UIImagePNGRepresentation(image) writeToFile:filePath atomically:YES];
 
     [picker dismissViewControllerAnimated:YES completion:^{}];
+    [self dismissViewControllerAnimated:YES completion:^{}];
 }
 
 
@@ -94,6 +95,7 @@ didFinishPickingMediaWithInfo   :   (NSDictionary *)            info {
 imagePickerControllerDidCancel  :   (UIImagePickerController *) picker {
     //一般情況下沒有什麼特別要做的事情
     [picker dismissViewControllerAnimated:YES completion:^{}];
+    [self dismissViewControllerAnimated:YES completion:^{}];
 
 }
 

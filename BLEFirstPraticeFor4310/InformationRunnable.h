@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface InformationRunAvailable : UIViewController
+@interface InformationRunnable : UIViewController
 
 - (BOOL) InformationRunnable : (UIAlertController *) alert;
 

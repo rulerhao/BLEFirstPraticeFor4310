@@ -13,9 +13,6 @@
 @interface ViewController ()
 @property (strong, nonatomic) IBOutlet UICollectionView *myCollectionView;
 @property (strong, nonatomic) IBOutlet UIButton *Bool_Order_Button;
-@property (readonly, assign) NSUInteger MovementScanTime;
-@property (readonly, assign) float HighTemperature;
-@property (readonly, assign) float LowTemperature;
 @property (readwrite, assign) BOOL EnabledOrder;
 @end
 
@@ -26,42 +23,37 @@ BOOL EnabledOrder;
 // Touch button to turn on/off order function
 - (IBAction)Touch_Bool_Order:(id)sender {
     // 切換 EnabledOrder 狀態
-    if(EnabledOrder == true) {
+    UIImage *image;
+    if(EnabledOrder)
+    {
         NSLog(@"EnabledOrder:Off");
         EnabledOrder = false;
-    }
-    else {
-        NSLog(@"EnabledOrder:On");
-        EnabledOrder = true;
-    }
-    UIImage *image;
-    if(EnabledOrder == true) {
-        image = [UIImage imageNamed:@"Exchanging.png"];
-    }
-    else {
         image = [UIImage imageNamed:@"Change_Icon.png"];
         // 清除 Order_Items_Index
         [_Order_Items_Index removeAllObjects];
+    }
+    else
+    {
+        NSLog(@"EnabledOrder:On");
+        EnabledOrder = true;
+        image = [UIImage imageNamed:@"Exchanging.png"];
     }
     [_Bool_Order_Button setImage:image forState:normal];
     
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
-    _myCBCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
+    _myCBCentralManager = [[CBCentralManager alloc] initWithDelegate:self
+                                                               queue:nil
+                                                             options:nil];
     NSLog(@"AfterCM");
     
     _StoredDevices = [[NSMutableArray alloc] init];
     
     _DevicesInformation = [[NSMutableArray alloc] init];
-    
-    _MovementScanTime = 15;
-    
-    _HighTemperature = 27;
-    
-    _LowTemperature = 25;
     
     _myCollectionView.dragInteractionEnabled = YES;
     _myCollectionView.dragDelegate = self;
@@ -148,9 +140,9 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
             NSLog(@"device_Identifier2: %@", [peripheral identifier]);
             cellData *CD = [[cellData alloc] init];
             [CD addObj                  :peripheral
-                nowCharacteristic       :nil
+                nowDeviceInformationCharacteristic       :nil
                 previousCharacteristic  :nil
-                nowBabyInformation      :nil
+                nowBabyInformationCharacteristic      :nil
                 CurrentCharacteristic   :nil
                 storedMovementState     :nil
                 deviceName              :nil
@@ -187,9 +179,9 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         if([stored_Identifier isEqual:now_Identifier])
         {
             [CD addObj                  :peripheral
-                nowCharacteristic       :[[_StoredDevices objectAtIndex:i] getNowCharacteristic]
+                nowDeviceInformationCharacteristic       :[[_StoredDevices objectAtIndex:i] getNowDeviceInformationCharacteristic]
                 previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]
-                nowBabyInformation      :[[_StoredDevices objectAtIndex:i] getNowBabyInformation]
+                nowBabyInformationCharacteristic      :[[_StoredDevices objectAtIndex:i] getNowBabyInformationCharacteristic]
                 CurrentCharacteristic   :[[_StoredDevices objectAtIndex:i] getCurrentCharacteristic]
                 storedMovementState     :[[_StoredDevices objectAtIndex:i] getStoredMovementState]
                 deviceName              :[[_StoredDevices objectAtIndex:i] getDeviceName]
@@ -211,16 +203,19 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
  當發現 service 時會 call 這個 function
  */
 - (void)     peripheral              :(CBPeripheral *)   peripheral
-             didDiscoverServices     :(NSError *)        error {
+             didDiscoverServices     :(NSError *)        error
+{
     NSLog(@"peripheralSecond: %@", peripheral);
     NSLog(@"Find Service");
-    for(int i = 0;i < [_StoredDevices count];i++) {
-        if([[[[_StoredDevices objectAtIndex:i] getPheripheral]identifier] isEqual:[peripheral identifier]]) {
+    for(int i = 0;i < [_StoredDevices count];i++)
+    {
+        if([[[[_StoredDevices objectAtIndex:i] getPheripheral]identifier] isEqual:[peripheral identifier]])
+        {
             cellData *CD = [[cellData alloc] init];
             [CD addObj                  :peripheral
-                nowCharacteristic       :[[_StoredDevices objectAtIndex:i] getNowCharacteristic]
+                nowDeviceInformationCharacteristic       :[[_StoredDevices objectAtIndex:i] getNowDeviceInformationCharacteristic]
                 previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]
-                nowBabyInformation      :[[_StoredDevices objectAtIndex:i] getNowBabyInformation]
+                nowBabyInformationCharacteristic      :[[_StoredDevices objectAtIndex:i] getNowBabyInformationCharacteristic]
                 CurrentCharacteristic   :[[_StoredDevices objectAtIndex:i] getCurrentCharacteristic]
                 storedMovementState     :[[_StoredDevices objectAtIndex:i] getStoredMovementState]
                 deviceName              :[[_StoredDevices objectAtIndex:i] getDeviceName]
@@ -239,7 +234,8 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
      1 不確定
      2 為 FFF0 所在的位置 也就是放 Bluetooth 資訊的位置
      */
-    [peripheral discoverCharacteristics:nil forService:[[peripheral services] objectAtIndex:2]];
+    [peripheral discoverCharacteristics:nil
+                             forService:[[peripheral services] objectAtIndex:2]];
 }
 
 /**
@@ -275,28 +271,37 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     
     cellData *CD = [[cellData alloc] init];
     
-    for(int i = 0;i < [_StoredDevices count];i++) {
+    KS4310Setting *ks4310Setting = [[KS4310Setting alloc] init];
+    [ks4310Setting InitKS4310Setting];
+    
+    for(int i = 0;i < [_StoredDevices count];i++)
+    {
         NSUUID *stored_Identifier = [[[_StoredDevices objectAtIndex:i] getPheripheral] identifier];
         NSUUID *now_Identifier = [peripheral identifier];
         
-        if([stored_Identifier isEqual:now_Identifier]) {
+        if([stored_Identifier isEqual:now_Identifier])
+        {
             // 如果是第一次進如則先 write 04 讓 device回傳device內資訊
             // 如果 getNowCharacteristic 還是 nil 的話
             // 或者接收到 0x0555aa (接收到 0x05 時 update 的值 length = 3)
-            if(![[_StoredDevices objectAtIndex:i] getNowCharacteristic] ||
-               [[characteristic value] length] == 3) {
+            if(![[_StoredDevices objectAtIndex:i] getNowDeviceInformationCharacteristic] ||
+               [[characteristic value] length] == ks4310Setting.Identifier_From_Write_Characteristic_Full_Bytes_Length)
+            {
                 [self write04ToKS4310:_StoredDevices
                                 index:i];
             }
             
             NSData *characteristic_Value = [characteristic value];
             NSString *characteristic_Str = [CalculateFunc getHEX:characteristic_Value];
+            NSLog(@"characteristic_Str = %@", characteristic_Str);
+            NSString *Characteristic_Head_Bytes_String = [str_Process_Func getSubString   :characteristic_Str
+                                                                 length         :ks4310Setting.Identifier_Characteristic_Bytes_String_Head_Length
+                                                                 location       :ks4310Setting.Identifier_Characteristic_Bytes_String_Cut_Start_Location];
             
-            NSString *cut_Characteristic_Str = [str_Process_Func getSubString   :characteristic_Str
-                                                                 length         :2
-                                                                 location       :0];
-            
-            if([cut_Characteristic_Str isEqual:@"04"]) {
+            // 如果這次的 Characterstice 是 04
+            // 也就是讀取嬰兒身份
+            if([Characteristic_Head_Bytes_String isEqual:ks4310Setting.Identifier_From_Read_Characteristic_Bytes_String])
+            {
                 NSLog(@"RunInto04");
                 // Device Name
                 NSString *Device_Name_Str = [convert_Characteristic getDeviceName:[characteristic value]];
@@ -305,16 +310,18 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 // Device Sex
                 NSString *Device_Sex_Str = [convert_Characteristic getDeviceSex:[characteristic value]];
                 
+                // 在這裡執行 MQTT
+                
                 // 儲存資料至 _StoradDevices
                 [CD addObj                  :peripheral
-                    nowCharacteristic       :[[_StoredDevices objectAtIndex:i] getNowCharacteristic]
-                    previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]
-                    nowBabyInformation      :[characteristic value]
-                    CurrentCharacteristic   :[characteristic value]
-                    storedMovementState     :[[_StoredDevices objectAtIndex:i] getStoredMovementState]
-                    deviceName              :Device_Name_Str
-                    deviceID                :Device_ID_Str
-                    deviceSex               :Device_Sex_Str];
+                    nowDeviceInformationCharacteristic          :[[_StoredDevices objectAtIndex:i] getNowDeviceInformationCharacteristic]
+                    previousCharacteristic                      :[[_StoredDevices objectAtIndex:i] getCurrentCharacteristic]
+                    nowBabyInformationCharacteristic            :[characteristic value]
+                    CurrentCharacteristic                       :[characteristic value]
+                    storedMovementState                         :[[_StoredDevices objectAtIndex:i] getStoredMovementState]
+                    deviceName                                  :Device_Name_Str
+                    deviceID                                    :Device_ID_Str
+                    deviceSex                                   :Device_Sex_Str];
                 
                 [_StoredDevices replaceObjectAtIndex:i
                                           withObject:CD];
@@ -332,41 +339,43 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 
                 break;
             }
-            else if ([cut_Characteristic_Str isEqual:@"00"]) {
+            // 假如這次收到的 characteristic 開頭為 00
+            // 也就是接收裝置資訊時
+            else if ([Characteristic_Head_Bytes_String isEqual:ks4310Setting.Identifier_From_Recieve_Characteristic_Bytes_String])
+            {
                 //NSLog(@"RunTimes2:%d", i);
                 NSMutableArray *now_Stored_Movement_State = [[NSMutableArray alloc] init];
                 
-                NSString *setPassword = [CalculateFunc getHEX:[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]] ;
-                if(setPassword.length >= 8) {
-                    setPassword = [str_Process_Func getSubString    :   setPassword
-                                                    length          :   8
-                                                    location        :   0];
-                }
+                NSString *Previous_Characteristic = [CalculateFunc getHEX:[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]] ;
                 
-                if([[_StoredDevices objectAtIndex:i] getPreviousCharacteristic] != nil && [setPassword isEqual:@"0000F8FA"])
+                Previous_Characteristic = [str_Process_Func getSubString    :   Previous_Characteristic
+                                                            length          :   ks4310Setting.    Identifier_From_Recieve_Characteristic_Full_Bytes_String_Length
+                                                            location        :   ks4310Setting.    Identifier_From_Recieve_Characteristic_Bytes_String_Cut_Location];
+                
+                // 如果前一個 Characteristic isEqual "0000F8FA"
+                if(Previous_Characteristic != nil && [Previous_Characteristic isEqual:ks4310Setting.Identifier_From_Recieve_Characteristic_Full_Bytes_String])
                 {
+                    NSLog(@"characteristic too short = :%@", [characteristic value]);
                     Convert4310Information *convert = [[Convert4310Information alloc] init];
                     now_Stored_Movement_State = [convert getMovementStatus         :   characteristic
                                                          nowStoredMovementState    :   now_Stored_Movement_State
                                                          storedDevices             :   _StoredDevices
-                                                         movementScanTime          :   _MovementScanTime
+                                                         movementScanTime          :   ks4310Setting.Movement_Scan_Time
                                                          index                     :   i];
                 }
 
                 /**
                  * 儲存至全域 NSMutableArray StoredDevices
                  */
-                
-                [CD addObj                  :peripheral
-                    nowCharacteristic       :[characteristic value]
-                    previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getNowCharacteristic]
-                    nowBabyInformation      :[[_StoredDevices objectAtIndex:i] getNowBabyInformation]
-                    CurrentCharacteristic   :[characteristic value]
-                    storedMovementState     :now_Stored_Movement_State
-                    deviceName              :[[_StoredDevices objectAtIndex:i] getDeviceName]
-                    deviceID                :[[_StoredDevices objectAtIndex:i] getDeviceID]
-                    deviceSex               :[[_StoredDevices objectAtIndex:i] getDeviceSex]];
-                
+                [CD addObj                                      :peripheral
+                    nowDeviceInformationCharacteristic          :[characteristic value]
+                    previousCharacteristic                      :[[_StoredDevices objectAtIndex:i] getNowDeviceInformationCharacteristic]
+                    nowBabyInformationCharacteristic            :[[_StoredDevices objectAtIndex:i] getNowBabyInformationCharacteristic]
+                    CurrentCharacteristic                       :[characteristic value]
+                    storedMovementState                         :now_Stored_Movement_State
+                    deviceName                                  :[[_StoredDevices objectAtIndex:i] getDeviceName]
+                    deviceID                                    :[[_StoredDevices objectAtIndex:i] getDeviceID]
+                    deviceSex                                   :[[_StoredDevices objectAtIndex:i] getDeviceSex]];
                 
                 [_StoredDevices replaceObjectAtIndex:i withObject:CD];
                 
@@ -384,15 +393,17 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 }];
                 break;
             }
-            else if ([cut_Characteristic_Str isEqual:@"05"]) {
+            // 如果前一個是 05
+            // 也就是前一次是寫入的動作
+            else if ([Characteristic_Head_Bytes_String isEqual:ks4310Setting.Identifier_From_Write_Characteristic_Bytes_String]) {
                 NSLog(@"05Chara:%@", characteristic_Str);
                 NSLog(@"GotA05");
                 
                 // 儲存資料至 _StoradDevices
                 [CD addObj                  :peripheral
-                    nowCharacteristic       :[[_StoredDevices objectAtIndex:i] getNowCharacteristic]
-                    previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]
-                    nowBabyInformation      :[[_StoredDevices objectAtIndex:i] getNowBabyInformation]
+                    nowDeviceInformationCharacteristic       :[[_StoredDevices objectAtIndex:i] getNowDeviceInformationCharacteristic]
+                    previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getCurrentCharacteristic]
+                    nowBabyInformationCharacteristic      :[[_StoredDevices objectAtIndex:i] getNowBabyInformationCharacteristic]
                     CurrentCharacteristic   :[characteristic value]
                     storedMovementState     :[[_StoredDevices objectAtIndex:i] getStoredMovementState]
                     deviceName              :[[_StoredDevices objectAtIndex:i] getDeviceName]
@@ -418,12 +429,15 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
 // 裝置斷線時
 -(void)     centralManager          :(CBCentralManager *)       central
             didDisconnectPeripheral :(CBPeripheral *)           peripheral
-            error                   :(NSError *)                error {
+            error                   :(NSError *)                error
+{
     NSLog(@"DisConnected");
-    for(int i = 0; i < [_StoredDevices count];i++) {
+    for(int i = 0; i < [_StoredDevices count];i++)
+    {
         NSUUID *Stored_UUID = [[[_StoredDevices objectAtIndex:i] getPheripheral] identifier];
         
-        if([Stored_UUID isEqual:[peripheral identifier]]) {
+        if([Stored_UUID isEqual:[peripheral identifier]])
+        {
             [_StoredDevices removeObjectAtIndex:i];
             [_Order_Items_Index removeAllObjects];
             break;
@@ -434,7 +448,8 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
 
 - (NSInteger)
 collectionView          :(UICollectionView *)   collectionView
-numberOfItemsInSection  :(NSInteger)            section {
+numberOfItemsInSection  :(NSInteger)            section
+{
     return [_StoredDevices count];
 }
 
@@ -447,11 +462,15 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
     
     StringProcessFunc *str_Procecss_Func = [[StringProcessFunc alloc] init];
     
+    KS4310Setting *ks4310Setting = [[KS4310Setting alloc] init];
+    [ks4310Setting InitKS4310Setting];
+    
     __kindof UICollectionViewCell *cell;
     
     cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell"
                                                      forIndexPath:indexPath];
-    if(cell == nil) {
+    if(cell == nil)
+    {
         cell = [[UICollectionViewCell alloc] init];
     }
         
@@ -473,60 +492,53 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
      */
     SketchView *sketchView = [[SketchView alloc] init];
     
-    if([characteristic_Str length] > 2) {
-        NSString *cut_Characteristic_Str = [str_Procecss_Func getSubString  :   characteristic_Str
-                                                              length        :   2
-                                                              location      :   0];
-        
-        if([cut_Characteristic_Str isEqual:@"00"]) {
-            NSLog(@"Clickclick");
+    if([characteristic_Str length] > ks4310Setting.Identifier_Characteristic_Bytes_String_Head_Length)
+    {
+        NSString *Characteristic_Head_String = [str_Procecss_Func getSubString  :   characteristic_Str
+                                                              length        :   ks4310Setting.Identifier_Characteristic_Bytes_String_Head_Length
+                                                              location      :   ks4310Setting.Identifier_Characteristic_Bytes_String_Cut_Start_Location];
+        // "00"
+        if([Characteristic_Head_String isEqual:ks4310Setting.Identifier_From_Recieve_Characteristic_Bytes_String])
+        {
             // 每秒 4310 所回傳的資訊
-            // 確認名字非 nil
-            NSLog(@"ItemCharDeviceName:%@", [CD getDeviceName]);
-            if([[CD getDeviceName] length] != 0) {
-                //NSLog(@"ItemCharDeviceName:%@", [CD getDeviceName]);
+            // 如果 DeviceName DeviceID DeviceSex 不是NIL
+            if([CD getDeviceName] &&
+               [CD getDeviceID] &&
+               [CD getDeviceSex])
+            {
                 [sketchView setNotLoadingView:cell];
                 
+                // 如果這次的 index 相同則變透明
                 BOOL cellShouldBeTransparent = false;
-                for( NSUInteger i = 0; i < [_Order_Items_Index count]; i++) {
-                    if([[_Order_Items_Index objectAtIndex:i] row] == [indexPath row]) {
-                        cellShouldBeTransparent = true;
-                    }
-                }
-                if(cellShouldBeTransparent) {
-                    [sketchView setTrasparentView:cell];
-                }
-                else {
-                    [sketchView setNotTrasparentView:cell];
-                }
                 
+                for( NSUInteger i = 0; i < [_Order_Items_Index count]; i++)
+                    if([[_Order_Items_Index objectAtIndex:i] row] == [indexPath row])
+                        cellShouldBeTransparent = true;
+                
+                if(cellShouldBeTransparent)
+                    [sketchView setTrasparentView:cell];
+                else
+                    [sketchView setNotTrasparentView:cell];
+                
+                // 4310 接收 0x00 資訊
                 [sketchView setDeviceReturnInformation:cell
                                          storedDevices:_StoredDevices
-                                      movementScanTime:_MovementScanTime
-                                       highTemperature:_HighTemperature
-                                        lowTemperature:_LowTemperature
+                                      movementScanTime:ks4310Setting.Movement_Scan_Time
+                                       highTemperature:ks4310Setting.HighTemperatureword
+                                        lowTemperature:ks4310Setting.LowTemperature
                                              IndexPath:indexPath];
+                
                 // 4310 受 write 0x04 或 0x05 後的資訊
                 [sketchView setDeviceInformation:cell
                                    storedDevices:_StoredDevices
                                        indexPath: indexPath];
-            }
-            else {
-                [sketchView setNotTrasparentView:cell];
-                [sketchView setLoadingView:cell];
+                
+                return cell;
             }
         }
-        // 0x04 0x05
-        else {
-            [sketchView setNotTrasparentView:cell];
-            [sketchView setLoadingView:cell];
-        }
     }
-    
-    else {
-        [sketchView setNotTrasparentView:cell];
-        [sketchView setLoadingView:cell];
-    }
+    [sketchView setNotTrasparentView:cell];
+    [sketchView setLoadingView:cell];
     
     return cell;
 }
@@ -537,11 +549,6 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
 -(void)
 collectionView          :(UICollectionView *)   collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
-    /*
-    id object = [_StoredDevices objectAtIndex:0];
-    [_StoredDevices removeObjectAtIndex:0];
-    [_StoredDevices insertObject:object atIndex:1];
-     */
     
     __kindof UICollectionViewCell *cell;
     
@@ -551,32 +558,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
         cell = [[UICollectionViewCell alloc] init];
     }
     
-    if(EnabledOrder == true) {
-        NSLog(@"[Order_Items_Index]:%lu", (unsigned long)[_Order_Items_Index count]);
-        switch ([_Order_Items_Index count]) {
-            case 0:
-                [_Order_Items_Index addObject:indexPath];
-                break;
-            case 1:
-                [_Order_Items_Index addObject:indexPath];
-                
-                // 交換兩個
-                NSInteger First_Index = [[_Order_Items_Index objectAtIndex:0] row];
-                NSInteger Second_Index = [[_Order_Items_Index objectAtIndex:1] row];
-                id First_Object = [_StoredDevices objectAtIndex:First_Index];
-                id Second_Object = [_StoredDevices objectAtIndex:Second_Index];
-                [_StoredDevices removeObjectAtIndex:First_Index];
-                [_StoredDevices insertObject:Second_Object atIndex:First_Index];
-                [_StoredDevices removeObjectAtIndex:Second_Index];
-                [_StoredDevices insertObject:First_Object atIndex:Second_Index];
-                 
-                [_Order_Items_Index removeAllObjects];
-                
-                break;
-        }
-        [UIView performWithoutAnimation:^{
-            [_myCollectionView reloadData];
-        }];
+    // 如果目前是切換狀態
+    if(EnabledOrder) {
+        SwitchDevices *switchDevices = [[SwitchDevices alloc] init];
+        [switchDevices switchDevices:_myCollectionView
+                     orderItemsIndex:_Order_Items_Index
+                       storedDevices:_StoredDevices
+                           indexPath:indexPath];
     }
     else {
         _NowClickIndexPath = indexPath;
@@ -632,34 +620,41 @@ didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
         }];
         
         // 拍照按鍵部份
-        
+        // 在此因為先進入 CameraController 再到 Camera 內
+        // 所以退出時也需要先退出 Camera 再退出 CameraController
         UIAlertAction* CameraAction = [UIAlertAction actionWithTitle:@"Camera"
                                                                style:UIAlertActionStyleDefault
            handler:^(UIAlertAction * action) {
-            CameraController *cameraFunc = [[CameraController alloc] init];
+            CameraController *cameraController = [[CameraController alloc] init];
             ViewController *viewController = self;
             
-            cameraFunc.NowClickIndexPath = self->_NowClickIndexPath;
-            cameraFunc.StoredDevices = self->_StoredDevices;
-            
-            [viewController presentViewController:cameraFunc
-                                         animated:false
+            // 將卡片形式設定為全畫面
+            cameraController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+            cameraController.NowClickIndexPath = self->_NowClickIndexPath;
+            cameraController.StoredDevices = self->_StoredDevices;
+            [viewController presentViewController:cameraController
+                                         animated:true
                                        completion:nil];
         }];
         
         // OK按鍵的部分
-        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK"
+                                                           style:UIAlertActionStyleDefault
            handler:^(UIAlertAction * action) {
-            // 按了 OK 之後
-            [self clickOKButton : alert
-                       IndexPath:indexPath];
+            SaveInformationFunc *saveInformationFunc = [[SaveInformationFunc alloc] init];
+            NSString *ErrorMessage = [saveInformationFunc saveInformation: alert
+                                                            storedDevices: self->_StoredDevices
+                                                                indexPath: indexPath];
+            [self ShowAlertMessage:ErrorMessage];
         }];
         
         [alert addAction:cancelAction];
         [alert addAction:CameraAction];
         [alert addAction:okAction];
         
-        [self presentViewController:alert animated:YES completion:nil];
+        [self presentViewController:alert
+                           animated:YES
+                         completion:nil];
          
         NSLog(@"finish");
     }
@@ -678,91 +673,31 @@ index               : (NSUInteger)          Index {
  
     const uint8_t bytes[] = {0x04};
     
-    NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
-    [peri writeValue:data forCharacteristic:chara type:CBCharacteristicWriteWithResponse];
+    NSData *data = [NSData dataWithBytes:bytes
+                                  length:sizeof(bytes)];
+    [peri writeValue:data
+   forCharacteristic:chara
+                type:CBCharacteristicWriteWithResponse];
 }
 
-- (void ) clickOKButton : (UIAlertController *) alert
-              IndexPath : (NSIndexPath *) indexPath {
-    NSLog(@"Write05");
-
-    // 由 alert view 中取得輸入資訊
-    ChangeBetweenWriteStringViewController *ChangeWriteReadString = [[ChangeBetweenWriteStringViewController alloc] init];
-    
-    NSMutableData *Merged_InformationsAgain = [ChangeWriteReadString getWriteStringThroughAlertView:alert];
-    
-    //  判斷輸入格式是否正確
-    InformationRunAvailable *InformationRunnable = [[InformationRunAvailable alloc ]init];
-    if([InformationRunnable InformationRunnable:alert])
+- (void) ShowAlertMessage : (NSString *) ErrorMessage
+{
+    if([ErrorMessage length] > 0)
     {
-        NSLog(@"Merged_InformationsAgain : %@", Merged_InformationsAgain);
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:ErrorMessage
+                                       message:nil
+                                       preferredStyle:UIAlertControllerStyleAlert];
+        // Cancel按鍵的部分
+        UIAlertAction* CloseAction = [UIAlertAction actionWithTitle:@"Close"
+                                                               style:UIAlertActionStyleDefault
+           handler:^(UIAlertAction * action) {
+        }];
         
-        // write 05 和要賦予的裝置資訊
-        CBPeripheral *peri = [[_StoredDevices objectAtIndex:[indexPath row]] getPheripheral];
-        CBService *ser = [[peri services] objectAtIndex:2];
-        CBCharacteristic *chara = [[ser characteristics] objectAtIndex:2];
-
-        //wirte to get information setting in device.
-        [peri writeValue:Merged_InformationsAgain
-       forCharacteristic:chara
-                    type:CBCharacteristicWriteWithResponse];
+        [alertController addAction:CloseAction];
         
-        NSString *Now_Device_name = [[[alert textFields] objectAtIndex:0] text];
-        
-        NSString *Previous_Device_Name = [[self->_StoredDevices objectAtIndex:[self->_NowClickIndexPath row]] getDeviceName];
-        
-        CameraController *cameraFunc = [[CameraController alloc] init];
-        
-        [cameraFunc saveChangedNameImage:Now_Device_name
-                      delete_Device_Name:Previous_Device_Name];
-    }
-    else
-    {
-        if(![InformationRunnable NameRunnable:alert])
-        {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Name Input Formate Error!"
-                                           message:nil
-                                           preferredStyle:UIAlertControllerStyleAlert];
-            // Cancel按鍵的部分
-            UIAlertAction* CloseAction = [UIAlertAction actionWithTitle:@"Close"
-                                                                   style:UIAlertActionStyleDefault
-               handler:^(UIAlertAction * action) {
-            }];
-            
-            [alertController addAction:CloseAction];
-            
-            [self presentViewController:alertController animated:YES completion:nil];
-        }
-        if(![InformationRunnable IDRunnable:alert])
-        {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"ID Input Formate Error!"
-                                           message:nil
-                                           preferredStyle:UIAlertControllerStyleAlert];
-            // Cancel按鍵的部分
-            UIAlertAction* CloseAction = [UIAlertAction actionWithTitle:@"Close"
-                                                                   style:UIAlertActionStyleDefault
-               handler:^(UIAlertAction * action) {
-            }];
-            
-            [alertController addAction:CloseAction];
-            
-            [self presentViewController:alertController animated:YES completion:nil];
-        }
-        if(![InformationRunnable SexRunnable:alert])
-        {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Sex Input Formate Error!"
-                                           message:nil
-                                           preferredStyle:UIAlertControllerStyleAlert];
-            // Cancel按鍵的部分
-            UIAlertAction* CloseAction = [UIAlertAction actionWithTitle:@"Close"
-                                                                   style:UIAlertActionStyleDefault
-               handler:^(UIAlertAction * action) {
-            }];
-            
-            [alertController addAction:CloseAction];
-            
-            [self presentViewController:alertController animated:YES completion:nil];
-        }
+        [self presentViewController:alertController
+                           animated:YES
+                         completion:nil];
     }
 }
 @end

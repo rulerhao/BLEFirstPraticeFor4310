@@ -5,13 +5,13 @@
 //  Created by louie on 2020/11/9.
 //
 
-#import "InformationRunAvailable.h"
+#import "InformationRunnable.h"
 
-@interface InformationRunAvailable ()
+@interface InformationRunnable ()
 
 @end
 
-@implementation InformationRunAvailable
+@implementation InformationRunnable
 
 - (void)viewDidLoad {
     [super viewDidLoad];
