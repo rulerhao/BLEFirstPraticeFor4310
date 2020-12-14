@@ -49,7 +49,8 @@ storedDevices   : (NSMutableArray *)     StoredDevices
                                animated:NO
                              completion:nil];
         }
-        else {
+        else
+        {
             //提示使用者，目前設備不支援相機
             NSLog(@"No Camera Device");
         }

@@ -79,4 +79,49 @@ location        : (NSUInteger) Location {
     }
     return IntegerForAll;
 }
+
+/*!
+ * @discussion
+ *  刪除所有 Origin_String 內所包含的 Sub_String
+ *  運用 Recursive 來刪去所有的 Sub_String
+ *  Delete all Sub_String in Origin_String through recutsive method.
+ *
+ *  Example :
+ *  Origin_String = @"ababab";
+ *  Sub_String = @"ba";
+ *  ans : @"ab";
+ *
+ *  @param Origin_String :
+ *  原本完整的 String
+ *  The origin string that was not yet processed
+ *  @param Sub_String : 要被切割的 String
+ *  The string that we want to cut from origin string
+ */
+- (NSString *)
+deleteSubString : (NSString *) Origin_String
+subString       : (NSString *) Sub_String
+{
+    NSUInteger Sub_String_Location = [Origin_String rangeOfString:Sub_String].location;
+    if(Sub_String_Location == NSNotFound)
+    {
+        return Origin_String;
+    }
+    else
+    {
+        NSLog(@"Inner = %@", Origin_String);
+        NSString *Front_Part_String = [self getSubString:Origin_String
+                                                  length:Sub_String_Location
+                                                location:0];
+        
+        NSString *Back_Part_String = [self getSubString:Origin_String
+                                                 length:[Origin_String length] - Sub_String_Location - [Sub_String length]
+                                               location:Sub_String_Location + [Sub_String length]];
+        
+        NSString *New_String = [self MergeTwoString:Front_Part_String
+                                          SecondStr:Back_Part_String];
+        
+        return [self deleteSubString:New_String
+                           subString:Sub_String];
+    }
+}
 @end

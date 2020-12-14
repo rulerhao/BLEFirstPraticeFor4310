@@ -27,7 +27,8 @@ CurrentCharacteristic   :(nullable NSData *)         Current_Characteristic
 storedMovementState     :(nullable NSMutableArray *) Stored_Movement_State
 deviceName              :(nullable NSString *)       Device_Name
 deviceID                :(nullable NSString *)       Device_ID
-deviceSex               :(nullable NSString *)       Device_Sex {
+deviceSex               :(nullable NSString *)       Device_Sex
+{
     peripheral = Pheripheral;
     now_Charact = Now_Charact;
     previous_Charact = Previous_Charact;

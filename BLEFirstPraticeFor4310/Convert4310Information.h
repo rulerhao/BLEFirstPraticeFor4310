@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *) getDeviceSex : (NSData *) data_Bytes;
 
 - (NSMutableArray *)
-getMovementStatus       : (CBCharacteristic*)   characteristic
+refreshMovementState       : (CBCharacteristic*)   characteristic
 nowStoredMovementState  : (NSMutableArray *)    now_Stored_Movement_State
 storedDevices           : (NSMutableArray *)    StoredDevices
 movementScanTime        : (NSInteger)           MovementScanTime

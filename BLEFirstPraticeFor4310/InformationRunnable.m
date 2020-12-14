@@ -37,11 +37,9 @@
 {
     NSString *Now_Device_name = [[[alert textFields] objectAtIndex:0] text];
     BOOL Name_Can_Run = false;
-    if([Now_Device_name length] <= 8 )
-    {
+    if([Now_Device_name length] <= 8 ) {
         Name_Can_Run = true;
-    }
-    else
+    } else
     {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Modify Information"
                                        message:nil

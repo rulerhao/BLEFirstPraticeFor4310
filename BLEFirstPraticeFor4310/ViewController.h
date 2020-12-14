@@ -18,6 +18,19 @@
 #import "KS4310Setting.h"
 #import "SwitchDevices.h"
 
+#import <MQTTClient.h>
+#import <MQTTWebsocketTransport.h>
+#import "Message.pbobjc.h"
+#import "Sensor.pbobjc.h"
+#import "Device.pbobjc.h"
+#import "StampTimeProcess.h"
+#import "TypesConversion.h"
+#import "IDFVProcess.h"
+#import "MQTTSetting.h"
+#import "MQTTMain.h"
+#import "OAuth2Main.h"
+#import <OIDAuthorizationRequest.h>
+#import "PublishDataFor4320.h"
 @interface ViewController : UIViewController <
 CBCentralManagerDelegate,
 CBPeripheralDelegate,

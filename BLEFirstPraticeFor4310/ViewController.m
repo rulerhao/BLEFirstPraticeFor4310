@@ -11,6 +11,14 @@
 
 
 @interface ViewController ()
+{
+    BOOL MQTTSubscribing;
+    MQTTSession *Session;
+    NSString *Client_ID;
+    NSString *User_Name;
+    NSString *OTP;
+    NSString *OTP_Expired;
+}
 @property (strong, nonatomic) IBOutlet UICollectionView *myCollectionView;
 @property (strong, nonatomic) IBOutlet UIButton *Bool_Order_Button;
 @property (readwrite, assign) BOOL EnabledOrder;
@@ -45,7 +53,28 @@ BOOL EnabledOrder;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    // set notificationCenter to get OAuth2 returning informaiton from OAuth2Main
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self
+        selector:@selector(didGetOAuthOTPNotification:) //接收到該Notification時要call的function
+        name:@"getOAuthOTPNotification"
+        object:nil];
     
+    // Set MQTT subScribe notification that we can know whether mqtt subscribe yet.
+    MQTTSubscribing = NO;
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self
+        selector:@selector(didGetMQTTSubscribeNotification:) //接收到該Notification時要call的function
+        name:@"getMQTTSubscribing"
+        object:nil];
+    
+    OAuth2Main *webViewController = [OAuth2Main new];
+    [self.view addSubview:webViewController];
+    [webViewController InitEnter : self];
+    
+    /**
+     * 底下需要修改位置
+     */
     _myCBCentralManager = [[CBCentralManager alloc] initWithDelegate:self
                                                                queue:nil
                                                              options:nil];
@@ -122,7 +151,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         /**
          判斷新搜尋到的 Device 有沒有在已搜尋到的裝置中
          */
-        for(int i = 0;i < [_StoredDevices count];i++) {
+        for(int i = 0;i < [_StoredDevices count]; i++) {
             //NSLog(@"getIntoFor");
             NSUUID *device_Identifier = [[[_StoredDevices objectAtIndex:i] getPheripheral] identifier];
             if([device_Identifier isEqual:[peripheral identifier]]) {
@@ -150,15 +179,16 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 deviceSex               :nil];
             
             [_StoredDevices addObject:CD];
-            
-            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[_StoredDevices count] - 2 inSection:0];
-            NSLog(@"indexPath: %@", indexPath);
+            NSLog(@"_StoredDevicesCount = %lu", [_StoredDevices count]);
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[_StoredDevices count] - 1 inSection:0];
             NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
             [indexPaths addObject:indexPath];
-            
-            [UIView performWithoutAnimation:^{
-                [_myCollectionView reloadItemsAtIndexPaths:indexPaths];
-            }];
+            NSLog(@"indexPathsForOutSide = %@", indexPaths);
+            for(int i = 0; i < [indexPaths count]; i++) {
+                NSLog(@"indexPathOutside %d = %@", i, [indexPaths objectAtIndex:i]);
+            }
+            NSLog(@"NumberOfItemsOutSide = %lu", [_myCollectionView numberOfItemsInSection:0]);
+            [_myCollectionView insertItemsAtIndexPaths:indexPaths];
             
             NSLog(@"size of StoredDevice: %lu", [_StoredDevices count]);
             [_myCBCentralManager connectPeripheral:peripheral options:nil];
@@ -169,30 +199,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
 - (void)
         centralManager          :(CBCentralManager *)               central
         didConnectPeripheral    :(CBPeripheral *)                   peripheral {
-      
-    cellData *CD = [[cellData alloc] init];
     NSLog(@"peripheral 1st: %@", peripheral);
-    for(int i = 0;i < [_StoredDevices count];i++)
-    {
-        NSUUID *stored_Identifier = [[[_StoredDevices objectAtIndex:i] getPheripheral] identifier];
-        NSUUID *now_Identifier = [peripheral identifier];
-        if([stored_Identifier isEqual:now_Identifier])
-        {
-            [CD addObj                  :peripheral
-                nowDeviceInformationCharacteristic       :[[_StoredDevices objectAtIndex:i] getNowDeviceInformationCharacteristic]
-                previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]
-                nowBabyInformationCharacteristic      :[[_StoredDevices objectAtIndex:i] getNowBabyInformationCharacteristic]
-                CurrentCharacteristic   :[[_StoredDevices objectAtIndex:i] getCurrentCharacteristic]
-                storedMovementState     :[[_StoredDevices objectAtIndex:i] getStoredMovementState]
-                deviceName              :[[_StoredDevices objectAtIndex:i] getDeviceName]
-                deviceID                :[[_StoredDevices objectAtIndex:i] getDeviceID]
-                deviceSex               :[[_StoredDevices objectAtIndex:i] getDeviceSex]];
-            
-            [_StoredDevices replaceObjectAtIndex:i withObject:CD];
-            
-            break;
-        }
-    }
     
     NSLog(@"didConn");
     peripheral.delegate = self;
@@ -203,30 +210,9 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
  當發現 service 時會 call 這個 function
  */
 - (void)     peripheral              :(CBPeripheral *)   peripheral
-             didDiscoverServices     :(NSError *)        error
-{
+             didDiscoverServices     :(NSError *)        error {
     NSLog(@"peripheralSecond: %@", peripheral);
     NSLog(@"Find Service");
-    for(int i = 0;i < [_StoredDevices count];i++)
-    {
-        if([[[[_StoredDevices objectAtIndex:i] getPheripheral]identifier] isEqual:[peripheral identifier]])
-        {
-            cellData *CD = [[cellData alloc] init];
-            [CD addObj                  :peripheral
-                nowDeviceInformationCharacteristic       :[[_StoredDevices objectAtIndex:i] getNowDeviceInformationCharacteristic]
-                previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]
-                nowBabyInformationCharacteristic      :[[_StoredDevices objectAtIndex:i] getNowBabyInformationCharacteristic]
-                CurrentCharacteristic   :[[_StoredDevices objectAtIndex:i] getCurrentCharacteristic]
-                storedMovementState     :[[_StoredDevices objectAtIndex:i] getStoredMovementState]
-                deviceName              :[[_StoredDevices objectAtIndex:i] getDeviceName]
-                deviceID                :[[_StoredDevices objectAtIndex:i] getDeviceID]
-                deviceSex               :[[_StoredDevices objectAtIndex:i] getDeviceSex]];
-            
-            [_StoredDevices replaceObjectAtIndex:i withObject:CD];
-            
-            break;
-        }
-    }
     
     NSLog(@"services: %@", [peripheral services]);
     /**
@@ -274,23 +260,19 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     KS4310Setting *ks4310Setting = [[KS4310Setting alloc] init];
     [ks4310Setting InitKS4310Setting];
     
-    for(int i = 0;i < [_StoredDevices count];i++)
-    {
+    for(int i = 0; i < [_StoredDevices count]; i++) {
         NSUUID *stored_Identifier = [[[_StoredDevices objectAtIndex:i] getPheripheral] identifier];
         NSUUID *now_Identifier = [peripheral identifier];
         
-        if([stored_Identifier isEqual:now_Identifier])
-        {
-            // 如果是第一次進如則先 write 04 讓 device回傳device內資訊
+        if([stored_Identifier isEqual:now_Identifier]) {
+            // 如果是第一次進如則先 write 04 讓 device回傳嬰兒資訊
             // 如果 getNowCharacteristic 還是 nil 的話
             // 或者接收到 0x0555aa (接收到 0x05 時 update 的值 length = 3)
             if(![[_StoredDevices objectAtIndex:i] getNowDeviceInformationCharacteristic] ||
-               [[characteristic value] length] == ks4310Setting.Identifier_From_Write_Characteristic_Full_Bytes_Length)
-            {
+               [[characteristic value] length] == ks4310Setting.Identifier_From_Write_Characteristic_Full_Bytes_Length) {
                 [self write04ToKS4310:_StoredDevices
                                 index:i];
             }
-            
             NSData *characteristic_Value = [characteristic value];
             NSString *characteristic_Str = [CalculateFunc getHEX:characteristic_Value];
             NSLog(@"characteristic_Str = %@", characteristic_Str);
@@ -300,8 +282,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
             
             // 如果這次的 Characterstice 是 04
             // 也就是讀取嬰兒身份
-            if([Characteristic_Head_Bytes_String isEqual:ks4310Setting.Identifier_From_Read_Characteristic_Bytes_String])
-            {
+            if([Characteristic_Head_Bytes_String isEqual:ks4310Setting.Identifier_From_Read_Characteristic_Bytes_String]) {
                 NSLog(@"RunInto04");
                 // Device Name
                 NSString *Device_Name_Str = [convert_Characteristic getDeviceName:[characteristic value]];
@@ -309,8 +290,6 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 NSString *Device_ID_Str = [convert_Characteristic getDeviceID:[characteristic value]];
                 // Device Sex
                 NSString *Device_Sex_Str = [convert_Characteristic getDeviceSex:[characteristic value]];
-                
-                // 在這裡執行 MQTT
                 
                 // 儲存資料至 _StoradDevices
                 [CD addObj                  :peripheral
@@ -341,10 +320,15 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
             }
             // 假如這次收到的 characteristic 開頭為 00
             // 也就是接收裝置資訊時
-            else if ([Characteristic_Head_Bytes_String isEqual:ks4310Setting.Identifier_From_Recieve_Characteristic_Bytes_String])
-            {
-                //NSLog(@"RunTimes2:%d", i);
-                NSMutableArray *now_Stored_Movement_State = [[NSMutableArray alloc] init];
+            else if ([Characteristic_Head_Bytes_String isEqual:ks4310Setting.Identifier_From_Recieve_Characteristic_Bytes_String]) {
+                // 如果 stored movement state 為 nil 則 init
+                // 如果 stored movement state not nil 則取原本的值
+                NSMutableArray *now_Stored_Movement_State;
+                if([[_StoredDevices objectAtIndex:i] getStoredMovementState]) {
+                    now_Stored_Movement_State = [[_StoredDevices objectAtIndex:i] getStoredMovementState];
+                } else {
+                    now_Stored_Movement_State = [[NSMutableArray alloc] init];
+                }
                 
                 NSString *Previous_Characteristic = [CalculateFunc getHEX:[[_StoredDevices objectAtIndex:i] getPreviousCharacteristic]] ;
                 
@@ -353,17 +337,16 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                                                             location        :   ks4310Setting.    Identifier_From_Recieve_Characteristic_Bytes_String_Cut_Location];
                 
                 // 如果前一個 Characteristic isEqual "0000F8FA"
-                if(Previous_Characteristic != nil && [Previous_Characteristic isEqual:ks4310Setting.Identifier_From_Recieve_Characteristic_Full_Bytes_String])
-                {
+                if(Previous_Characteristic &&
+                   [Previous_Characteristic isEqual:ks4310Setting.Identifier_From_Recieve_Characteristic_Full_Bytes_String]) {
                     NSLog(@"characteristic too short = :%@", [characteristic value]);
                     Convert4310Information *convert = [[Convert4310Information alloc] init];
-                    now_Stored_Movement_State = [convert getMovementStatus         :   characteristic
+                    now_Stored_Movement_State = [convert refreshMovementState         :   characteristic
                                                          nowStoredMovementState    :   now_Stored_Movement_State
                                                          storedDevices             :   _StoredDevices
                                                          movementScanTime          :   ks4310Setting.Movement_Scan_Time
                                                          index                     :   i];
                 }
-
                 /**
                  * 儲存至全域 NSMutableArray StoredDevices
                  */
@@ -391,6 +374,9 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 [UIView performWithoutAnimation:^{
                     [_myCollectionView reloadItemsAtIndexPaths:indexPaths];
                 }];
+                
+                // MQTT Publish 到 OUHealthng
+                
                 break;
             }
             // 如果前一個是 05
@@ -400,15 +386,15 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                 NSLog(@"GotA05");
                 
                 // 儲存資料至 _StoradDevices
-                [CD addObj                  :peripheral
-                    nowDeviceInformationCharacteristic       :[[_StoredDevices objectAtIndex:i] getNowDeviceInformationCharacteristic]
-                    previousCharacteristic  :[[_StoredDevices objectAtIndex:i] getCurrentCharacteristic]
-                    nowBabyInformationCharacteristic      :[[_StoredDevices objectAtIndex:i] getNowBabyInformationCharacteristic]
-                    CurrentCharacteristic   :[characteristic value]
-                    storedMovementState     :[[_StoredDevices objectAtIndex:i] getStoredMovementState]
-                    deviceName              :[[_StoredDevices objectAtIndex:i] getDeviceName]
-                    deviceID                :[[_StoredDevices objectAtIndex:i] getDeviceID]
-                    deviceSex               :[[_StoredDevices objectAtIndex:i] getDeviceSex]];
+                [CD addObj                              :peripheral
+                    nowDeviceInformationCharacteristic  :[[_StoredDevices objectAtIndex:i] getNowDeviceInformationCharacteristic]
+                    previousCharacteristic              :[[_StoredDevices objectAtIndex:i] getCurrentCharacteristic]
+                    nowBabyInformationCharacteristic    :[[_StoredDevices objectAtIndex:i] getNowBabyInformationCharacteristic]
+                    CurrentCharacteristic               :[characteristic value]
+                    storedMovementState                 :[[_StoredDevices objectAtIndex:i] getStoredMovementState]
+                    deviceName                          :[[_StoredDevices objectAtIndex:i] getDeviceName]
+                    deviceID                            :[[_StoredDevices objectAtIndex:i] getDeviceID]
+                    deviceSex                           :[[_StoredDevices objectAtIndex:i] getDeviceSex]];
                 
                 [_StoredDevices replaceObjectAtIndex:i withObject:CD];
                 
@@ -429,16 +415,17 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
 // 裝置斷線時
 -(void)     centralManager          :(CBCentralManager *)       central
             didDisconnectPeripheral :(CBPeripheral *)           peripheral
-            error                   :(NSError *)                error
-{
+            error                   :(NSError *)                error {
     NSLog(@"DisConnected");
-    for(int i = 0; i < [_StoredDevices count];i++)
-    {
+    for(int i = 0; i < [_StoredDevices count];i++) {
         NSUUID *Stored_UUID = [[[_StoredDevices objectAtIndex:i] getPheripheral] identifier];
-        
-        if([Stored_UUID isEqual:[peripheral identifier]])
-        {
+        if([Stored_UUID isEqual:[peripheral identifier]]) {
             [_StoredDevices removeObjectAtIndex:i];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i
+                                                         inSection:0];
+            NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+            [indexPaths addObject:indexPath];
+            [_myCollectionView deleteItemsAtIndexPaths:indexPaths];
             [_Order_Items_Index removeAllObjects];
             break;
         }
@@ -448,8 +435,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
 
 - (NSInteger)
 collectionView          :(UICollectionView *)   collectionView
-numberOfItemsInSection  :(NSInteger)            section
-{
+numberOfItemsInSection  :(NSInteger)            section {
     return [_StoredDevices count];
 }
 
@@ -492,23 +478,26 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
      */
     SketchView *sketchView = [[SketchView alloc] init];
     
-    if([characteristic_Str length] > ks4310Setting.Identifier_Characteristic_Bytes_String_Head_Length)
-    {
+    if([characteristic_Str length] > ks4310Setting.Identifier_Characteristic_Bytes_String_Head_Length) {
         NSString *Characteristic_Head_String = [str_Procecss_Func getSubString  :   characteristic_Str
                                                               length        :   ks4310Setting.Identifier_Characteristic_Bytes_String_Head_Length
                                                               location      :   ks4310Setting.Identifier_Characteristic_Bytes_String_Cut_Start_Location];
         // "00"
-        if([Characteristic_Head_String isEqual:ks4310Setting.Identifier_From_Recieve_Characteristic_Bytes_String])
-        {
+        if([Characteristic_Head_String isEqual:ks4310Setting.Identifier_From_Recieve_Characteristic_Bytes_String]) {
             // 每秒 4310 所回傳的資訊
             // 如果 DeviceName DeviceID DeviceSex 不是NIL
             if([CD getDeviceName] &&
                [CD getDeviceID] &&
                [CD getDeviceSex])
             {
+                NSLog(@"deviceName = %@", [CD getDeviceName]);
+                NSLog(@"deviceID = %@", [CD getDeviceID]);
+                NSLog(@"deviceSex = %@", [CD getDeviceSex]);
+
                 [sketchView setNotLoadingView:cell];
                 
                 // 如果這次的 index 相同則變透明
+                // 用於交換裝置卡片用
                 BOOL cellShouldBeTransparent = false;
                 
                 for( NSUInteger i = 0; i < [_Order_Items_Index count]; i++)
@@ -533,6 +522,14 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
                                    storedDevices:_StoredDevices
                                        indexPath: indexPath];
                 
+                // MQTT publish 至 Ouhealthng
+                NSLog(@"getStoredMovementState = %@", [CD getStoredMovementState]);
+                
+                BOOL MovementNormal = [sketchView getMovementNormal:[CD getStoredMovementState]
+                                                           ScanTime:ks4310Setting.Movement_Scan_Time];
+                [self mqttPublish : [CD getDeviceName]
+                 characteristic:characteristic_Data
+                 movementState:MovementNormal];
                 return cell;
             }
         }
@@ -573,6 +570,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
         NSString *Device_Name = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceName];
         
         NSString *Device_ID = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceID];
+        // ID 的字串處理
         NSString *First_ID_Str = [StrProcessFunc getSubString:Device_ID
                                                        length:1
                                                      location:0];
@@ -595,8 +593,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
             Device_Sex = @"G";
         }
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Modify Information"
-                                       message:nil
-                                       preferredStyle:UIAlertControllerStyleAlert];
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleAlert];
         
         [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
             textField.placeholder = @"Name";
@@ -699,5 +697,79 @@ index               : (NSUInteger)          Index {
                            animated:YES
                          completion:nil];
     }
+}
+
+- (void) mqttPublish : (NSString *) Baby_Name
+      characteristic : (NSData *) Characteristic
+       movementState : (BOOL) MovementState {
+    PublishDataFor4320 *publishDataFor4320 = [[PublishDataFor4320 alloc] init];
+    Convert4310Information *convert4310Information = [Convert4310Information alloc];
+    
+    NSString *Baby_UUID;
+    NSString *Device_Type = @"KS-4310";
+    if([Baby_Name isEqual:@"S10"]) {
+        Baby_UUID = @"92ee96a5-ff9a-11ea-8fd3-0242ac160004";
+    }
+    else if([Baby_Name isEqual:@"S15"]) {
+        Baby_UUID = @"92ee96a6-ff9a-11ea-8fd3-0242ac160004";
+    }
+    else {
+        Baby_UUID = @"92ee96a6-ff9a-11ea-8fd3-0242ac160004";
+    }
+    
+    NSData *PublishData = [publishDataFor4320 getPublishData:Device_Type
+                                               Device_Serial:Baby_Name
+                                                 Device_UUID:Baby_UUID
+                                                   client_ID:Client_ID
+                                                Temperature1:[convert4310Information getTemperature_1:Characteristic]
+                                                Temperature2:[convert4310Information getTemperature_2:Characteristic]
+                                                Temperature3:[convert4310Information getTemperature_3:Characteristic]
+                                                     Battery:(int) [convert4310Information getBattery_Volume:Characteristic]
+                                                      Breath:MovementState
+                                                    Motion_X:123.1
+                                                    Motion_Y:252.6
+                                                    Motion_Z:929.1];
+    
+    TypesConversion *typesConversion = [[TypesConversion alloc] init];
+    NSLog(@"ADADAADD:%@", [typesConversion getHEX:PublishData]);
+    [Session publishData:PublishData
+                 onTopic:@"/ouhub/requests"
+                  retain:NO
+                     qos:MQTTQosLevelAtMostOnce
+          publishHandler:^(NSError *error) {
+        if (error) {
+            NSLog(@"PulbishForSameTimeerror - %@",error);
+        } else {
+            NSLog(@"send ok");
+        }
+    }];
+}
+// 得到 OTP 走這
+- (void)
+didGetOAuthOTPNotification:(NSNotification *)notification {
+    NSLog(@"getOAuthOTPSusscess");
+    
+    // Read OTP information dictionary
+    NSDictionary * userInfo = [notification userInfo]; //讀取userInfo
+    NSArray *userInfo_Array = [[userInfo allValues] objectAtIndex:0];
+    Client_ID = [userInfo_Array objectAtIndex:0];
+    User_Name = [userInfo_Array objectAtIndex:1];
+    OTP = [userInfo_Array objectAtIndex:2];
+    OTP_Expired = [userInfo_Array objectAtIndex:3];
+    
+    // MQTT Subscribe
+    MQTTMain *mqttMain = [MQTTMain alloc];
+    [mqttMain MQTTStart:[userInfo allValues] viewController : self];
+    
+}
+
+// 得到 MQTT subscribe susscess 走這
+- (void)
+didGetMQTTSubscribeNotification:(NSNotification *)notification {
+    NSLog(@"getMQTTSubscribeSusscess");
+    NSDictionary *userInfo = [notification userInfo]; //讀取userInfo
+    Session = [[userInfo allValues] objectAtIndex:0];
+    NSLog(@"Session123 = %@", Session);
+    MQTTSubscribing = YES;
 }
 @end

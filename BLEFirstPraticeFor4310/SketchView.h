@@ -35,5 +35,9 @@ setNotLoadingView   : (__kindof UICollectionViewCell *)    cell ;
 
 - (void) setNotTrasparentView   : (__kindof UICollectionViewCell *)    cell;
 
+- (BOOL)
+getMovementNormal       : (NSMutableArray *)    Movement_Recode_Array
+ScanTime                : (NSUInteger)          ScanTime;
+
 @end
 NS_ASSUME_NONNULL_END

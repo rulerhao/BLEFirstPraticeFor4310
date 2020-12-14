@@ -411,7 +411,7 @@ previous_z          :(NSInteger) previous_Z {
  */
 
 - (NSMutableArray *)
-getMovementStatus       : (CBCharacteristic*)   characteristic
+refreshMovementState       : (CBCharacteristic*)   characteristic
 nowStoredMovementState  : (NSMutableArray *)    now_Stored_Movement_State
 storedDevices           : (NSMutableArray *)    StoredDevices
 movementScanTime        : (NSInteger)           MovementScanTime
@@ -440,15 +440,23 @@ index                   : (NSUInteger)          index {
         /**
          * 建立一個儲存十五秒位置變化是否正常的 array
          */
+        // 如果未滿的時候
         if([now_Stored_Movement_State count] < MovementScanTime) {
+            NSLog(@"now_Movement_Statusacc = %hhu", now_Movement_Status);
             [now_Stored_Movement_State addObject: [NSNumber numberWithBool:now_Movement_Status]];
+            NSLog(@"now_Stored_Movement_State_Inside = %@", now_Stored_Movement_State);
         }
+        // 如果滿位置的時候
         else {
-            for(NSInteger i = 0;i < [now_Stored_Movement_State count] - 1;i++) {
-                [now_Stored_Movement_State replaceObjectAtIndex:i withObject:[now_Stored_Movement_State objectAtIndex:i + 1]];
+            for(NSInteger i = 0; i < [now_Stored_Movement_State count] - 1; i++) {
+                [now_Stored_Movement_State replaceObjectAtIndex:i
+                                                     withObject:[now_Stored_Movement_State
+                                                  objectAtIndex:i + 1]];
             }
-            [now_Stored_Movement_State replaceObjectAtIndex:[now_Stored_Movement_State count] - 1 withObject:[NSNumber numberWithBool:now_Movement_Status]];
+            [now_Stored_Movement_State replaceObjectAtIndex:[now_Stored_Movement_State count] - 1
+                                                 withObject:[NSNumber numberWithBool:now_Movement_Status]];
         }
+    NSLog(@"now_Stored_Movement_State_Inside = %@", now_Stored_Movement_State);
     return now_Stored_Movement_State;
 }
 @end

@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4273DFD9F134D0D258761321 /* Pods_BLEFirstPraticeFor4310.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1C9614A219060EC16AA474F /* Pods_BLEFirstPraticeFor4310.framework */; };
 		630720B5256E3FC70000F7C7 /* SaveInformationFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = 630720B4256E3FC70000F7C7 /* SaveInformationFunc.m */; };
 		630720BB256E463B0000F7C7 /* KS4310Setting.m in Sources */ = {isa = PBXBuildFile; fileRef = 630720BA256E463B0000F7C7 /* KS4310Setting.m */; };
 		631E68772546AAEB00C1B051 /* CalFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = 631E68762546AAEB00C1B051 /* CalFunc.m */; };
@@ -39,6 +40,26 @@
 		63AF37F925496D1E00D6F804 /* StringProcessFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AF37F825496D1E00D6F804 /* StringProcessFunc.m */; };
 		63B153B0256F897B00FD435F /* SwitchDevices.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B153AF256F897B00FD435F /* SwitchDevices.m */; };
 		63B153B4256F904900FD435F /* DeviceSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B153B3256F904900FD435F /* DeviceSettingController.m */; };
+		63CF82632583503E00438317 /* IDFVProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF82552583503E00438317 /* IDFVProcess.m */; };
+		63CF82642583503E00438317 /* MQTTConnectImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF82562583503E00438317 /* MQTTConnectImplementation.m */; };
+		63CF82652583503E00438317 /* StampTimeProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF82572583503E00438317 /* StampTimeProcess.m */; };
+		63CF82662583503E00438317 /* MQTTMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF825A2583503E00438317 /* MQTTMain.m */; };
+		63CF82682583503E00438317 /* MQTTSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF825E2583503E00438317 /* MQTTSetting.m */; };
+		63CF82692583503E00438317 /* MQTTSubscribeSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF82622583503E00438317 /* MQTTSubscribeSetting.m */; };
+		63CF83ED2583507300438317 /* URLProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83642583507200438317 /* URLProcess.m */; };
+		63CF83EE2583507300438317 /* JSONProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83652583507200438317 /* JSONProcess.m */; };
+		63CF83EF2583507300438317 /* RequestOAuth2Steps.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83672583507200438317 /* RequestOAuth2Steps.m */; };
+		63CF83F02583507300438317 /* OAuthParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83682583507200438317 /* OAuthParameters.m */; };
+		63CF83F12583507300438317 /* HTMLProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF836A2583507200438317 /* HTMLProcess.m */; };
+		63CF83F22583507300438317 /* OAuth2Main.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF836E2583507200438317 /* OAuth2Main.m */; };
+		63CF83F32583507300438317 /* device.proto in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83722583507200438317 /* device.proto */; };
+		63CF83F42583507300438317 /* Message.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83742583507200438317 /* Message.pbobjc.m */; };
+		63CF83F52583507300438317 /* Device.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83752583507200438317 /* Device.pbobjc.m */; };
+		63CF83F62583507300438317 /* sensor.proto in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83762583507200438317 /* sensor.proto */; };
+		63CF83F72583507300438317 /* Sensor.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83772583507200438317 /* Sensor.pbobjc.m */; };
+		63CF83F82583507300438317 /* message.proto in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83782583507200438317 /* message.proto */; };
+		63CF841125835B7600438317 /* TypesConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF840F25835B7600438317 /* TypesConversion.m */; };
+		63CF841825836A7700438317 /* PublishDataFor4320.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF841525836A7600438317 /* PublishDataFor4320.m */; };
 		63DB0E4E251DC2E000FA3D39 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB0E4D251DC2E000FA3D39 /* AppDelegate.m */; };
 		63DB0E51251DC2E000FA3D39 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB0E50251DC2E000FA3D39 /* SceneDelegate.m */; };
 		63DB0E54251DC2E000FA3D39 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB0E53251DC2E000FA3D39 /* ViewController.m */; };
@@ -48,6 +69,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		472E0AA493744BAD7BBB4B43 /* Pods-BLEFirstPraticeFor4310.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLEFirstPraticeFor4310.release.xcconfig"; path = "Target Support Files/Pods-BLEFirstPraticeFor4310/Pods-BLEFirstPraticeFor4310.release.xcconfig"; sourceTree = "<group>"; };
 		630720B3256E3FC70000F7C7 /* SaveInformationFunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SaveInformationFunc.h; sourceTree = "<group>"; };
 		630720B4256E3FC70000F7C7 /* SaveInformationFunc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaveInformationFunc.m; sourceTree = "<group>"; };
 		630720B9256E463B0000F7C7 /* KS4310Setting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KS4310Setting.h; sourceTree = "<group>"; };
@@ -92,6 +114,43 @@
 		63B153AF256F897B00FD435F /* SwitchDevices.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SwitchDevices.m; sourceTree = "<group>"; };
 		63B153B2256F904900FD435F /* DeviceSettingController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceSettingController.h; sourceTree = "<group>"; };
 		63B153B3256F904900FD435F /* DeviceSettingController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceSettingController.m; sourceTree = "<group>"; };
+		63CF82552583503E00438317 /* IDFVProcess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDFVProcess.m; sourceTree = "<group>"; };
+		63CF82562583503E00438317 /* MQTTConnectImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTTConnectImplementation.m; sourceTree = "<group>"; };
+		63CF82572583503E00438317 /* StampTimeProcess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StampTimeProcess.m; sourceTree = "<group>"; };
+		63CF82582583503E00438317 /* MQTTSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTTSetting.h; sourceTree = "<group>"; };
+		63CF82592583503E00438317 /* MQTTSubscribeSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTTSubscribeSetting.h; sourceTree = "<group>"; };
+		63CF825A2583503E00438317 /* MQTTMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTTMain.m; sourceTree = "<group>"; };
+		63CF825C2583503E00438317 /* IDFVProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDFVProcess.h; sourceTree = "<group>"; };
+		63CF825D2583503E00438317 /* MQTTConnectImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTTConnectImplementation.h; sourceTree = "<group>"; };
+		63CF825E2583503E00438317 /* MQTTSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTTSetting.m; sourceTree = "<group>"; };
+		63CF825F2583503E00438317 /* StampTimeProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StampTimeProcess.h; sourceTree = "<group>"; };
+		63CF82612583503E00438317 /* MQTTMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTTMain.h; sourceTree = "<group>"; };
+		63CF82622583503E00438317 /* MQTTSubscribeSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTTSubscribeSetting.m; sourceTree = "<group>"; };
+		63CF83642583507200438317 /* URLProcess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLProcess.m; sourceTree = "<group>"; };
+		63CF83652583507200438317 /* JSONProcess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONProcess.m; sourceTree = "<group>"; };
+		63CF83662583507200438317 /* HTMLProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLProcess.h; sourceTree = "<group>"; };
+		63CF83672583507200438317 /* RequestOAuth2Steps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestOAuth2Steps.m; sourceTree = "<group>"; };
+		63CF83682583507200438317 /* OAuthParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthParameters.m; sourceTree = "<group>"; };
+		63CF83692583507200438317 /* OAuth2Main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuth2Main.h; sourceTree = "<group>"; };
+		63CF836A2583507200438317 /* HTMLProcess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLProcess.m; sourceTree = "<group>"; };
+		63CF836B2583507200438317 /* URLProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLProcess.h; sourceTree = "<group>"; };
+		63CF836C2583507200438317 /* JSONProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONProcess.h; sourceTree = "<group>"; };
+		63CF836D2583507200438317 /* RequestOAuth2Steps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestOAuth2Steps.h; sourceTree = "<group>"; };
+		63CF836E2583507200438317 /* OAuth2Main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuth2Main.m; sourceTree = "<group>"; };
+		63CF836F2583507200438317 /* OAuthParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthParameters.h; sourceTree = "<group>"; };
+		63CF83712583507200438317 /* Device.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.pbobjc.h; sourceTree = "<group>"; };
+		63CF83722583507200438317 /* device.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = device.proto; sourceTree = "<group>"; };
+		63CF83732583507200438317 /* Sensor.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sensor.pbobjc.h; sourceTree = "<group>"; };
+		63CF83742583507200438317 /* Message.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.pbobjc.m; sourceTree = "<group>"; };
+		63CF83752583507200438317 /* Device.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Device.pbobjc.m; sourceTree = "<group>"; };
+		63CF83762583507200438317 /* sensor.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = sensor.proto; sourceTree = "<group>"; };
+		63CF83772583507200438317 /* Sensor.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sensor.pbobjc.m; sourceTree = "<group>"; };
+		63CF83782583507200438317 /* message.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = message.proto; sourceTree = "<group>"; };
+		63CF83792583507200438317 /* Message.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.pbobjc.h; sourceTree = "<group>"; };
+		63CF840F25835B7600438317 /* TypesConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TypesConversion.m; sourceTree = "<group>"; };
+		63CF841025835B7600438317 /* TypesConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypesConversion.h; sourceTree = "<group>"; };
+		63CF841525836A7600438317 /* PublishDataFor4320.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishDataFor4320.m; sourceTree = "<group>"; };
+		63CF841625836A7600438317 /* PublishDataFor4320.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishDataFor4320.h; sourceTree = "<group>"; };
 		63DB0E49251DC2E000FA3D39 /* BLEFirstPraticeFor4310.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BLEFirstPraticeFor4310.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63DB0E4C251DC2E000FA3D39 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		63DB0E4D251DC2E000FA3D39 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -103,6 +162,8 @@
 		63DB0E5B251DC2E200FA3D39 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		63DB0E5D251DC2E200FA3D39 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		63DB0E5E251DC2E200FA3D39 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		87E46CD961BC891A64EBC105 /* Pods-BLEFirstPraticeFor4310.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLEFirstPraticeFor4310.debug.xcconfig"; path = "Target Support Files/Pods-BLEFirstPraticeFor4310/Pods-BLEFirstPraticeFor4310.debug.xcconfig"; sourceTree = "<group>"; };
+		B1C9614A219060EC16AA474F /* Pods_BLEFirstPraticeFor4310.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BLEFirstPraticeFor4310.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,12 +171,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4273DFD9F134D0D258761321 /* Pods_BLEFirstPraticeFor4310.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		637DAF8125875A5C00425A66 /* KS-4310 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "KS-4310";
+			sourceTree = "<group>";
+		};
 		63AF37DA2548FE0200D6F804 /* images */ = {
 			isa = PBXGroup;
 			children = (
@@ -142,11 +211,81 @@
 			path = images;
 			sourceTree = "<group>";
 		};
+		63B153B8256F9F0700FD435F /* MQTT */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = MQTT;
+			sourceTree = "<group>";
+		};
+		63CF82542583503E00438317 /* MQTT */ = {
+			isa = PBXGroup;
+			children = (
+				63CF825C2583503E00438317 /* IDFVProcess.h */,
+				63CF82552583503E00438317 /* IDFVProcess.m */,
+				63CF825D2583503E00438317 /* MQTTConnectImplementation.h */,
+				63CF82562583503E00438317 /* MQTTConnectImplementation.m */,
+				63CF82582583503E00438317 /* MQTTSetting.h */,
+				63CF825E2583503E00438317 /* MQTTSetting.m */,
+				63CF825F2583503E00438317 /* StampTimeProcess.h */,
+				63CF82572583503E00438317 /* StampTimeProcess.m */,
+				63CF82612583503E00438317 /* MQTTMain.h */,
+				63CF825A2583503E00438317 /* MQTTMain.m */,
+				63CF82592583503E00438317 /* MQTTSubscribeSetting.h */,
+				63CF82622583503E00438317 /* MQTTSubscribeSetting.m */,
+			);
+			name = MQTT;
+			path = BLEFirstPraticeFor4310/MQTT;
+			sourceTree = "<group>";
+		};
+		63CF83632583507200438317 /* OAuth */ = {
+			isa = PBXGroup;
+			children = (
+				63CF836B2583507200438317 /* URLProcess.h */,
+				63CF83642583507200438317 /* URLProcess.m */,
+				63CF83662583507200438317 /* HTMLProcess.h */,
+				63CF836A2583507200438317 /* HTMLProcess.m */,
+				63CF836D2583507200438317 /* RequestOAuth2Steps.h */,
+				63CF83672583507200438317 /* RequestOAuth2Steps.m */,
+				63CF83692583507200438317 /* OAuth2Main.h */,
+				63CF836E2583507200438317 /* OAuth2Main.m */,
+				63CF836C2583507200438317 /* JSONProcess.h */,
+				63CF83652583507200438317 /* JSONProcess.m */,
+				63CF836F2583507200438317 /* OAuthParameters.h */,
+				63CF83682583507200438317 /* OAuthParameters.m */,
+			);
+			name = OAuth;
+			path = BLEFirstPraticeFor4310/OAuth;
+			sourceTree = "<group>";
+		};
+		63CF83702583507200438317 /* proto files */ = {
+			isa = PBXGroup;
+			children = (
+				63CF83712583507200438317 /* Device.pbobjc.h */,
+				63CF83722583507200438317 /* device.proto */,
+				63CF83732583507200438317 /* Sensor.pbobjc.h */,
+				63CF83742583507200438317 /* Message.pbobjc.m */,
+				63CF83752583507200438317 /* Device.pbobjc.m */,
+				63CF83762583507200438317 /* sensor.proto */,
+				63CF83772583507200438317 /* Sensor.pbobjc.m */,
+				63CF83782583507200438317 /* message.proto */,
+				63CF83792583507200438317 /* Message.pbobjc.h */,
+			);
+			name = "proto files";
+			path = "BLEFirstPraticeFor4310/proto files";
+			sourceTree = "<group>";
+		};
 		63DB0E40251DC2E000FA3D39 = {
 			isa = PBXGroup;
 			children = (
+				637DAF8125875A5C00425A66 /* KS-4310 */,
+				63CF83632583507200438317 /* OAuth */,
+				63CF83702583507200438317 /* proto files */,
+				63CF82542583503E00438317 /* MQTT */,
 				63DB0E4B251DC2E000FA3D39 /* BLEFirstPraticeFor4310 */,
 				63DB0E4A251DC2E000FA3D39 /* Products */,
+				73AE7946AF1BA1075DA1F951 /* Pods */,
+				81F8FA743A94B9EA392DA766 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -161,6 +300,7 @@
 		63DB0E4B251DC2E000FA3D39 /* BLEFirstPraticeFor4310 */ = {
 			isa = PBXGroup;
 			children = (
+				63B153B8256F9F0700FD435F /* MQTT */,
 				63DB0E5E251DC2E200FA3D39 /* main.m */,
 				63DB0E5D251DC2E200FA3D39 /* Info.plist */,
 				63DB0E58251DC2E200FA3D39 /* Assets.xcassets */,
@@ -169,6 +309,8 @@
 				63AF37DA2548FE0200D6F804 /* images */,
 				63DB0E4C251DC2E000FA3D39 /* AppDelegate.h */,
 				63DB0E4D251DC2E000FA3D39 /* AppDelegate.m */,
+				63DB0E4F251DC2E000FA3D39 /* SceneDelegate.h */,
+				63DB0E50251DC2E000FA3D39 /* SceneDelegate.m */,
 				632D1371252F099B00073BC9 /* cellData.h */,
 				632D1372252F099B00073BC9 /* cellData.m */,
 				633BBB1C252D8AD3003544A1 /* Convert4310Information.h */,
@@ -177,8 +319,6 @@
 				631E68762546AAEB00C1B051 /* CalFunc.m */,
 				6322A7B6255001B1007ACEF0 /* SketchView.h */,
 				6322A7B7255001B1007ACEF0 /* SketchView.m */,
-				63DB0E4F251DC2E000FA3D39 /* SceneDelegate.h */,
-				63DB0E50251DC2E000FA3D39 /* SceneDelegate.m */,
 				63DB0E52251DC2E000FA3D39 /* ViewController.h */,
 				63DB0E53251DC2E000FA3D39 /* ViewController.m */,
 				63AF37F725496D1E00D6F804 /* StringProcessFunc.h */,
@@ -197,8 +337,29 @@
 				63B153AF256F897B00FD435F /* SwitchDevices.m */,
 				63B153B2256F904900FD435F /* DeviceSettingController.h */,
 				63B153B3256F904900FD435F /* DeviceSettingController.m */,
+				63CF841025835B7600438317 /* TypesConversion.h */,
+				63CF840F25835B7600438317 /* TypesConversion.m */,
+				63CF841625836A7600438317 /* PublishDataFor4320.h */,
+				63CF841525836A7600438317 /* PublishDataFor4320.m */,
 			);
 			path = BLEFirstPraticeFor4310;
+			sourceTree = "<group>";
+		};
+		73AE7946AF1BA1075DA1F951 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				87E46CD961BC891A64EBC105 /* Pods-BLEFirstPraticeFor4310.debug.xcconfig */,
+				472E0AA493744BAD7BBB4B43 /* Pods-BLEFirstPraticeFor4310.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		81F8FA743A94B9EA392DA766 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B1C9614A219060EC16AA474F /* Pods_BLEFirstPraticeFor4310.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -208,9 +369,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 63DB0E62251DC2E200FA3D39 /* Build configuration list for PBXNativeTarget "BLEFirstPraticeFor4310" */;
 			buildPhases = (
+				414E91A2709DDF57534F9ED6 /* [CP] Check Pods Manifest.lock */,
 				63DB0E45251DC2E000FA3D39 /* Sources */,
 				63DB0E46251DC2E000FA3D39 /* Frameworks */,
 				63DB0E47251DC2E000FA3D39 /* Resources */,
+				11AEA6964166B173400F7FFF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -284,27 +447,89 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		11AEA6964166B173400F7FFF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BLEFirstPraticeFor4310/Pods-BLEFirstPraticeFor4310-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BLEFirstPraticeFor4310/Pods-BLEFirstPraticeFor4310-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BLEFirstPraticeFor4310/Pods-BLEFirstPraticeFor4310-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		414E91A2709DDF57534F9ED6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BLEFirstPraticeFor4310-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		63DB0E45251DC2E000FA3D39 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63CF83F12583507300438317 /* HTMLProcess.m in Sources */,
+				63CF83EE2583507300438317 /* JSONProcess.m in Sources */,
+				63CF82632583503E00438317 /* IDFVProcess.m in Sources */,
 				63AF37F925496D1E00D6F804 /* StringProcessFunc.m in Sources */,
+				63CF83F52583507300438317 /* Device.pbobjc.m in Sources */,
+				63CF83F22583507300438317 /* OAuth2Main.m in Sources */,
+				63CF82642583503E00438317 /* MQTTConnectImplementation.m in Sources */,
 				63DB0E54251DC2E000FA3D39 /* ViewController.m in Sources */,
 				63DB0E4E251DC2E000FA3D39 /* AppDelegate.m in Sources */,
+				63CF83F32583507300438317 /* device.proto in Sources */,
 				6352680D2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m in Sources */,
+				63CF83ED2583507300438317 /* URLProcess.m in Sources */,
 				63DB0E5F251DC2E200FA3D39 /* main.m in Sources */,
+				63CF841825836A7700438317 /* PublishDataFor4320.m in Sources */,
+				63CF82692583503E00438317 /* MQTTSubscribeSetting.m in Sources */,
+				63CF83F42583507300438317 /* Message.pbobjc.m in Sources */,
 				63DB0E51251DC2E000FA3D39 /* SceneDelegate.m in Sources */,
+				63CF83EF2583507300438317 /* RequestOAuth2Steps.m in Sources */,
+				63CF83F62583507300438317 /* sensor.proto in Sources */,
+				63CF82662583503E00438317 /* MQTTMain.m in Sources */,
 				63B153B4256F904900FD435F /* DeviceSettingController.m in Sources */,
+				63CF82652583503E00438317 /* StampTimeProcess.m in Sources */,
 				633BBB1E252D8AD3003544A1 /* Convert4310Information.m in Sources */,
 				631E68772546AAEB00C1B051 /* CalFunc.m in Sources */,
+				63CF83F72583507300438317 /* Sensor.pbobjc.m in Sources */,
+				63CF82682583503E00438317 /* MQTTSetting.m in Sources */,
 				635268112558E49F0071F655 /* InformationRunnable.m in Sources */,
 				63B153B0256F897B00FD435F /* SwitchDevices.m in Sources */,
 				630720B5256E3FC70000F7C7 /* SaveInformationFunc.m in Sources */,
+				63CF83F02583507300438317 /* OAuthParameters.m in Sources */,
 				6322A7AC254FB792007ACEF0 /* CameraController.m in Sources */,
+				63CF841125835B7600438317 /* TypesConversion.m in Sources */,
 				6322A7B8255001B1007ACEF0 /* SketchView.m in Sources */,
 				630720BB256E463B0000F7C7 /* KS4310Setting.m in Sources */,
 				632D1373252F099B00073BC9 /* cellData.m in Sources */,
+				63CF83F82583507300438317 /* message.proto in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,7 +606,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -434,7 +659,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -444,12 +669,16 @@
 		};
 		63DB0E63251DC2E200FA3D39 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 87E46CD961BC891A64EBC105 /* Pods-BLEFirstPraticeFor4310.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = W4395MK238;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BLEFirstPraticeFor4310/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -462,12 +691,16 @@
 		};
 		63DB0E64251DC2E200FA3D39 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 472E0AA493744BAD7BBB4B43 /* Pods-BLEFirstPraticeFor4310.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = W4395MK238;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BLEFirstPraticeFor4310/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

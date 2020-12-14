@@ -21,6 +21,11 @@ length          : (NSUInteger) Length
 location        : (NSUInteger) Location;
 
 - (BOOL) getIntegerForAll    : (NSString *) Str;
+
+- (NSString *)
+deleteSubString : (NSString *) UUID_String
+subString       : (NSString *) SubString;
+
 @end
 
 NS_ASSUME_NONNULL_END
