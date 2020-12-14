@@ -18,6 +18,7 @@
     NSString *User_Name;
     NSString *OTP;
     NSString *OTP_Expired;
+    NSTimer *BLEBeDisabledTimer;
 }
 @property (strong, nonatomic) IBOutlet UICollectionView *myCollectionView;
 @property (strong, nonatomic) IBOutlet UIButton *Bool_Order_Button;
@@ -101,7 +102,7 @@ BOOL EnabledOrder;
 
 - (void)
 centralManagerDidUpdateState:(CBCentralManager *)central {
-    /*
+    
     switch(central.state) {
         case CBManagerStateUnknown:
             NSLog(@"central.state: CBManagerStateUnknown.");
@@ -117,12 +118,15 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
             break;
         case CBManagerStatePoweredOff:
             NSLog(@"central.state: CBManagerStatePoweredOff.");
+            [self initApp];
+            [self enableBLEDisableTimer];
             break;
         case CBManagerStatePoweredOn:
             NSLog(@"central.state: CBManagerStatePoweredOn.");
+            [self disableBLEDisableTimer];
             break;
     }
-             */
+             
    if(central.state == CBManagerStatePoweredOn) {
        NSLog(@"Power on");
        /**
@@ -431,7 +435,6 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         }
     }
 }
-
 
 - (NSInteger)
 collectionView          :(UICollectionView *)   collectionView
@@ -771,5 +774,49 @@ didGetMQTTSubscribeNotification:(NSNotification *)notification {
     Session = [[userInfo allValues] objectAtIndex:0];
     NSLog(@"Session123 = %@", Session);
     MQTTSubscribing = YES;
+}
+
+- (void) initApp {
+    [_StoredDevices removeAllObjects];
+    [_myCollectionView reloadData];
+    [_Order_Items_Index removeAllObjects];
+}
+
+- (void) bleBeDisabledByUserEnd {
+    [self initApp];
+    [self showBLEBeDiabledByUserEndAlertView];
+}
+
+- (void) showBLEBeDiabledByUserEndAlertView {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"BlueTooth Be Disabled By User End"
+                                                                   message:@"Please Enable Your Bluetooth"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    // OK按鍵的部分
+    UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK"
+                                                       style:UIAlertActionStyleDefault
+       handler:^(UIAlertAction * action) {
+    }];
+    
+    [alert addAction:okAction];
+    
+    [self presentViewController:alert
+                       animated:YES
+                     completion:nil];
+}
+
+- (void) showBLEBeDiabledByUserEndAlertViewInSameTime :(NSTimer*)sender {
+    [self showBLEBeDiabledByUserEndAlertView];
+}
+
+- (void) enableBLEDisableTimer {
+    BLEBeDisabledTimer = [NSTimer scheduledTimerWithTimeInterval:5
+                                     target:self
+                                   selector:@selector(showBLEBeDiabledByUserEndAlertViewInSameTime:)
+                                   userInfo:nil
+                                    repeats:YES];
+}
+- (void) disableBLEDisableTimer {
+    [BLEBeDisabledTimer invalidate];
+    BLEBeDisabledTimer = nil;
 }
 @end
