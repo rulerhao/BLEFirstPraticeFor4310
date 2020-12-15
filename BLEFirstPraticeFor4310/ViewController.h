@@ -31,6 +31,7 @@
 #import "OAuth2Main.h"
 #import <OIDAuthorizationRequest.h>
 #import "PublishDataFor4320.h"
+#import "Reachability.h"
 @interface ViewController : UIViewController <
 CBCentralManagerDelegate,
 CBPeripheralDelegate,

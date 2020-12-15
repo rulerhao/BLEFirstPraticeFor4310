@@ -33,8 +33,7 @@ indexPath       : (NSIndexPath *)       indexPath
     
     //  判斷輸入格式是否正確
     InformationRunnable *informationRunnable = [[InformationRunnable alloc ]init];
-    if([informationRunnable InformationRunnable:alert])
-    {
+    if([informationRunnable InformationRunnable:alert]) {
         NSLog(@"Merged_InformationsAgain : %@", Merged_InformationsAgain);
         
         // write 05 和要賦予的裝置資訊
@@ -54,28 +53,23 @@ indexPath       : (NSIndexPath *)       indexPath
         CameraController *cameraFunc = [[CameraController alloc] init];
         [cameraFunc saveChangedNameImage:Now_Device_name
                       delete_Device_Name:Previous_Device_Name];
-    }
-    else
-    {
+    } else {
         NSString *NameErrorMsg = @"Name Input Formate Error!\n";
         NSString *IDErrorMsg = @"ID Input Formate Error!\n";
         NSString *SexErrorMsg = @"Sex Input Formate Error!\n";
         
         StringProcessFunc *stringProcessFunc = [[StringProcessFunc alloc] init];
-        if(![informationRunnable NameRunnable:alert])
-        {
+        if(![informationRunnable NameRunnable:alert]) {
             ErrorMsg = [stringProcessFunc MergeTwoString:ErrorMsg
                                                SecondStr:NameErrorMsg];
         }
         
-        if(![informationRunnable IDRunnable:alert])
-        {
+        if(![informationRunnable IDRunnable:alert]) {
             ErrorMsg = [stringProcessFunc MergeTwoString:ErrorMsg
                                                SecondStr:IDErrorMsg];
         }
         
-        if(![informationRunnable SexRunnable:alert])
-        {
+        if(![informationRunnable SexRunnable:alert]) {
             ErrorMsg = [stringProcessFunc MergeTwoString:ErrorMsg
                                                SecondStr:SexErrorMsg];
         }

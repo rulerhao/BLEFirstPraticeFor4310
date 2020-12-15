@@ -19,6 +19,8 @@
     NSString *OTP;
     NSString *OTP_Expired;
     NSTimer *BLEBeDisabledTimer;
+    NSTimer *NetworkBeDisabledTimer;
+    OAuth2Main *webViewController;
 }
 @property (strong, nonatomic) IBOutlet UICollectionView *myCollectionView;
 @property (strong, nonatomic) IBOutlet UIButton *Bool_Order_Button;
@@ -33,46 +35,37 @@ BOOL EnabledOrder;
 - (IBAction)Touch_Bool_Order:(id)sender {
     // 切換 EnabledOrder 狀態
     UIImage *image;
-    if(EnabledOrder)
-    {
+    if(EnabledOrder) {
         NSLog(@"EnabledOrder:Off");
         EnabledOrder = false;
         image = [UIImage imageNamed:@"Change_Icon.png"];
         // 清除 Order_Items_Index
         [_Order_Items_Index removeAllObjects];
-    }
-    else
-    {
+    } else {
         NSLog(@"EnabledOrder:On");
         EnabledOrder = true;
         image = [UIImage imageNamed:@"Exchanging.png"];
     }
     [_Bool_Order_Button setImage:image forState:normal];
-    
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
+    [self checkNetworkStatusForFixTime];
+    NSLog(@"ReachAblility = %ld", (long)[[Reachability reachabilityWithHostName:@"https://healthng.oucare.com/"] currentReachabilityStatus]);
+    NSLog(@"ReachAblility = %ld", (long)[[Reachability reachabilityWithHostName:@"https://healthng.oucare.com/ou/7da0f976-f732-11ea-b7aa-0242ac160004/dashboard"] currentReachabilityStatus]);
     // set notificationCenter to get OAuth2 returning informaiton from OAuth2Main
-    [[NSNotificationCenter defaultCenter]
-        addObserver:self
-        selector:@selector(didGetOAuthOTPNotification:) //接收到該Notification時要call的function
-        name:@"getOAuthOTPNotification"
-        object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didGetOAuthOTPNotification:) //接收到該Notification時要call的function
+                                                 name:@"getOAuthOTPNotification"
+                                               object:nil];
     
     // Set MQTT subScribe notification that we can know whether mqtt subscribe yet.
     MQTTSubscribing = NO;
-    [[NSNotificationCenter defaultCenter]
-        addObserver:self
-        selector:@selector(didGetMQTTSubscribeNotification:) //接收到該Notification時要call的function
-        name:@"getMQTTSubscribing"
-        object:nil];
-    
-    OAuth2Main *webViewController = [OAuth2Main new];
-    [self.view addSubview:webViewController];
-    [webViewController InitEnter : self];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didGetMQTTSubscribeNotification:) //接收到該Notification時要call的function
+                                                 name:@"getMQTTSubscribing"
+                                               object:nil];
     /**
      * 底下需要修改位置
      */
@@ -92,8 +85,7 @@ BOOL EnabledOrder;
     EnabledOrder = false;
     if(EnabledOrder == false) {
         NSLog(@"EnabledOrder:nice");
-    }
-    else {
+    } else {
         NSLog(@"EnabledOrder:NotNIce");
     }
     
@@ -137,7 +129,8 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
        opt = @{
            CBCentralManagerScanOptionAllowDuplicatesKey : @YES
        };
-       [_myCBCentralManager scanForPeripheralsWithServices:nil options:opt];
+       [_myCBCentralManager scanForPeripheralsWithServices:nil
+                                                   options:opt];
    }
 }
 
@@ -172,29 +165,21 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         if(Device_Contain == false) {
             NSLog(@"device_Identifier2: %@", [peripheral identifier]);
             cellData *CD = [[cellData alloc] init];
-            [CD addObj                  :peripheral
-                nowDeviceInformationCharacteristic       :nil
-                previousCharacteristic  :nil
-                nowBabyInformationCharacteristic      :nil
-                CurrentCharacteristic   :nil
-                storedMovementState     :nil
-                deviceName              :nil
-                deviceID                :nil
-                deviceSex               :nil];
+            [CD addObj                                  :peripheral
+                nowDeviceInformationCharacteristic      :nil
+                previousCharacteristic                  :nil
+                nowBabyInformationCharacteristic        :nil
+                CurrentCharacteristic                   :nil
+                storedMovementState                     :nil
+                deviceName                              :nil
+                deviceID                                :nil
+                deviceSex                               :nil];
             
             [_StoredDevices addObject:CD];
-            NSLog(@"_StoredDevicesCount = %lu", [_StoredDevices count]);
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[_StoredDevices count] - 1 inSection:0];
             NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
             [indexPaths addObject:indexPath];
-            NSLog(@"indexPathsForOutSide = %@", indexPaths);
-            for(int i = 0; i < [indexPaths count]; i++) {
-                NSLog(@"indexPathOutside %d = %@", i, [indexPaths objectAtIndex:i]);
-            }
-            NSLog(@"NumberOfItemsOutSide = %lu", [_myCollectionView numberOfItemsInSection:0]);
             [_myCollectionView insertItemsAtIndexPaths:indexPaths];
-            
-            NSLog(@"size of StoredDevice: %lu", [_StoredDevices count]);
             [_myCBCentralManager connectPeripheral:peripheral options:nil];
         }
     }
@@ -567,7 +552,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
                            indexPath:indexPath];
     }
     else {
-        _NowClickIndexPath = indexPath;
         StringProcessFunc *StrProcessFunc = [[StringProcessFunc alloc] init];
         
         NSString *Device_Name = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceName];
@@ -588,11 +572,9 @@ didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
         NSString *Device_Sex = [[_StoredDevices objectAtIndex:[indexPath row]] getDeviceSex];
         if([Device_Sex isEqual:@"0"]) {
             Device_Sex = @"G";
-        }
-        else if ([Device_Sex isEqual:@"1"]) {
+        } else if ([Device_Sex isEqual:@"1"]) {
             Device_Sex = @"B";
-        }
-        else {
+        } else {
             Device_Sex = @"G";
         }
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Modify Information"
@@ -631,7 +613,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
             
             // 將卡片形式設定為全畫面
             cameraController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-            cameraController.NowClickIndexPath = self->_NowClickIndexPath;
+            cameraController.NowClickIndexPath = indexPath;
             cameraController.StoredDevices = self->_StoredDevices;
             [viewController presentViewController:cameraController
                                          animated:true
@@ -735,17 +717,34 @@ index               : (NSUInteger)          Index {
     
     TypesConversion *typesConversion = [[TypesConversion alloc] init];
     NSLog(@"ADADAADD:%@", [typesConversion getHEX:PublishData]);
-    [Session publishData:PublishData
-                 onTopic:@"/ouhub/requests"
-                  retain:NO
-                     qos:MQTTQosLevelAtMostOnce
-          publishHandler:^(NSError *error) {
-        if (error) {
-            NSLog(@"PulbishForSameTimeerror - %@",error);
-        } else {
-            NSLog(@"send ok");
+
+    long ReachAbility = [[Reachability reachabilityWithHostName:@"https://healthng.oucare.com/"] currentReachabilityStatus];
+    NSLog(@"ReachAbilityBeforePublish = %ld", ReachAbility);
+    NSLog(@"Session = %@", Session);
+    if([self webViewExist] && Session) {
+        if(ReachAbility == 1) {
+            NSLog(@"EnterHere");
+            [Session publishData:PublishData
+                         onTopic:@"/ouhub/requests"
+                          retain:NO
+                             qos:MQTTQosLevelAtMostOnce
+                  publishHandler:^(NSError *error) {
+                NSLog(@"subviewInPublish = %@",  self.view.subviews);
+                if (error) {
+                    NSLog(@"失去MQTT Subscribe");
+                    [self->webViewController removeFromSuperview];
+                    self->Session = nil;
+                    [self oAuth2AndMQTTStart];
+                    // 重新讀取
+                    NSLog(@"PulbishForSameTimeerror - %@",error);
+                } else {
+                    NSLog(@"send ok");
+                }
+            }];
+        } else if(ReachAbility == 0) {
+            
         }
-    }];
+    }
 }
 // 得到 OTP 走這
 - (void)
@@ -759,10 +758,9 @@ didGetOAuthOTPNotification:(NSNotification *)notification {
     User_Name = [userInfo_Array objectAtIndex:1];
     OTP = [userInfo_Array objectAtIndex:2];
     OTP_Expired = [userInfo_Array objectAtIndex:3];
-    
     // MQTT Subscribe
     MQTTMain *mqttMain = [MQTTMain alloc];
-    [mqttMain MQTTStart:[userInfo allValues] viewController : self];
+    [mqttMain mqttStart:[userInfo allValues] viewController : self];
     
 }
 
@@ -782,11 +780,16 @@ didGetMQTTSubscribeNotification:(NSNotification *)notification {
     [_Order_Items_Index removeAllObjects];
 }
 
+/**
+ * BLE TIMER
+ */
+// 當BLE被使用者關掉時
 - (void) bleBeDisabledByUserEnd {
     [self initApp];
     [self showBLEBeDiabledByUserEndAlertView];
 }
 
+// 顯示無BLE時的Alert View
 - (void) showBLEBeDiabledByUserEndAlertView {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"BlueTooth Be Disabled By User End"
                                                                    message:@"Please Enable Your Bluetooth"
@@ -804,19 +807,81 @@ didGetMQTTSubscribeNotification:(NSNotification *)notification {
                      completion:nil];
 }
 
-- (void) showBLEBeDiabledByUserEndAlertViewInSameTime :(NSTimer*)sender {
+// 顯示Timer到期時無BLE時的Alert View
+- (void) showBLEBeDisabledByUserEndAlertViewInSameTime :(NSTimer*)sender {
     [self showBLEBeDiabledByUserEndAlertView];
 }
 
+// 打開無BLE時的Timer
 - (void) enableBLEDisableTimer {
     BLEBeDisabledTimer = [NSTimer scheduledTimerWithTimeInterval:5
                                      target:self
-                                   selector:@selector(showBLEBeDiabledByUserEndAlertViewInSameTime:)
+                                   selector:@selector(showBLEBeDisabledByUserEndAlertViewInSameTime:)
                                    userInfo:nil
                                     repeats:YES];
 }
+// 關閉無BLE時的Timer
 - (void) disableBLEDisableTimer {
     [BLEBeDisabledTimer invalidate];
     BLEBeDisabledTimer = nil;
+}
+
+/**
+ * Network 有無的 timer
+ */
+// 顯示無BLE時的Alert View
+- (void) showNetworkAlertView {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"網路沒有連線"
+                                                                   message:@"請打開你的網路並確認連線"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    // OK按鍵的部分
+    UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK"
+                                                       style:UIAlertActionStyleDefault
+       handler:^(UIAlertAction * action) {
+    }];
+    
+    [alert addAction:okAction];
+    
+    [self presentViewController:alert
+                       animated:YES
+                     completion:nil];
+}
+- (void) checkNetworkStatusForFixTime {
+    NetworkBeDisabledTimer = [NSTimer scheduledTimerWithTimeInterval:3
+                                                              target:self
+                                                            selector:@selector(checkNetworkStatus:)
+                                                            userInfo:nil
+                                                             repeats:YES];
+}
+
+- (void) checkNetworkStatus : (NSTimer*) sender {
+    NSUInteger Reach_Ablility_Status = [[Reachability reachabilityWithHostName:@"https://healthng.oucare.com/"] currentReachabilityStatus];
+    if(Reach_Ablility_Status == 0) {
+        // 顯示網路alert View
+        [self showNetworkAlertView];
+    } else if (Reach_Ablility_Status == 1) {
+        NSLog(@"WebViewContain = %@", self.view.subviews);
+        if(![self webViewExist]) {
+            NSLog(@"webViewExist");
+            // 開始做MQTT以及OAuth2
+            [self oAuth2AndMQTTStart];
+        }
+    }
+}
+- (BOOL) webViewExist {
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [OAuth2Main class]];
+    NSArray *filteredViews = [self.view.subviews filteredArrayUsingPredicate:predicate];
+    if([filteredViews count] > 0) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (void) oAuth2AndMQTTStart {
+    webViewController = [OAuth2Main new];
+    [self.view addSubview:webViewController];
+    NSLog(@"self.view.TestExist = %@", self.view.subviews);
+    [webViewController InitEnter : self];
 }
 @end

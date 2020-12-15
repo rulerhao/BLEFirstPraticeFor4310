@@ -24,6 +24,8 @@
 		635268082558CD520071F655 /* Exchanging.png in Resources */ = {isa = PBXBuildFile; fileRef = 635268072558CD520071F655 /* Exchanging.png */; };
 		6352680D2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6352680C2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m */; };
 		635268112558E49F0071F655 /* InformationRunnable.m in Sources */ = {isa = PBXBuildFile; fileRef = 635268102558E49F0071F655 /* InformationRunnable.m */; };
+		63746DF8258857650011D283 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 63746DF7258857650011D283 /* Reachability.m */; };
+		63746DFC258886A40011D283 /* NetworkReachAbility.m in Sources */ = {isa = PBXBuildFile; fileRef = 63746DFB258886A40011D283 /* NetworkReachAbility.m */; };
 		63AF37E62548FE1900D6F804 /* baby_card_girl_photo_background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37DB2548FE1900D6F804 /* baby_card_girl_photo_background2.png */; };
 		63AF37E72548FE1900D6F804 /* baby_card_boy_information_bar_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37DC2548FE1900D6F804 /* baby_card_boy_information_bar_background.png */; };
 		63AF37E82548FE1900D6F804 /* baby_card_warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37DD2548FE1900D6F804 /* baby_card_warning.png */; };
@@ -95,6 +97,10 @@
 		6352680C2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChangeBetweenWriteStringViewController.m; sourceTree = "<group>"; };
 		6352680F2558E49F0071F655 /* InformationRunnable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InformationRunnable.h; sourceTree = "<group>"; };
 		635268102558E49F0071F655 /* InformationRunnable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InformationRunnable.m; sourceTree = "<group>"; };
+		63746DF6258857650011D283 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = BLEFirstPraticeFor4310/Reachability.h; sourceTree = "<group>"; };
+		63746DF7258857650011D283 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = BLEFirstPraticeFor4310/Reachability.m; sourceTree = "<group>"; };
+		63746DFA258886A40011D283 /* NetworkReachAbility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkReachAbility.h; sourceTree = "<group>"; };
+		63746DFB258886A40011D283 /* NetworkReachAbility.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkReachAbility.m; sourceTree = "<group>"; };
 		63AF37DB2548FE1900D6F804 /* baby_card_girl_photo_background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_girl_photo_background2.png; path = BLEFirstPraticeFor4310/baby_card_girl_photo_background2.png; sourceTree = SOURCE_ROOT; };
 		63AF37DC2548FE1900D6F804 /* baby_card_boy_information_bar_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_boy_information_bar_background.png; path = BLEFirstPraticeFor4310/baby_card_boy_information_bar_background.png; sourceTree = SOURCE_ROOT; };
 		63AF37DD2548FE1900D6F804 /* baby_card_warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_warning.png; path = BLEFirstPraticeFor4310/baby_card_warning.png; sourceTree = SOURCE_ROOT; };
@@ -278,6 +284,10 @@
 		63DB0E40251DC2E000FA3D39 = {
 			isa = PBXGroup;
 			children = (
+				63746DFA258886A40011D283 /* NetworkReachAbility.h */,
+				63746DFB258886A40011D283 /* NetworkReachAbility.m */,
+				63746DF6258857650011D283 /* Reachability.h */,
+				63746DF7258857650011D283 /* Reachability.m */,
 				637DAF8125875A5C00425A66 /* KS-4310 */,
 				63CF83632583507200438317 /* OAuth */,
 				63CF83702583507200438317 /* proto files */,
@@ -500,6 +510,7 @@
 				63AF37F925496D1E00D6F804 /* StringProcessFunc.m in Sources */,
 				63CF83F52583507300438317 /* Device.pbobjc.m in Sources */,
 				63CF83F22583507300438317 /* OAuth2Main.m in Sources */,
+				63746DF8258857650011D283 /* Reachability.m in Sources */,
 				63CF82642583503E00438317 /* MQTTConnectImplementation.m in Sources */,
 				63DB0E54251DC2E000FA3D39 /* ViewController.m in Sources */,
 				63DB0E4E251DC2E000FA3D39 /* AppDelegate.m in Sources */,
@@ -521,6 +532,7 @@
 				63CF83F72583507300438317 /* Sensor.pbobjc.m in Sources */,
 				63CF82682583503E00438317 /* MQTTSetting.m in Sources */,
 				635268112558E49F0071F655 /* InformationRunnable.m in Sources */,
+				63746DFC258886A40011D283 /* NetworkReachAbility.m in Sources */,
 				63B153B0256F897B00FD435F /* SwitchDevices.m in Sources */,
 				630720B5256E3FC70000F7C7 /* SaveInformationFunc.m in Sources */,
 				63CF83F02583507300438317 /* OAuthParameters.m in Sources */,
