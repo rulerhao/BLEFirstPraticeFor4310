@@ -7,6 +7,7 @@
 
 #import "AppDelegate.h"
 
+MyNavigationController *RootNavigationView;
 @interface AppDelegate ()
 
 @end
@@ -15,7 +16,8 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    UIStoryboard *StoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    RootNavigationView = [StoryBoard instantiateViewControllerWithIdentifier:@"myNavigationController"];
     return YES;
 }
 

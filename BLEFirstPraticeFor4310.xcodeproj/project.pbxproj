@@ -10,6 +10,9 @@
 		4273DFD9F134D0D258761321 /* Pods_BLEFirstPraticeFor4310.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1C9614A219060EC16AA474F /* Pods_BLEFirstPraticeFor4310.framework */; };
 		630720B5256E3FC70000F7C7 /* SaveInformationFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = 630720B4256E3FC70000F7C7 /* SaveInformationFunc.m */; };
 		630720BB256E463B0000F7C7 /* KS4310Setting.m in Sources */ = {isa = PBXBuildFile; fileRef = 630720BA256E463B0000F7C7 /* KS4310Setting.m */; };
+		630EFD1B258B08DE0027B07E /* MyNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 630EFD1A258B08DE0027B07E /* MyNavigationController.m */; };
+		630EFD1F258B47980027B07E /* OrganizationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 630EFD1E258B47980027B07E /* OrganizationController.m */; };
+		630EFD23258B55300027B07E /* RoomController.m in Sources */ = {isa = PBXBuildFile; fileRef = 630EFD22258B55300027B07E /* RoomController.m */; };
 		631E68772546AAEB00C1B051 /* CalFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = 631E68762546AAEB00C1B051 /* CalFunc.m */; };
 		6322A7AC254FB792007ACEF0 /* CameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6322A7AB254FB792007ACEF0 /* CameraController.m */; };
 		6322A7B8255001B1007ACEF0 /* SketchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6322A7B7255001B1007ACEF0 /* SketchView.m */; };
@@ -20,6 +23,7 @@
 		63382EF6254C13A6006CF490 /* Baby_1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63382EF2254C13A6006CF490 /* Baby_1.jpg */; };
 		63382EF7254C13A6006CF490 /* Baby_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63382EF3254C13A6006CF490 /* Baby_2.jpg */; };
 		633BBB1E252D8AD3003544A1 /* Convert4310Information.m in Sources */ = {isa = PBXBuildFile; fileRef = 633BBB1D252D8AD3003544A1 /* Convert4310Information.m */; };
+		6342EE232589D80000280BCF /* LogInController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6342EE222589D80000280BCF /* LogInController.m */; };
 		635268052558CCA70071F655 /* Change_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 635268042558CCA70071F655 /* Change_Icon.png */; };
 		635268082558CD520071F655 /* Exchanging.png in Resources */ = {isa = PBXBuildFile; fileRef = 635268072558CD520071F655 /* Exchanging.png */; };
 		6352680D2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6352680C2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m */; };
@@ -76,6 +80,12 @@
 		630720B4256E3FC70000F7C7 /* SaveInformationFunc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaveInformationFunc.m; sourceTree = "<group>"; };
 		630720B9256E463B0000F7C7 /* KS4310Setting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KS4310Setting.h; sourceTree = "<group>"; };
 		630720BA256E463B0000F7C7 /* KS4310Setting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KS4310Setting.m; sourceTree = "<group>"; };
+		630EFD19258B08DE0027B07E /* MyNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyNavigationController.h; sourceTree = "<group>"; };
+		630EFD1A258B08DE0027B07E /* MyNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyNavigationController.m; sourceTree = "<group>"; };
+		630EFD1D258B47980027B07E /* OrganizationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrganizationController.h; sourceTree = "<group>"; };
+		630EFD1E258B47980027B07E /* OrganizationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrganizationController.m; sourceTree = "<group>"; };
+		630EFD21258B55300027B07E /* RoomController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomController.h; sourceTree = "<group>"; };
+		630EFD22258B55300027B07E /* RoomController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomController.m; sourceTree = "<group>"; };
 		631E68752546AAEB00C1B051 /* CalFunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalFunc.h; sourceTree = "<group>"; };
 		631E68762546AAEB00C1B051 /* CalFunc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalFunc.m; sourceTree = "<group>"; };
 		6322A7AA254FB792007ACEF0 /* CameraController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraController.h; sourceTree = "<group>"; };
@@ -91,6 +101,8 @@
 		63382EF3254C13A6006CF490 /* Baby_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Baby_2.jpg; path = "../../../../MUL OUcare 第二代(KS-4310)/Baby_2.jpg"; sourceTree = "<group>"; };
 		633BBB1C252D8AD3003544A1 /* Convert4310Information.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Convert4310Information.h; sourceTree = "<group>"; };
 		633BBB1D252D8AD3003544A1 /* Convert4310Information.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Convert4310Information.m; sourceTree = "<group>"; };
+		6342EE212589D80000280BCF /* LogInController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LogInController.h; sourceTree = "<group>"; };
+		6342EE222589D80000280BCF /* LogInController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogInController.m; sourceTree = "<group>"; };
 		635268042558CCA70071F655 /* Change_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Change_Icon.png; path = "../../../../MUL OUcare 第二代(KS-4310)/Change_Icon.png"; sourceTree = "<group>"; };
 		635268072558CD520071F655 /* Exchanging.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Exchanging.png; path = "../../../../MUL OUcare 第二代(KS-4310)/Exchanging.png"; sourceTree = "<group>"; };
 		6352680B2558D2A90071F655 /* ChangeBetweenWriteStringViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChangeBetweenWriteStringViewController.h; sourceTree = "<group>"; };
@@ -284,6 +296,14 @@
 		63DB0E40251DC2E000FA3D39 = {
 			isa = PBXGroup;
 			children = (
+				630EFD21258B55300027B07E /* RoomController.h */,
+				630EFD22258B55300027B07E /* RoomController.m */,
+				630EFD1D258B47980027B07E /* OrganizationController.h */,
+				630EFD1E258B47980027B07E /* OrganizationController.m */,
+				630EFD19258B08DE0027B07E /* MyNavigationController.h */,
+				630EFD1A258B08DE0027B07E /* MyNavigationController.m */,
+				6342EE212589D80000280BCF /* LogInController.h */,
+				6342EE222589D80000280BCF /* LogInController.m */,
 				63746DFA258886A40011D283 /* NetworkReachAbility.h */,
 				63746DFB258886A40011D283 /* NetworkReachAbility.m */,
 				63746DF6258857650011D283 /* Reachability.h */,
@@ -506,6 +526,7 @@
 			files = (
 				63CF83F12583507300438317 /* HTMLProcess.m in Sources */,
 				63CF83EE2583507300438317 /* JSONProcess.m in Sources */,
+				630EFD23258B55300027B07E /* RoomController.m in Sources */,
 				63CF82632583503E00438317 /* IDFVProcess.m in Sources */,
 				63AF37F925496D1E00D6F804 /* StringProcessFunc.m in Sources */,
 				63CF83F52583507300438317 /* Device.pbobjc.m in Sources */,
@@ -516,6 +537,7 @@
 				63DB0E4E251DC2E000FA3D39 /* AppDelegate.m in Sources */,
 				63CF83F32583507300438317 /* device.proto in Sources */,
 				6352680D2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m in Sources */,
+				6342EE232589D80000280BCF /* LogInController.m in Sources */,
 				63CF83ED2583507300438317 /* URLProcess.m in Sources */,
 				63DB0E5F251DC2E200FA3D39 /* main.m in Sources */,
 				63CF841825836A7700438317 /* PublishDataFor4320.m in Sources */,
@@ -532,6 +554,8 @@
 				63CF83F72583507300438317 /* Sensor.pbobjc.m in Sources */,
 				63CF82682583503E00438317 /* MQTTSetting.m in Sources */,
 				635268112558E49F0071F655 /* InformationRunnable.m in Sources */,
+				630EFD1B258B08DE0027B07E /* MyNavigationController.m in Sources */,
+				630EFD1F258B47980027B07E /* OrganizationController.m in Sources */,
 				63746DFC258886A40011D283 /* NetworkReachAbility.m in Sources */,
 				63B153B0256F897B00FD435F /* SwitchDevices.m in Sources */,
 				630720B5256E3FC70000F7C7 /* SaveInformationFunc.m in Sources */,

@@ -32,6 +32,7 @@
 #import <OIDAuthorizationRequest.h>
 #import "PublishDataFor4320.h"
 #import "Reachability.h"
+#import "LogInController.h"
 @interface ViewController : UIViewController <
 CBCentralManagerDelegate,
 CBPeripheralDelegate,
@@ -41,7 +42,7 @@ UICollectionViewDragDelegate,
 UICollectionViewDropDelegate,
 UINavigationControllerDelegate,
 UIImagePickerControllerDelegate,
-UINavigationControllerDelegate>
+UITextFieldDelegate>
 
 @property (strong, nonatomic) CBCentralManager *myCBCentralManager;
 @property (strong, nonatomic) CBPeripheral *myCBPeripheral;

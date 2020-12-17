@@ -6,7 +6,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MyNavigationController.h"
+@class MyNavigationController;
 
+extern MyNavigationController *RootNavigationView;
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow * window;

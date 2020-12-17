@@ -21,9 +21,16 @@
     NSTimer *BLEBeDisabledTimer;
     NSTimer *NetworkBeDisabledTimer;
     OAuth2Main *webViewController;
+    NSUInteger Network_Reachable;
+    NSUInteger Network_Not_Reachable;
+    CBCentralManager *cb_Central_Manager;
 }
+@property (strong, nonatomic) IBOutlet UITextField *AccountTextView;
+@property (strong, nonatomic) IBOutlet UITextField *PasswordTextView;
+@property (strong, nonatomic) IBOutlet UIButton *LogInButton;
 @property (strong, nonatomic) IBOutlet UICollectionView *myCollectionView;
 @property (strong, nonatomic) IBOutlet UIButton *Bool_Order_Button;
+@property (strong, nonatomic) IBOutlet UIView *LogInView;
 @property (readwrite, assign) BOOL EnabledOrder;
 @end
 
@@ -48,9 +55,24 @@ BOOL EnabledOrder;
     }
     [_Bool_Order_Button setImage:image forState:normal];
 }
-
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    Network_Reachable = 1;
+    Network_Not_Reachable = 0;
+    //----------------------- Create Navigation --------------------------
+//    UIViewController *bbp=[[UIViewController alloc]initWithNibName:@"UIViewController" bundle:nil];
+//    UINavigationController *passcodeNavigationController = [[UINavigationController alloc] initWithRootViewController:bbp];
+//    // [self.navigationController presentModalViewController:passcodeNavigationController animated:YES];
+//      [self.navigationController pushViewController:passcodeNavigationController animated:YES];
+    
+    //--------------------------------------------------------------------
+    [self startAppViewDraw];
+//    LogInController *logInController = [LogInController new];
+//    [self presentViewController:logInController
+//                       animated:NO
+//                     completion:nil];
+    
     [self checkNetworkStatusForFixTime];
     NSLog(@"ReachAblility = %ld", (long)[[Reachability reachabilityWithHostName:@"https://healthng.oucare.com/"] currentReachabilityStatus]);
     NSLog(@"ReachAblility = %ld", (long)[[Reachability reachabilityWithHostName:@"https://healthng.oucare.com/ou/7da0f976-f732-11ea-b7aa-0242ac160004/dashboard"] currentReachabilityStatus]);
@@ -78,9 +100,12 @@ BOOL EnabledOrder;
     
     _DevicesInformation = [[NSMutableArray alloc] init];
     
+    NSLog(@"CollectionViewBeforeDelegate = %@", _myCollectionView.delegate);
     _myCollectionView.dragInteractionEnabled = YES;
     _myCollectionView.dragDelegate = self;
     _myCollectionView.dropDelegate = self;
+    NSLog(@"CollectionViewAfterDelegate = %@", _myCollectionView.delegate);
+
     
     EnabledOrder = false;
     if(EnabledOrder == false) {
@@ -94,7 +119,7 @@ BOOL EnabledOrder;
 
 - (void)
 centralManagerDidUpdateState:(CBCentralManager *)central {
-    
+    cb_Central_Manager = central;
     switch(central.state) {
         case CBManagerStateUnknown:
             NSLog(@"central.state: CBManagerStateUnknown.");
@@ -883,5 +908,16 @@ didGetMQTTSubscribeNotification:(NSNotification *)notification {
     [self.view addSubview:webViewController];
     NSLog(@"self.view.TestExist = %@", self.view.subviews);
     [webViewController InitEnter : self];
+}
+
+// 剛開APP的畫面
+- (void) startAppViewDraw {
+    [_LogInView setHidden:NO];
+    [_myCollectionView setHidden:YES];
+}
+// 登入後畫面
+- (void) LogInViewDraw {
+    [_LogInView setHidden:YES];
+    [_myCollectionView setHidden:NO];
 }
 @end
