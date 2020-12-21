@@ -57,7 +57,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SensorUIViewController" id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -85,10 +85,10 @@
                                             <action selector="Touch_Bool_Order:" destination="BYZ-38-t0r" eventType="touchDown" id="67u-Vw-g0N"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ULI-9R-Lpe">
-                                        <rect key="frame" x="196" y="8" width="91" height="64"/>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ULI-9R-Lpe">
+                                        <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Button"/>
+                                        <state key="normal" image="function_back.png"/>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -342,7 +342,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="135.19999999999999" y="54.422788605697157"/>
+            <point key="canvasLocation" x="2832.8000000000002" y="53.523238380809602"/>
         </scene>
         <!--Log In Controller-->
         <scene sceneID="XdJ-kr-Ot8">
@@ -450,7 +450,6 @@
         <!--Organization Controller-->
         <scene sceneID="bum-DT-s9J">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VSN-Vn-myC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="OrganizationUIViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="59Y-rw-CHH" customClass="OrganizationController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ILm-Oo-KNe">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -469,6 +468,16 @@
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="50s-r5-ttJ" userLabel="View_2">
                                         <rect key="frame" x="0.0" y="65" width="375" height="80"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xtd-68-Q7G" userLabel="Back_Button">
+                                                <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" image="function_back.png"/>
+                                                <connections>
+                                                    <action selector="Touch_Back_Button:" destination="59Y-rw-CHH" eventType="touchUpInside" id="8eN-eb-XPT"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i2P-W9-Y2J" userLabel="OrganizationView">
@@ -569,6 +578,7 @@
                         <outlet property="MyOrgCollectView" destination="6q2-a7-NpI" id="b6Q-2w-eXC"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VSN-Vn-myC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1520.8" y="53.523238380809602"/>
         </scene>
@@ -597,6 +607,13 @@
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f5g-qk-V50" userLabel="View_2">
                                                 <rect key="frame" x="0.0" y="65" width="375" height="80"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ma6-FK-9KN">
+                                                        <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <state key="normal" image="function_back.png"/>
+                                                    </button>
+                                                </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KjZ-Gp-qJN" userLabel="RoomView">
@@ -709,6 +726,7 @@
         <image name="Change_Icon.png" width="409.60000610351562" height="409.60000610351562"/>
         <image name="baby_card_background.png" width="221.75999450683594" height="249.1199951171875"/>
         <image name="background.png" width="480" height="800"/>
+        <image name="function_back.png" width="92" height="80"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

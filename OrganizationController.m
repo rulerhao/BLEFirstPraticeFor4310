@@ -16,6 +16,9 @@
 @end
 
 @implementation OrganizationController
+- (IBAction)Touch_Back_Button:(id)sender {
+    [RootNavigationView popViewControllerAnimated:NO];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

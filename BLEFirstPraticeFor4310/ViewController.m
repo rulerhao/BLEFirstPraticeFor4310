@@ -68,6 +68,7 @@ BOOL EnabledOrder;
     
     //--------------------------------------------------------------------
     [self startAppViewDraw];
+    [self afterLogInViewDraw];
 //    LogInController *logInController = [LogInController new];
 //    [self presentViewController:logInController
 //                       animated:NO
@@ -916,7 +917,7 @@ didGetMQTTSubscribeNotification:(NSNotification *)notification {
     [_myCollectionView setHidden:YES];
 }
 // 登入後畫面
-- (void) LogInViewDraw {
+- (void) afterLogInViewDraw {
     [_LogInView setHidden:YES];
     [_myCollectionView setHidden:NO];
 }

@@ -47,6 +47,7 @@ numberOfItemsInSection  :(NSInteger)            section {
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return [Stored_Rooms count];
 }
+
 - (__kindof UICollectionViewCell *)
 collectionView          :(UICollectionView *)   collectionView
 cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
@@ -69,7 +70,15 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
 -(void)
 collectionView          :(UICollectionView *)   collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
-    NSLog(@"Touchchchcchch");
+    NSLog(@"Touchchchcchch = %@", indexPath);
+    UIStoryboard *StoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    RoomController *SensorController = [StoryBoard instantiateViewControllerWithIdentifier:@"SensorUIViewController"];
+    [RootNavigationView pushViewController:SensorController animated:NO];
 }
 
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    NSInteger currentIndex = self.Collection_View.contentOffset.x / self.Collection_View.frame.size.width;
+    NSLog(@"currentIndex = %ld", (long)currentIndex);
+}
 @end
