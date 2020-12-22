@@ -36,6 +36,7 @@
 @property (readwrite, assign) BOOL EnabledOrder;
 @property (strong, nonatomic) IBOutlet UITextView *Time_Text_Field;
 @property (strong, nonatomic) IBOutlet UITextView *Now_Navigation_Name_TextView;
+@property (strong, nonatomic) IBOutlet UITextView *Now_Room_TextView;
 @end
 
 @implementation ViewController
@@ -94,6 +95,8 @@ BOOL EnabledOrder;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // ------------------- Room TextView ----------------------
+    self.Now_Room_TextView.text = Now_Navigation_Name;
     // ------------------- Button Bar ----------------------
     self.Now_Navigation_Name_TextView.text = Now_Navigation_Name;
     

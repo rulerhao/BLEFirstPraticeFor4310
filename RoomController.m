@@ -14,7 +14,6 @@
 @property (strong, nonatomic) IBOutlet UICollectionView *Collection_View;
 @property (strong, nonatomic) IBOutlet UITextView *Time_Text_Field;
 @property (strong, nonatomic) IBOutlet UITextView *Now_Navigation_Name_TextView;
-
 @end
 
 @implementation RoomController
@@ -35,22 +34,22 @@
     self.Now_Navigation_Name_TextView.text = Now_Navigation_Name;
     
     Stored_Rooms = [[NSMutableArray alloc] init];
-    NSMutableArray *Floor1 = [[NSMutableArray alloc] init];
-    [Floor1 addObject:@"101-Room"];
-    [Floor1 addObject:@"102-Room"];
-    [Floor1 addObject:@"103-Room"];
-    NSMutableArray *Floor2 = [[NSMutableArray alloc] init];
-    [Floor2 addObject:@"201-Room"];
-    [Floor2 addObject:@"202-Room"];
-    [Floor2 addObject:@"203-Room"];
-    NSMutableArray *Floor3 = [[NSMutableArray alloc] init];
-    [Floor3 addObject:@"301-Room"];
-    [Floor3 addObject:@"302-Room"];
-    [Floor3 addObject:@"303-Room"];
+    NSMutableArray *Floor = [[NSMutableArray alloc] init];
+    if([Now_Navigation_Name isEqual:@"1樓"]) {
+        [Floor addObject:@"Room-101"];
+        [Floor addObject:@"Room-102"];
+        [Floor addObject:@"Room-103"];
+    } else if ([Now_Navigation_Name isEqual:@"2樓"]) {
+        [Floor addObject:@"Room-201"];
+        [Floor addObject:@"Room-202"];
+        [Floor addObject:@"Room-203"];
+    } else {
+        [Floor addObject:@"Room-301"];
+        [Floor addObject:@"Room-302"];
+        [Floor addObject:@"Room-303"];
+    }
     
-    [Stored_Rooms addObject:Floor1];
-    [Stored_Rooms addObject:Floor2];
-    [Stored_Rooms addObject:Floor3];
+    [Stored_Rooms addObject:Floor];
     
     self.Time_Text_Field.text = Now_Time;
 }
@@ -87,13 +86,14 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
 collectionView          :(UICollectionView *)   collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
     NSLog(@"Touchchchcchch = %@", indexPath);
+    // ---------------------- Now Navigation Name -------------------
+    Now_Navigation_Name = [[Stored_Rooms objectAtIndex:[indexPath section]] objectAtIndex:[indexPath row]];
+    NSLog(@"Now_Navigation_Name = %@", Now_Navigation_Name);
+    
     UIStoryboard *StoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     RoomController *SensorController = [StoryBoard instantiateViewControllerWithIdentifier:@"SensorUIViewController"];
     [RootNavigationView pushViewController:SensorController animated:NO];
     
-    // ---------------------- Now Navigation Name -------------------
-    Now_Navigation_Name = [[Stored_Rooms objectAtIndex:[indexPath section]] objectAtIndex:[indexPath row]];
-    NSLog(@"Now_Navigation_Name = %@", Now_Navigation_Name);
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView

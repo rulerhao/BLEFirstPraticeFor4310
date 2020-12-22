@@ -7,6 +7,7 @@
 
 #import "ViewController.h"
 #import "RoomController.h"
+#import "FloorController.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface OrganizationController : UIViewController <UICollectionViewDataSource,

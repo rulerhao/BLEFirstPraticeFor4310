@@ -28,6 +28,7 @@
 		632D1373252F099B00073BC9 /* cellData.m in Sources */ = {isa = PBXBuildFile; fileRef = 632D1372252F099B00073BC9 /* cellData.m */; };
 		633BBB1E252D8AD3003544A1 /* Convert4310Information.m in Sources */ = {isa = PBXBuildFile; fileRef = 633BBB1D252D8AD3003544A1 /* Convert4310Information.m */; };
 		6342EE232589D80000280BCF /* LogInController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6342EE222589D80000280BCF /* LogInController.m */; };
+		635146292591C982008A3BAE /* FloorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 635146272591C982008A3BAE /* FloorController.m */; };
 		6352680D2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6352680C2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m */; };
 		635268112558E49F0071F655 /* InformationRunnable.m in Sources */ = {isa = PBXBuildFile; fileRef = 635268102558E49F0071F655 /* InformationRunnable.m */; };
 		63746DF8258857650011D283 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 63746DF7258857650011D283 /* Reachability.m */; };
@@ -793,6 +794,8 @@
 		633BBB1D252D8AD3003544A1 /* Convert4310Information.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Convert4310Information.m; sourceTree = "<group>"; };
 		6342EE212589D80000280BCF /* LogInController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LogInController.h; sourceTree = "<group>"; };
 		6342EE222589D80000280BCF /* LogInController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogInController.m; sourceTree = "<group>"; };
+		635146272591C982008A3BAE /* FloorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloorController.m; sourceTree = "<group>"; };
+		635146282591C982008A3BAE /* FloorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloorController.h; sourceTree = "<group>"; };
 		6352680B2558D2A90071F655 /* ChangeBetweenWriteStringViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChangeBetweenWriteStringViewController.h; sourceTree = "<group>"; };
 		6352680C2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChangeBetweenWriteStringViewController.m; sourceTree = "<group>"; };
 		6352680F2558E49F0071F655 /* InformationRunnable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InformationRunnable.h; sourceTree = "<group>"; };
@@ -1654,6 +1657,8 @@
 				63F08B6E2590316600424EFD /* res */,
 				630EFD21258B55300027B07E /* RoomController.h */,
 				630EFD22258B55300027B07E /* RoomController.m */,
+				635146282591C982008A3BAE /* FloorController.h */,
+				635146272591C982008A3BAE /* FloorController.m */,
 				630EFD1D258B47980027B07E /* OrganizationController.h */,
 				630EFD1E258B47980027B07E /* OrganizationController.m */,
 				630EFD19258B08DE0027B07E /* MyNavigationController.h */,
@@ -3510,6 +3515,7 @@
 				635268112558E49F0071F655 /* InformationRunnable.m in Sources */,
 				630EFD1B258B08DE0027B07E /* MyNavigationController.m in Sources */,
 				630EFD1F258B47980027B07E /* OrganizationController.m in Sources */,
+				635146292591C982008A3BAE /* FloorController.m in Sources */,
 				63746DFC258886A40011D283 /* NetworkReachAbility.m in Sources */,
 				63B153B0256F897B00FD435F /* SwitchDevices.m in Sources */,
 				630720B5256E3FC70000F7C7 /* SaveInformationFunc.m in Sources */,

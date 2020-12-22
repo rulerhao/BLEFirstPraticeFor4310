@@ -11,7 +11,6 @@
 {
     NSMutableArray *Stored_Organizations;
 }
-@property (strong, nonatomic) IBOutlet UICollectionView *MyOrgCollectView;
 @property (strong, nonatomic) IBOutlet UITextView *Time_Text_Field;
 @property (strong, nonatomic) IBOutlet UITextView *Now_Navigation_Name_TextView;
 
@@ -40,6 +39,7 @@
     self.Time_Text_Field.text = Now_Time;
     NSLog(@"EnterOrgController");
 }
+
 - (NSInteger)
 collectionView          :(UICollectionView *)   collectionView
 numberOfItemsInSection  :(NSInteger)            section {
@@ -70,9 +70,8 @@ collectionView          :(UICollectionView *)   collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
     NSLog(@"didSelectItem");
     UIStoryboard *StoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    RoomController *RoomController = [StoryBoard instantiateViewControllerWithIdentifier:@"RoomUIViewController"];
-    [RootNavigationView pushViewController:RoomController animated:NO];
-    
+    FloorController *FloorController = [StoryBoard instantiateViewControllerWithIdentifier:@"FloorUIViewController"];
+    [RootNavigationView pushViewController:FloorController animated:NO];
     // ---------------------- Now Navigation Name -------------------
     Now_Navigation_Name = [Stored_Organizations objectAtIndex:[indexPath row]];
     NSLog(@"Now_Navigation_Name = %@", Now_Navigation_Name);
