@@ -10,6 +10,8 @@
 @class MyNavigationController;
 
 extern MyNavigationController *RootNavigationView;
+extern NSString *Now_Time;
+extern NSString *Now_Navigation_Name;
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow * window;

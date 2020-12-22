@@ -24,6 +24,8 @@
     NSUInteger Network_Reachable;
     NSUInteger Network_Not_Reachable;
     CBCentralManager *cb_Central_Manager;
+    NSNotificationCenter *center;
+
 }
 @property (strong, nonatomic) IBOutlet UITextField *AccountTextView;
 @property (strong, nonatomic) IBOutlet UITextField *PasswordTextView;
@@ -32,6 +34,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *Bool_Order_Button;
 @property (strong, nonatomic) IBOutlet UIView *LogInView;
 @property (readwrite, assign) BOOL EnabledOrder;
+@property (strong, nonatomic) IBOutlet UITextView *Time_Text_Field;
+@property (strong, nonatomic) IBOutlet UITextView *Now_Navigation_Name_TextView;
 @end
 
 @implementation ViewController
@@ -55,11 +59,52 @@ BOOL EnabledOrder;
     }
     [_Bool_Order_Button setImage:image forState:normal];
 }
+//--------------- 按下回前個畫面按鈕 ---------------
+- (IBAction)Touch_Back_Button:(id)sender {
+    [RootNavigationView popViewControllerAnimated:NO];
+
+}
+//--------------- 按下回登入畫面按鈕 ---------------
+- (IBAction)Button_To_Return_LogIn:(id)sender {
+    NSArray *array = [self.navigationController viewControllers];
+    [RootNavigationView popToViewController:[array objectAtIndex:1] animated:NO];
+}
+-(void)viewDidDisappear:(BOOL)animated {
+    NSLog(@"disappear");
+    //--------------------------- 關閉網路斷線的警報 --------------------------------
+    [NetworkBeDisabledTimer invalidate];
+    //--------------------------- 關閉藍芽搜尋 --------------------------------
+    [_myCBCentralManager stopScan];
+    //--------------------------- 關閉藍芽連線 --------------------------------
+    for(int i = 0; i < [_StoredDevices count]; i++) {
+        cellData *Information_CellData = [_StoredDevices objectAtIndex:i];
+        [_myCBCentralManager cancelPeripheralConnection:[Information_CellData getPheripheral]];
+    }
+    //--------------------------- 關閉藍芽斷線的警報 --------------------------------
+    [BLEBeDisabledTimer invalidate];
+    
+    //--------------------------- 關閉取到OAuth2 OTP時的回傳 --------------------------------
+    //[[NSNotificationCenter defaultCenter] removeObserver:self name:@"getOAuthOTPNotification" object:nil];
+    [center removeObserver:self];
+
+    //--------------------------- 關閉MQTT Subscribe成功的回傳 --------------------------------
+    //[[NSNotificationCenter defaultCenter] removeObserver:self name:@"getMQTTSubscribing" object:nil];
+    [Session disconnect];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // ------------------- Button Bar ----------------------
+    self.Now_Navigation_Name_TextView.text = Now_Navigation_Name;
+    
+    NSLog(@"ViewDidLoadForVC");
     Network_Reachable = 1;
     Network_Not_Reachable = 0;
+    
+    //----------------------- Create NSNotificationCenter --------------------------
+    center = [NSNotificationCenter defaultCenter];
+
+    self.Time_Text_Field.text = Now_Time;
     //----------------------- Create Navigation --------------------------
 //    UIViewController *bbp=[[UIViewController alloc]initWithNibName:@"UIViewController" bundle:nil];
 //    UINavigationController *passcodeNavigationController = [[UINavigationController alloc] initWithRootViewController:bbp];
@@ -75,17 +120,16 @@ BOOL EnabledOrder;
 //                     completion:nil];
     
     [self checkNetworkStatusForFixTime];
-    NSLog(@"ReachAblility = %ld", (long)[[Reachability reachabilityWithHostName:@"https://healthng.oucare.com/"] currentReachabilityStatus]);
-    NSLog(@"ReachAblility = %ld", (long)[[Reachability reachabilityWithHostName:@"https://healthng.oucare.com/ou/7da0f976-f732-11ea-b7aa-0242ac160004/dashboard"] currentReachabilityStatus]);
+    
     // set notificationCenter to get OAuth2 returning informaiton from OAuth2Main
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    [center addObserver:self
                                              selector:@selector(didGetOAuthOTPNotification:) //接收到該Notification時要call的function
                                                  name:@"getOAuthOTPNotification"
                                                object:nil];
     
     // Set MQTT subScribe notification that we can know whether mqtt subscribe yet.
     MQTTSubscribing = NO;
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    [center addObserver:self
                                              selector:@selector(didGetMQTTSubscribeNotification:) //接收到該Notification時要call的function
                                                  name:@"getMQTTSubscribing"
                                                object:nil];
@@ -746,7 +790,7 @@ index               : (NSUInteger)          Index {
 
     long ReachAbility = [[Reachability reachabilityWithHostName:@"https://healthng.oucare.com/"] currentReachabilityStatus];
     NSLog(@"ReachAbilityBeforePublish = %ld", ReachAbility);
-    NSLog(@"Session = %@", Session);
+    NSLog(@"Session = %@", [Session clientId]);
     if([self webViewExist] && Session) {
         if(ReachAbility == 1) {
             NSLog(@"EnterHere");

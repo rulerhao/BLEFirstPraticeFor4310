@@ -12,18 +12,33 @@
     NSMutableArray *Stored_Organizations;
 }
 @property (strong, nonatomic) IBOutlet UICollectionView *MyOrgCollectView;
+@property (strong, nonatomic) IBOutlet UITextView *Time_Text_Field;
+@property (strong, nonatomic) IBOutlet UITextView *Now_Navigation_Name_TextView;
 
 @end
 
 @implementation OrganizationController
+//--------------- 按下回前個畫面按鈕 ---------------
 - (IBAction)Touch_Back_Button:(id)sender {
     [RootNavigationView popViewControllerAnimated:NO];
+}
+//--------------- 按下回登入畫面按鈕 ---------------
+- (IBAction)Button_To_Return_LogIn:(id)sender {
+    NSArray *array = [self.navigationController viewControllers];
+    //NSLog(@"ContorllerList = %@", [[array objectAtIndex:1] ]);
+    [RootNavigationView popToViewController:[array objectAtIndex:1] animated:NO];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    // ------------------- Button Bar ----------------------
+    self.Now_Navigation_Name_TextView.text = Now_Navigation_Name;
+    
     Stored_Organizations = [[NSMutableArray alloc] init];
     [Stored_Organizations addObject:@"凱健企業股份有限公司"];
+    self.Time_Text_Field.text = Now_Time;
+    NSLog(@"EnterOrgController");
 }
 - (NSInteger)
 collectionView          :(UICollectionView *)   collectionView
@@ -43,7 +58,7 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
     }
     
     UITextView *Organization_Name = [cell viewWithTag:1];
-    Organization_Name.text = [Stored_Organizations objectAtIndex:[indexPath row]];
+    [Organization_Name setText:[Stored_Organizations objectAtIndex:[indexPath row]]];
     
     return cell;
 }
@@ -57,5 +72,9 @@ didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
     UIStoryboard *StoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     RoomController *RoomController = [StoryBoard instantiateViewControllerWithIdentifier:@"RoomUIViewController"];
     [RootNavigationView pushViewController:RoomController animated:NO];
+    
+    // ---------------------- Now Navigation Name -------------------
+    Now_Navigation_Name = [Stored_Organizations objectAtIndex:[indexPath row]];
+    NSLog(@"Now_Navigation_Name = %@", Now_Navigation_Name);
 }
 @end

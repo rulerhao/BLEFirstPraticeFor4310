@@ -8,6 +8,8 @@
 #import "AppDelegate.h"
 
 MyNavigationController *RootNavigationView;
+NSString *Now_Time;
+NSString *Now_Navigation_Name;
 @interface AppDelegate ()
 
 @end
@@ -18,6 +20,12 @@ MyNavigationController *RootNavigationView;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     UIStoryboard *StoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     RootNavigationView = [StoryBoard instantiateViewControllerWithIdentifier:@"myNavigationController"];
+    //-------------------NowTime----------------
+    NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    // or @"yyyy-MM-dd hh:mm:ss a" if you prefer the time with AM/PM
+    NSLog(@"%@",[dateFormatter stringFromDate:[NSDate date]]);
+    Now_Time = [dateFormatter stringFromDate:[NSDate date]];
     return YES;
 }
 
