@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package ouhub;
+
+import "device.proto";
+
+
+/**
+ * 訊息
+ */
+message Message {
+    /**
+     * [[ 訊息代碼 ]]
+     *
+     * 編碼建議 :
+     *
+     * 1. 取得目前時間精確到小數點 3 位
+     *    例如 2020-09-26 09:46:28.472 , 轉成 `1601113588472` 為整數
+     * 2. 將訊息再轉為 16 進位 格式，可以縮小長度為 `174c9ce82f8`
+     * 3. 如果使用 36 進位，則會更進一步縮成 `kfjhovlk` , 基本上 Server 不管編碼方式，只要確定 message_id 不會重複即可
+     *
+     * 若真的很頻繁發送訊息，建議保留最後一筆 message_id 比對是否重複，若重複，則自己 + 1
+     */
+    string message_id = 1;
+
+    /**
+     * 此值與 MQTT 登入使用的 CLIENT ID 是相同的
+     *
+     * 一定要填對 , 否則 Response 無法回應到正確的連接者
+     */
+    string client_id = 2;
+
+
+    // 編號 3~9 保留 ，怕以後會有其他用途
+
+    // 資料主體
+    oneof body {
+        // 命名規則 {action}_{object}_{channel(request|response)}
+
+        // 訊息處理結果回應要求
+        Response response = 10;
+
+        // 裝置狀態通知
+        device.NotifyStatusRequest notify_status_request = 11;
+
+        // 量測資料上傳要求 , 即時，會另外轉傳封包給相關 ClientID/UserUUID/OrgUUID
+        device.PostMeasureRequest post_measure_request = 12;
+
+        // 回補量測資料，不會另外轉傳封包給相關 ClientID/UserUUID/OrgUUID
+        device.RepostMeasureRequest repost_measure_request = 13;
+
+    }
+}
+
+
+message Response {
+    // 要求的訊息代碼，讓發送端比對的
+    string request_message_id = 1;
+    ResponseCode code = 2;
+    string message = 3;
+    enum ResponseCode {
+        UNKNOW_ERROR_CODE = 0;
+        OK = 200;
+        BAD_REQUEST = 400;
+        FORBIDDEN = 403;
+        NOT_FOUND = 404;
+        SERVER_ERROR = 500;
+    }
+}

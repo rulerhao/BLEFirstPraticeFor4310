@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package ouhub.device;
+
+
+// 感應器
+message Sensor {
+    // 感應器的索引 , zero base , 若裝置中有不同的感應器類型，每一種不同的感應器都從 zero 開始算起
+    // 例如 3溫度感應器 + 1電源感應器 分別是 0,1,2 及 0 去區分
+    int32 index = 1;
+    oneof property {
+        TemperatureProperty temperature_property = 10;
+        BatteryProperty battery_property = 11;
+        BreathProperty breath_property = 12;
+    }
+
+    /**
+    * 溫度感應器
+    */
+    message TemperatureProperty {
+        float value = 1;        // 溫度值
+    }
+
+    /**
+    * 電池屬性
+    */
+    message BatteryProperty {
+        int32 value = 1;       // 電量 , 0~100 的值
+    }
+
+    /**
+    * 呼吸感測器
+    */
+    message BreathProperty {
+        bool value = 1; // 是否有呼吸
+        MotionProperty motion_property = 2;
+    }
+
+    // 運動感應器
+    message MotionProperty {
+        float value_x = 1;
+        float value_y = 2;
+        float value_z = 3;
+    }
+
+}

@@ -1,0 +1,61 @@
+PODS:
+  - AppAuth (1.4.0):
+    - AppAuth/Core (= 1.4.0)
+    - AppAuth/ExternalUserAgent (= 1.4.0)
+  - AppAuth/Core (1.4.0)
+  - AppAuth/ExternalUserAgent (1.4.0)
+  - CocoaLumberjack (3.7.0):
+    - CocoaLumberjack/Core (= 3.7.0)
+  - CocoaLumberjack/Core (3.7.0)
+  - MQTTClient (0.15.3):
+    - MQTTClient/Core (= 0.15.3)
+  - MQTTClient/Core (0.15.3):
+    - MQTTClient/Manager
+    - MQTTClient/Min
+  - MQTTClient/Manager (0.15.3):
+    - MQTTClient/Min
+  - MQTTClient/ManagerL (0.15.3):
+    - MQTTClient/MinL
+  - MQTTClient/Min (0.15.3)
+  - MQTTClient/MinL (0.15.3):
+    - CocoaLumberjack
+  - MQTTClient/Websocket (0.15.3):
+    - MQTTClient/Min
+    - SocketRocket
+  - MQTTClient/WebsocketL (0.15.3):
+    - MQTTClient/MinL
+    - SocketRocket
+  - Protobuf (4.0.0-rc1)
+  - ProtocolBuffers (1.9.11)
+  - SocketRocket (0.5.1)
+
+DEPENDENCIES:
+  - AppAuth
+  - MQTTClient
+  - MQTTClient/ManagerL
+  - MQTTClient/MinL
+  - MQTTClient/Websocket
+  - MQTTClient/WebsocketL
+  - Protobuf (~> 4.0.0-rc1)
+  - ProtocolBuffers
+
+SPEC REPOS:
+  trunk:
+    - AppAuth
+    - CocoaLumberjack
+    - MQTTClient
+    - Protobuf
+    - ProtocolBuffers
+    - SocketRocket
+
+SPEC CHECKSUMS:
+  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
+  MQTTClient: 0dfa04e789479c2e461786464969895c1fcb0875
+  Protobuf: 4f17d10ac4c40626e36f2612842f1a9bc9cf734f
+  ProtocolBuffers: d509225eb2ea43d9582a59e94348fcf86e2abd65
+  SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
+
+PODFILE CHECKSUM: ca911605c7e8c7bcd92a7c299cad83bf0848d344
+
+COCOAPODS: 1.10.0

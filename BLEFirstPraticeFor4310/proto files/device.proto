@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package ouhub.device;
+
+import "google/protobuf/timestamp.proto";
+import public "sensor.proto";
+
+
+/**
+ * [[ 裝置屬性 ]]
+ *
+ * 此項目獨立出來，是為了 Request 端的，程式設計可以重複使用參照
+ * 免得每建立一筆訊息又要建立一筆裝置的型號與序號
+ */
+message DeviceProperty {
+    string uuid     = 1;    // 裝置註冊後的代碼
+    string model    = 2;    // 型號
+    string serial   = 3;    // 序號
+}
+
+
+/**
+* [[ 裝置狀態通知 ]]
+ */
+message NotifyStatusRequest {
+    // 裝置屬性
+    DeviceProperty device_property = 1;
+
+    // 裝置狀態
+    StatusCode code = 2;
+
+
+    enum StatusCode {
+        UNKNOWN_STATUS_CODE = 0; // 未知的狀態
+        OK           = 1;  // 裝置運作正常
+        CONNECTING   = 2;  // 裝置連線中
+        CONNECTED    = 3;  // 裝置已經連線
+        DISCONNECTED = 4;  // 裝置已經斷線
+        FAULT        = 99; // 裝置故障
+    }
+}
+
+
+
+/**
+ * [[ 上傳量測資料 ]]
+ */
+message PostMeasureRequest {
+    // 多筆資料集合
+    repeated MeasureRecord record = 2;
+}
+
+
+/**
+ * [[ 回補裝置量測資料 ]]
+ *
+ * 此動作是請 Server 將資料寫入資料庫而已，不會再轉送任何封包
+ */
+message RepostMeasureRequest {
+    // 多筆資料集合
+    repeated MeasureRecord record = 2;
+}
+
+
+
+
+/**
+ * [[ 量測記錄 ]]
+ *
+ * 每一筆量測記錄可以塞多筆感測器資料，某些裝置可能有 溫度 + 電量，則可以同時塞進去
+ */
+ message MeasureRecord {
+    // 裝置屬性
+    DeviceProperty device_property = 1;
+    // 量測時間 , 建立時間時，可以用 Timestamp.fromDate(new Date()) 的方式，就不用管精確度了
+    google.protobuf.Timestamp measured_at = 2;
+
+    // 感測器資料，可以同時多筆
+    repeated Sensor sensor = 3;
+}
+
