@@ -17,6 +17,19 @@
 @end
 
 @implementation RoomController
+//--------------- 按下開啟官網按鈕 ---------------
+- (IBAction)Button_To_Ouhealthcare:(id)sender {
+//    UIStoryboard *StoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    OuhealthcareWebViewController *Ouhealthcare_WebView = [StoryBoard instantiateViewControllerWithIdentifier:@"OuhealthcareWebView"];
+//    [RootNavigationView pushViewController:Ouhealthcare_WebView animated:NO];
+    UIApplication *application = [UIApplication sharedApplication];
+    NSURL *URL = [NSURL URLWithString:@"https://healthcare.oucare.com"];
+    [application openURL:URL options:@{} completionHandler:^(BOOL success) {
+        if (success) {
+             NSLog(@"Opened url");
+        }
+    }];
+}
 //--------------- 按下回前個畫面按鈕 ---------------
 - (IBAction)Touch_Back_Button:(id)sender {
     [RootNavigationView popViewControllerAnimated:NO];

@@ -31,6 +31,7 @@
 		635146292591C982008A3BAE /* FloorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 635146272591C982008A3BAE /* FloorController.m */; };
 		6352680D2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6352680C2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m */; };
 		635268112558E49F0071F655 /* InformationRunnable.m in Sources */ = {isa = PBXBuildFile; fileRef = 635268102558E49F0071F655 /* InformationRunnable.m */; };
+		635E304C2592D9E9009298FA /* OuhealthcareWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 635E304B2592D9E9009298FA /* OuhealthcareWebViewController.m */; };
 		63746DF8258857650011D283 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 63746DF7258857650011D283 /* Reachability.m */; };
 		63746DFC258886A40011D283 /* NetworkReachAbility.m in Sources */ = {isa = PBXBuildFile; fileRef = 63746DFB258886A40011D283 /* NetworkReachAbility.m */; };
 		63AF37E62548FE1900D6F804 /* baby_card_girl_photo_background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37DB2548FE1900D6F804 /* baby_card_girl_photo_background2.png */; };
@@ -800,6 +801,8 @@
 		6352680C2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChangeBetweenWriteStringViewController.m; sourceTree = "<group>"; };
 		6352680F2558E49F0071F655 /* InformationRunnable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InformationRunnable.h; sourceTree = "<group>"; };
 		635268102558E49F0071F655 /* InformationRunnable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InformationRunnable.m; sourceTree = "<group>"; };
+		635E304A2592D9E9009298FA /* OuhealthcareWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OuhealthcareWebViewController.h; sourceTree = "<group>"; };
+		635E304B2592D9E9009298FA /* OuhealthcareWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OuhealthcareWebViewController.m; sourceTree = "<group>"; };
 		63746DF6258857650011D283 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = BLEFirstPraticeFor4310/Reachability.h; sourceTree = "<group>"; };
 		63746DF7258857650011D283 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = BLEFirstPraticeFor4310/Reachability.m; sourceTree = "<group>"; };
 		63746DFA258886A40011D283 /* NetworkReachAbility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkReachAbility.h; sourceTree = "<group>"; };
@@ -1654,6 +1657,8 @@
 		63DB0E40251DC2E000FA3D39 = {
 			isa = PBXGroup;
 			children = (
+				635E304A2592D9E9009298FA /* OuhealthcareWebViewController.h */,
+				635E304B2592D9E9009298FA /* OuhealthcareWebViewController.m */,
 				63F08B6E2590316600424EFD /* res */,
 				630EFD21258B55300027B07E /* RoomController.h */,
 				630EFD22258B55300027B07E /* RoomController.m */,
@@ -3493,6 +3498,7 @@
 				63746DF8258857650011D283 /* Reachability.m in Sources */,
 				63CF82642583503E00438317 /* MQTTConnectImplementation.m in Sources */,
 				63DB0E54251DC2E000FA3D39 /* ViewController.m in Sources */,
+				635E304C2592D9E9009298FA /* OuhealthcareWebViewController.m in Sources */,
 				63DB0E4E251DC2E000FA3D39 /* AppDelegate.m in Sources */,
 				63CF83F32583507300438317 /* device.proto in Sources */,
 				6352680D2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m in Sources */,

@@ -42,6 +42,19 @@
 @implementation ViewController
 
 BOOL EnabledOrder;
+//--------------- 按下開啟官網按鈕 ---------------
+- (IBAction)Button_To_Ouhealthcare:(id)sender {
+//    UIStoryboard *StoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    OuhealthcareWebViewController *Ouhealthcare_WebView = [StoryBoard instantiateViewControllerWithIdentifier:@"OuhealthcareWebView"];
+//    [RootNavigationView pushViewController:Ouhealthcare_WebView animated:NO];
+    UIApplication *application = [UIApplication sharedApplication];
+    NSURL *URL = [NSURL URLWithString:@"https://healthcare.oucare.com"];
+    [application openURL:URL options:@{} completionHandler:^(BOOL success) {
+        if (success) {
+             NSLog(@"Opened url");
+        }
+    }];
+}
 // 按下啟動/關閉排序按鈕
 // Touch button to turn on/off order function
 - (IBAction)Touch_Bool_Order:(id)sender {

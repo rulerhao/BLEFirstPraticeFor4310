@@ -121,11 +121,19 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="27c-8r-iec">
-                                        <rect key="frame" x="88" y="0.0" width="93" height="80"/>
+                                        <rect key="frame" x="282" y="0.0" width="93" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="view_exit.png"/>
                                         <connections>
                                             <action selector="Button_To_Return_LogIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iW5-P1-UvS"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="za9-zk-Ndd">
+                                        <rect key="frame" x="80" y="0.0" width="92" height="80"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="function_info.png"/>
+                                        <connections>
+                                            <action selector="Button_To_Ouhealthcare:" destination="BYZ-38-t0r" eventType="touchUpInside" id="erW-WC-kD3"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -181,8 +189,8 @@
                                                                 <constraint firstAttribute="height" constant="74" id="keL-os-PWP"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" tag="6" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bHe-Sz-Wqw" userLabel="ID_Textview">
-                                                            <rect key="frame" x="123" y="10" width="41.5" height="21.5"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" tag="6" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bHe-Sz-Wqw" userLabel="ID_Textview">
+                                                            <rect key="frame" x="123" y="8" width="41.5" height="21.5"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="41.5" id="eMk-dg-QTQ"/>
                                                                 <constraint firstAttribute="width" secondItem="bHe-Sz-Wqw" secondAttribute="height" multiplier="41:21" id="f1r-6d-8Cr"/>
@@ -553,6 +561,40 @@
             </objects>
             <point key="canvasLocation" x="850" y="54"/>
         </scene>
+        <!--Ouhealthcare Web View Controller-->
+        <scene sceneID="Xoy-9n-lzo">
+            <objects>
+                <viewController storyboardIdentifier="OuhealthcareWebView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="m6x-g7-g5U" customClass="OuhealthcareWebViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pXo-Ni-2OU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZkY-Lz-gqc">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="9xx-68-Iat"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ZkY-Lz-gqc" firstAttribute="leading" secondItem="9xx-68-Iat" secondAttribute="leading" id="VHX-H0-Bq0"/>
+                            <constraint firstItem="9xx-68-Iat" firstAttribute="bottom" secondItem="ZkY-Lz-gqc" secondAttribute="bottom" id="ekl-n0-Azr"/>
+                            <constraint firstItem="9xx-68-Iat" firstAttribute="trailing" secondItem="ZkY-Lz-gqc" secondAttribute="trailing" id="g3A-3M-G2k"/>
+                            <constraint firstItem="ZkY-Lz-gqc" firstAttribute="top" secondItem="9xx-68-Iat" secondAttribute="top" id="kOx-Rq-7M2"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="Wk_Web_View" destination="ZkY-Lz-gqc" id="mk3-nL-SPH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y1l-ef-yAl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1521" y="-638"/>
+        </scene>
         <!--Organization Controller-->
         <scene sceneID="bum-DT-s9J">
             <objects>
@@ -605,11 +647,19 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6as-zH-q75">
-                                                <rect key="frame" x="88" y="0.0" width="93" height="80"/>
+                                                <rect key="frame" x="282" y="0.0" width="93" height="80"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" image="view_exit.png"/>
                                                 <connections>
                                                     <action selector="Button_To_Return_LogIn:" destination="59Y-rw-CHH" eventType="touchUpInside" id="NZb-9r-saw"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F9B-Gz-Hqu">
+                                                <rect key="frame" x="80" y="0.0" width="92" height="80"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" image="function_info.png"/>
+                                                <connections>
+                                                    <action selector="Button_To_Ouhealthcare:" destination="59Y-rw-CHH" eventType="touchUpInside" id="8NW-SO-yC2"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -631,7 +681,7 @@
                                                     <inset key="sectionInset" minX="0.0" minY="20" maxX="0.0" maxY="0.0"/>
                                                 </collectionViewFlowLayout>
                                                 <cells>
-                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" reuseIdentifier="cell" translatesAutoresizingMaskIntoConstraints="NO" id="Egt-Jl-pcq">
+                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" translatesAutoresizingMaskIntoConstraints="NO" id="Egt-Jl-pcq">
                                                         <rect key="frame" x="20" y="20" width="335" height="60"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <collectionViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="LR9-WA-a7W">
@@ -788,11 +838,19 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bC5-d0-IJe">
-                                                        <rect key="frame" x="88" y="0.0" width="93" height="80"/>
+                                                        <rect key="frame" x="282" y="0.0" width="93" height="80"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <state key="normal" image="view_exit.png"/>
                                                         <connections>
                                                             <action selector="Button_To_Return_LogIn:" destination="Y8W-nA-pUc" eventType="touchUpInside" id="mB4-9B-Ve4"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYv-J4-uCe">
+                                                        <rect key="frame" x="80" y="0.0" width="92" height="80"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <state key="normal" image="function_info.png"/>
+                                                        <connections>
+                                                            <action selector="Button_To_Ouhealthcare:" destination="Y8W-nA-pUc" eventType="touchUpInside" id="6mf-vb-tEE"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -972,11 +1030,19 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zsi-Oh-wOc">
-                                                <rect key="frame" x="88" y="0.0" width="93" height="80"/>
+                                                <rect key="frame" x="282" y="0.0" width="93" height="80"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" image="view_exit.png"/>
                                                 <connections>
                                                     <action selector="Button_To_Return_LogIn:" destination="5J5-yd-C6h" eventType="touchUpInside" id="voj-S2-pBV"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rv5-al-KXP">
+                                                <rect key="frame" x="80" y="0.0" width="92" height="80"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" image="function_info.png"/>
+                                                <connections>
+                                                    <action selector="Button_To_Ouhealthcare:" destination="5J5-yd-C6h" eventType="touchUpInside" id="LzC-2k-dUw"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -1106,6 +1172,7 @@
         <image name="baby_card_background.png" width="221.75999450683594" height="249.1199951171875"/>
         <image name="background.png" width="480" height="800"/>
         <image name="function_back.png" width="92" height="80"/>
+        <image name="function_info.png" width="92" height="80"/>
         <image name="oucare_ic_logo.png" width="139" height="36.5"/>
         <image name="title_user.png" width="32.639999389648438" height="43.200000762939453"/>
         <image name="view_exit.png" width="165" height="126"/>
