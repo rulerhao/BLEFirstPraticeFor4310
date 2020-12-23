@@ -121,13 +121,7 @@ BOOL EnabledOrder;
     center = [NSNotificationCenter defaultCenter];
 
     self.Time_Text_Field.text = Now_Time;
-    //----------------------- Create Navigation --------------------------
-//    UIViewController *bbp=[[UIViewController alloc]initWithNibName:@"UIViewController" bundle:nil];
-//    UINavigationController *passcodeNavigationController = [[UINavigationController alloc] initWithRootViewController:bbp];
-//    // [self.navigationController presentModalViewController:passcodeNavigationController animated:YES];
-//      [self.navigationController pushViewController:passcodeNavigationController animated:YES];
     
-    //--------------------------------------------------------------------
     [self startAppViewDraw];
     [self afterLogInViewDraw];
 //    LogInController *logInController = [LogInController new];
@@ -602,8 +596,8 @@ cellForItemAtIndexPath  :(NSIndexPath *)        indexPath {
                 BOOL MovementNormal = [sketchView getMovementNormal:[CD getStoredMovementState]
                                                            ScanTime:ks4310Setting.Movement_Scan_Time];
                 [self mqttPublish : [CD getDeviceName]
-                 characteristic:characteristic_Data
-                 movementState:MovementNormal];
+                   characteristic : characteristic_Data
+                    movementState : MovementNormal];
                 return cell;
             }
         }
