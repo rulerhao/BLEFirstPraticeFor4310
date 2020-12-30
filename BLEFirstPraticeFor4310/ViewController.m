@@ -75,6 +75,7 @@ BOOL EnabledOrder;
 }
 //--------------- 按下回前個畫面按鈕 ---------------
 - (IBAction)Touch_Back_Button:(id)sender {
+    [RootNavigationView popViewControllerAnimated:NO];
 }
 //--------------- 按下回登入畫面按鈕 ---------------
 - (IBAction)Button_To_Return_LogIn:(id)sender {
