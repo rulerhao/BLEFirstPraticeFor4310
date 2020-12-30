@@ -144,8 +144,11 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         NSLog(@"testForFork");
         NSLog(@"TestForFork2");
 <<<<<<< HEAD
+<<<<<<< HEAD
         if([Characteristic_Headg_String isEqual:@"00"]) {
 =======
+=======
+>>>>>>> testbranch
         NSLog(@"TestForFork3");
         if([Characteristic_Head_String isEqual:@"00"]) {
 >>>>>>> testbranch
