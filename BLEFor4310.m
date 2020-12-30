@@ -143,7 +143,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
          */
         NSLog(@"testForFork");
         NSLog(@"TestForFork2");
-        if([Characteristic_Headg_String isEqual:@"00"]) {
+        if([Characteristic_Head_String isEqual:@"00"]) {
             
         }
         else if([Characteristic_Head_String isEqual:@"04"]) {
