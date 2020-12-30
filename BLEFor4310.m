@@ -155,6 +155,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         }
     }
 }
+
 #pragma mark - Methods
 // ---------------------- 新增裝置至 Stored_Devices ----------------------
 - (void) addNewDeviceToStored : (NSMutableArray *)  Stored_Devices
