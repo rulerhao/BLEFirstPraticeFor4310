@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios
+platform :ios, 12.4
 
 # ignore all warnings from all pods
 inhibit_all_warnings!
