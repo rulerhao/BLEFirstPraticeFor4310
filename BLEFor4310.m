@@ -142,6 +142,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
          * write 05 後會收到0555AA後再 write 04 並會因此收到記憶體回傳的 04....... update value
          */
         NSLog(@"testForFork");
+        NSLog(@"TestForFork2");
         if([Characteristic_Head_String isEqual:@"00"]) {
             
         }
