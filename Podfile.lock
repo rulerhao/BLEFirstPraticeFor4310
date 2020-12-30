@@ -2,18 +2,10 @@ PODS:
   - AppAuth (1.4.0):
     - AppAuth/Core (= 1.4.0)
     - AppAuth/ExternalUserAgent (= 1.4.0)
-  - AppAuth/Core (1.4.0)
-  - AppAuth/ExternalUserAgent (1.4.0)
   - CocoaLumberjack (3.7.0):
     - CocoaLumberjack/Core (= 3.7.0)
-  - CocoaLumberjack/Core (3.7.0)
   - MQTTClient (0.15.3):
     - MQTTClient/Core (= 0.15.3)
-  - MQTTClient/Core (0.15.3):
-    - MQTTClient/Manager
-    - MQTTClient/Min
-  - MQTTClient/Manager (0.15.3):
-    - MQTTClient/Min
   - MQTTClient/ManagerL (0.15.3):
     - MQTTClient/MinL
   - MQTTClient/Min (0.15.3)
@@ -56,6 +48,6 @@ SPEC CHECKSUMS:
   ProtocolBuffers: d509225eb2ea43d9582a59e94348fcf86e2abd65
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
 
-PODFILE CHECKSUM: ca911605c7e8c7bcd92a7c299cad83bf0848d344
+PODFILE CHECKSUM: c12ff0fcda408e6c7d7aeed91f987ba01afb6e64
 
 COCOAPODS: 1.10.0

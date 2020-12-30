@@ -19,7 +19,7 @@
 }
 
 - (void)
-addObj                  :(nullable CBPeripheral *)   Pheripheral
+addObj                  :(nullable CBPeripheral *)   Peripheral
 nowDeviceInformationCharacteristic       :(nullable NSData *)         Now_Charact
 previousCharacteristic  :(nullable NSData *)         Previous_Charact
 nowBabyInformationCharacteristic      :(nullable NSData *)         Now_Baby_Infor
@@ -29,7 +29,7 @@ deviceName              :(nullable NSString *)       Device_Name
 deviceID                :(nullable NSString *)       Device_ID
 deviceSex               :(nullable NSString *)       Device_Sex
 {
-    peripheral = Pheripheral;
+    peripheral = Peripheral;
     now_Charact = Now_Charact;
     previous_Charact = Previous_Charact;
     now_Baby_Infor = Now_Baby_Infor;
@@ -40,7 +40,7 @@ deviceSex               :(nullable NSString *)       Device_Sex
     device_Sex = Device_Sex;
 }
 
-- (CBPeripheral *) getPheripheral {
+- (CBPeripheral *) getPeripheral {
     return peripheral;
 }
 

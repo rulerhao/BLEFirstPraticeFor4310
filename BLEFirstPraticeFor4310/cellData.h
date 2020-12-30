@@ -46,7 +46,7 @@ deviceName              :(nullable NSString *)       Device_Name
 deviceID                :(nullable NSString *)       Device_ID
 deviceSex               :(nullable NSString *)       Device_Sex;
 
-- (CBPeripheral *) getPheripheral;
+- (CBPeripheral *) getPeripheral;
 - (NSData *) getNowDeviceInformationCharacteristic;
 - (NSData *) getPreviousCharacteristic;
 - (NSData *) getNowBabyInformationCharacteristic;

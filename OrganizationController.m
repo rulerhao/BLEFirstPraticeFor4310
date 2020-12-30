@@ -44,6 +44,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // ------------------- 開始 BLE ----------------------
+    //BLE = [BLEFor4310 new];
     // ------------------- Button Bar ----------------------
     self.Now_Navigation_Name_TextView.text = Now_Navigation_Name;
     

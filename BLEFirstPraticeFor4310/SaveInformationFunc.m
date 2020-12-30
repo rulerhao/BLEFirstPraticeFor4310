@@ -37,7 +37,7 @@ indexPath       : (NSIndexPath *)       indexPath
         NSLog(@"Merged_InformationsAgain : %@", Merged_InformationsAgain);
         
         // write 05 和要賦予的裝置資訊
-        CBPeripheral *peri = [[StoredDevices objectAtIndex:[indexPath row]] getPheripheral];
+        CBPeripheral *peri = [[StoredDevices objectAtIndex:[indexPath row]] getPeripheral];
         CBService *ser = [[peri services] objectAtIndex:2];
         CBCharacteristic *chara = [[ser characteristics] objectAtIndex:2];
 

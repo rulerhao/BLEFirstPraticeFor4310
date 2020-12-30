@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4273DFD9F134D0D258761321 /* Pods_BLEFirstPraticeFor4310.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1C9614A219060EC16AA474F /* Pods_BLEFirstPraticeFor4310.framework */; };
 		630720B5256E3FC70000F7C7 /* SaveInformationFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = 630720B4256E3FC70000F7C7 /* SaveInformationFunc.m */; };
 		630720BB256E463B0000F7C7 /* KS4310Setting.m in Sources */ = {isa = PBXBuildFile; fileRef = 630720BA256E463B0000F7C7 /* KS4310Setting.m */; };
 		630EFD1B258B08DE0027B07E /* MyNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 630EFD1A258B08DE0027B07E /* MyNavigationController.m */; };
@@ -32,6 +31,7 @@
 		6352680D2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6352680C2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m */; };
 		635268112558E49F0071F655 /* InformationRunnable.m in Sources */ = {isa = PBXBuildFile; fileRef = 635268102558E49F0071F655 /* InformationRunnable.m */; };
 		635E304C2592D9E9009298FA /* OuhealthcareWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 635E304B2592D9E9009298FA /* OuhealthcareWebViewController.m */; };
+		635E307D25934434009298FA /* BLEFor4310.m in Sources */ = {isa = PBXBuildFile; fileRef = 635E307C25934434009298FA /* BLEFor4310.m */; };
 		63746DF8258857650011D283 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 63746DF7258857650011D283 /* Reachability.m */; };
 		63746DFC258886A40011D283 /* NetworkReachAbility.m in Sources */ = {isa = PBXBuildFile; fileRef = 63746DFB258886A40011D283 /* NetworkReachAbility.m */; };
 		63AF37E62548FE1900D6F804 /* baby_card_girl_photo_background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37DB2548FE1900D6F804 /* baby_card_girl_photo_background2.png */; };
@@ -803,6 +803,8 @@
 		635268102558E49F0071F655 /* InformationRunnable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InformationRunnable.m; sourceTree = "<group>"; };
 		635E304A2592D9E9009298FA /* OuhealthcareWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OuhealthcareWebViewController.h; sourceTree = "<group>"; };
 		635E304B2592D9E9009298FA /* OuhealthcareWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OuhealthcareWebViewController.m; sourceTree = "<group>"; };
+		635E307B25934434009298FA /* BLEFor4310.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLEFor4310.h; sourceTree = "<group>"; };
+		635E307C25934434009298FA /* BLEFor4310.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLEFor4310.m; sourceTree = "<group>"; };
 		63746DF6258857650011D283 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = BLEFirstPraticeFor4310/Reachability.h; sourceTree = "<group>"; };
 		63746DF7258857650011D283 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = BLEFirstPraticeFor4310/Reachability.m; sourceTree = "<group>"; };
 		63746DFA258886A40011D283 /* NetworkReachAbility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkReachAbility.h; sourceTree = "<group>"; };
@@ -1576,7 +1578,6 @@
 				6327851B2591C14100694AD4 /* ProtocolBuffers.framework in Frameworks */,
 				6327851D2591C14100694AD4 /* SocketRocket.framework in Frameworks */,
 				6327850B2591C11700694AD4 /* AppAuth.framework in Frameworks */,
-				4273DFD9F134D0D258761321 /* Pods_BLEFirstPraticeFor4310.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1657,6 +1658,8 @@
 		63DB0E40251DC2E000FA3D39 = {
 			isa = PBXGroup;
 			children = (
+				635E307B25934434009298FA /* BLEFor4310.h */,
+				635E307C25934434009298FA /* BLEFor4310.m */,
 				635E304A2592D9E9009298FA /* OuhealthcareWebViewController.h */,
 				635E304B2592D9E9009298FA /* OuhealthcareWebViewController.m */,
 				63F08B6E2590316600424EFD /* res */,
@@ -2711,7 +2714,7 @@
 		63DB0E41251DC2E000FA3D39 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1230;
 				TargetAttributes = {
 					63DB0E48251DC2E000FA3D39 = {
 						CreatedOnToolsVersion = 12.0;
@@ -3499,6 +3502,7 @@
 				63CF82642583503E00438317 /* MQTTConnectImplementation.m in Sources */,
 				63DB0E54251DC2E000FA3D39 /* ViewController.m in Sources */,
 				635E304C2592D9E9009298FA /* OuhealthcareWebViewController.m in Sources */,
+				635E307D25934434009298FA /* BLEFor4310.m in Sources */,
 				63DB0E4E251DC2E000FA3D39 /* AppDelegate.m in Sources */,
 				63CF83F32583507300438317 /* device.proto in Sources */,
 				6352680D2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m in Sources */,

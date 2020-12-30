@@ -75,8 +75,6 @@ BOOL EnabledOrder;
 }
 //--------------- 按下回前個畫面按鈕 ---------------
 - (IBAction)Touch_Back_Button:(id)sender {
-    [RootNavigationView popViewControllerAnimated:NO];
-
 }
 //--------------- 按下回登入畫面按鈕 ---------------
 - (IBAction)Button_To_Return_LogIn:(id)sender {
@@ -92,7 +90,7 @@ BOOL EnabledOrder;
     //--------------------------- 關閉藍芽連線 --------------------------------
     for(int i = 0; i < [_StoredDevices count]; i++) {
         cellData *Information_CellData = [_StoredDevices objectAtIndex:i];
-        [_myCBCentralManager cancelPeripheralConnection:[Information_CellData getPheripheral]];
+        [_myCBCentralManager cancelPeripheralConnection:[Information_CellData getPeripheral]];
     }
     //--------------------------- 關閉藍芽斷線的警報 --------------------------------
     [BLEBeDisabledTimer invalidate];
@@ -230,7 +228,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
          */
         for(int i = 0;i < [_StoredDevices count]; i++) {
             //NSLog(@"getIntoFor");
-            NSUUID *device_Identifier = [[[_StoredDevices objectAtIndex:i] getPheripheral] identifier];
+            NSUUID *device_Identifier = [[[_StoredDevices objectAtIndex:i] getPeripheral] identifier];
             if([device_Identifier isEqual:[peripheral identifier]]) {
                 NSLog(@"device_Identifier: %@", device_Identifier);
                 Device_Contain = true;
@@ -328,9 +326,9 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     
     KS4310Setting *ks4310Setting = [[KS4310Setting alloc] init];
     [ks4310Setting InitKS4310Setting];
-    
+    NSLog(@"characteristic = %@", [characteristic value]);
     for(int i = 0; i < [_StoredDevices count]; i++) {
-        NSUUID *stored_Identifier = [[[_StoredDevices objectAtIndex:i] getPheripheral] identifier];
+        NSUUID *stored_Identifier = [[[_StoredDevices objectAtIndex:i] getPeripheral] identifier];
         NSUUID *now_Identifier = [peripheral identifier];
         
         if([stored_Identifier isEqual:now_Identifier]) {
@@ -487,7 +485,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
             error                   :(NSError *)                error {
     NSLog(@"DisConnected");
     for(int i = 0; i < [_StoredDevices count];i++) {
-        NSUUID *Stored_UUID = [[[_StoredDevices objectAtIndex:i] getPheripheral] identifier];
+        NSUUID *Stored_UUID = [[[_StoredDevices objectAtIndex:i] getPeripheral] identifier];
         if([Stored_UUID isEqual:[peripheral identifier]]) {
             [_StoredDevices removeObjectAtIndex:i];
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i
@@ -728,7 +726,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)        indexPath {
 write04ToKS4310     : (NSMutableArray *)    mutable_Array
 index               : (NSUInteger)          Index {
     
-    CBPeripheral *peri = [[mutable_Array objectAtIndex:Index] getPheripheral];
+    CBPeripheral *peri = [[mutable_Array objectAtIndex:Index] getPeripheral];
     CBService *ser = [[peri services] objectAtIndex:2];
     CBCharacteristic *chara = [[ser characteristics] objectAtIndex:2];
     

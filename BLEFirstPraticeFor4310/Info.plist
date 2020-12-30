@@ -75,5 +75,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>bluetooth-central</key>
+	<string>The app communicates with Bluetooth low energy peripherals using the Core Bluetooth framework.</string>
+	<key>bluetooth-peripheral</key>
+	<string>The app shares data using the Core Bluetooth framework.</string>
 </dict>
 </plist>

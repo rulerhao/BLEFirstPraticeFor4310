@@ -41,6 +41,23 @@
     NSLog(@"Account_Account = %@", Account);
     NSLog(@"Account_Password = %@", Password);
     
+    // ------------------ Run BLEFor4310 ---------------
+//    BLEFor4310 *bleFor4310 = [BLEFor4310 new];
+//    BLEFor4310 *bleFor4310 = [BLEFor4310 new];
+//    [self presentViewController:bleFor4310
+//                       animated:NO
+//                     completion:nil];
+//    dispatch_queue_t createQueue = dispatch_queue_create("SerialQueue", nil);
+//        dispatch_async(createQueue, ^(){
+//            BLEFor4310 *bleFor4310 = [BLEFor4310 new];;
+//        });
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        [BLEFor4310 new];
+//    dispatch_async(GlobalQueue, ^{
+//        [BLEFor4310 new];
+//    });
+//    });
+    // ------------------ 跳到機構畫面 ---------------
     UIStoryboard *StoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     OrganizationController *OrganizationController = [StoryBoard instantiateViewControllerWithIdentifier:@"OrganizationUIViewController"];
     [RootNavigationView pushViewController:OrganizationController animated:NO];

@@ -8,8 +8,11 @@
 #import "AppDelegate.h"
 
 MyNavigationController *RootNavigationView;
+BLEFor4310 *BLE;
 NSString *Now_Time;
 NSString *Now_Navigation_Name;
+dispatch_queue_t GlobalQueue;
+
 @interface AppDelegate ()
 
 @end
@@ -18,6 +21,8 @@ NSString *Now_Navigation_Name;
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    GlobalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+
     UIStoryboard *StoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     RootNavigationView = [StoryBoard instantiateViewControllerWithIdentifier:@"myNavigationController"];
     //-------------------NowTime----------------
