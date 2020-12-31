@@ -411,16 +411,15 @@ previous_z          :(NSInteger) previous_Z {
  */
 
 - (NSMutableArray *)
-refreshMovementState       : (CBCharacteristic*)   characteristic
-nowStoredMovementState  : (NSMutableArray *)    now_Stored_Movement_State
+refreshMovementState    : (NSData *)  characteristic_Value
 storedDevices           : (NSMutableArray *)    StoredDevices
 movementScanTime        : (NSInteger)           MovementScanTime
 index                   : (NSUInteger)          index {
     
         
-        NSInteger Location_X = [self get_Location_X:[characteristic value]];
-        NSInteger Location_Y = [self get_Location_Y:[characteristic value]];
-        NSInteger Location_Z = [self get_Location_Z:[characteristic value]];
+        NSInteger Location_X = [self get_Location_X:characteristic_Value];
+        NSInteger Location_Y = [self get_Location_Y:characteristic_Value];
+        NSInteger Location_Z = [self get_Location_Z:characteristic_Value];
         
         NSData *Previous_Characteristic = [[StoredDevices objectAtIndex:index] getPreviousCharacteristic];
         
@@ -435,7 +434,58 @@ index                   : (NSUInteger)          index {
                                                previous_y             :Previous_Location_Y
                                                previous_z             :Previous_Location_Z];
         
-        now_Stored_Movement_State = [[StoredDevices objectAtIndex:index] getStoredMovementState];
+        NSMutableArray *now_Stored_Movement_State = [[StoredDevices objectAtIndex:index] getStoredMovementState];
+        
+        /**
+         * 建立一個儲存十五秒位置變化是否正常的 array
+         */
+        // 如果未滿的時候
+        if([now_Stored_Movement_State count] < MovementScanTime) {
+            NSLog(@"now_Movement_Statusacc = %hhu", now_Movement_Status);
+            [now_Stored_Movement_State addObject: [NSNumber numberWithBool:now_Movement_Status]];
+            NSLog(@"now_Stored_Movement_State_Inside = %@", now_Stored_Movement_State);
+        }
+        // 如果滿位置的時候
+        else {
+            for(NSInteger i = 0; i < [now_Stored_Movement_State count] - 1; i++) {
+                [now_Stored_Movement_State replaceObjectAtIndex:i
+                                                     withObject:[now_Stored_Movement_State
+                                                  objectAtIndex:i + 1]];
+            }
+            [now_Stored_Movement_State replaceObjectAtIndex:[now_Stored_Movement_State count] - 1
+                                                 withObject:[NSNumber numberWithBool:now_Movement_Status]];
+        }
+    NSLog(@"now_Stored_Movement_State_Inside = %@", now_Stored_Movement_State);
+    return now_Stored_Movement_State;
+}
+
+- (NSMutableArray *)
+movementStateRefresh    : (NSData *)  characteristic_Value
+storedDeviceCell        : (StoredDevicesCell *) Stored_Device_Cell
+movementScanTime        : (NSInteger)           MovementScanTime {
+        NSInteger Location_X = [self get_Location_X:characteristic_Value];
+        NSInteger Location_Y = [self get_Location_Y:characteristic_Value];
+        NSInteger Location_Z = [self get_Location_Z:characteristic_Value];
+        
+        NSData *Previous_Characteristic = [Stored_Device_Cell Device_Information];
+        
+        NSInteger Previous_Location_X = [self get_Location_X:Previous_Characteristic];
+        NSInteger Previous_Location_Y = [self get_Location_Y:Previous_Characteristic];
+        NSInteger Previous_Location_Z = [self get_Location_Z:Previous_Characteristic];
+        
+        Boolean now_Movement_Status = [self get_Movement_Status    :Location_X
+                                               y                      :Location_Y
+                                               z                      :Location_Z
+                                               previous_x             :Previous_Location_X
+                                               previous_y             :Previous_Location_Y
+                                               previous_z             :Previous_Location_Z];
+    NSLog(@"TestForMovement.Locate.Location_X = %ld", (long)Location_X);
+    NSLog(@"TestForMovement.Locate.Location_Y = %ld", (long)Location_Y);
+    NSLog(@"TestForMovement.Locate.Location_Z = %ld", (long)Location_Z);
+    NSLog(@"TestForMovement.Locate.Previous_Location_X = %ld", (long)Previous_Location_X);
+    NSLog(@"TestForMovement.Locate.Previous_Location_Y = %ld", (long)Previous_Location_Y);
+    NSLog(@"TestForMovement.Locate.Previous_Location_Z = %ld", (long)Previous_Location_Z);
+        NSMutableArray *now_Stored_Movement_State = [Stored_Device_Cell Stored_Movement_State];
         
         /**
          * 建立一個儲存十五秒位置變化是否正常的 array

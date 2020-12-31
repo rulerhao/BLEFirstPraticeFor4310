@@ -14,7 +14,6 @@ extern MyNavigationController *RootNavigationView;
 extern BLEFor4310 *BLE;
 extern NSString *Now_Time;
 extern NSString *Now_Navigation_Name;
-extern NSMutableArray *Stored_Data;
 
 extern dispatch_queue_t GlobalQueue;
 

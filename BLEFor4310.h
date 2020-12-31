@@ -9,6 +9,7 @@
 #import "CalFunc.h"
 #import "StoredDevicesCell.h"
 #import "KS4310Setting.h"
+#import "Convert4310Information.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) startFor4310BLE;
 
 @property(strong, nonatomic) CBCentralManager *CM;
+@property(strong, nonatomic) NSMutableArray *Stored_Data;
 
 @end
 

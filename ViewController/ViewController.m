@@ -333,7 +333,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         NSUUID *now_Identifier = [peripheral identifier];
         
         if([stored_Identifier isEqual:now_Identifier]) {
-            // 如果是第一次進如則先 write 04 讓 device回傳嬰兒資訊
+            // 如果是第一次進入則先 write 04 讓 device 回傳嬰兒資訊
             // 如果 getNowCharacteristic 還是 nil 的話
             // 或者接收到 0x0555aa (接收到 0x05 時 update 的值 length = 3)
             if(![[_StoredDevices objectAtIndex:i] getNowDeviceInformationCharacteristic] ||
@@ -409,11 +409,11 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                    [Previous_Characteristic isEqual:ks4310Setting.Identifier_From_Recieve_Characteristic_Full_Bytes_String]) {
                     NSLog(@"characteristic too short = :%@", [characteristic value]);
                     Convert4310Information *convert = [[Convert4310Information alloc] init];
-                    now_Stored_Movement_State = [convert refreshMovementState      :   characteristic
-                                                         nowStoredMovementState    :   now_Stored_Movement_State
+                    now_Stored_Movement_State = [convert refreshMovementState      :   [characteristic value]
                                                          storedDevices             :   _StoredDevices
                                                          movementScanTime          :   ks4310Setting.Movement_Scan_Time
                                                          index                     :   i];
+                    
                 }
                 /**
                  * 儲存至全域 NSMutableArray StoredDevices
@@ -427,8 +427,9 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                     deviceName                                  :[[_StoredDevices objectAtIndex:i] getDeviceName]
                     deviceID                                    :[[_StoredDevices objectAtIndex:i] getDeviceID]
                     deviceSex                                   :[[_StoredDevices objectAtIndex:i] getDeviceSex]];
-                
+                NSLog(@"TestForMovementCharacter.First = %@", [_StoredDevices objectAtIndex:i] );
                 [_StoredDevices replaceObjectAtIndex:i withObject:CD];
+                NSLog(@"TestForMovementCharacter.Second = %@", [_StoredDevices objectAtIndex:i] );
                 
                 /**
                  * 叫 collection view 刷新指定的 index

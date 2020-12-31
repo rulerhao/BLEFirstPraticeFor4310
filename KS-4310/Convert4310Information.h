@@ -8,6 +8,7 @@
 #import "ViewController.h"
 #import "CalFunc.h"
 #import "StringProcessFunc.h"
+#import "StoredDevicesCell.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -36,11 +37,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *) getDeviceSex : (NSData *) data_Bytes;
 
 - (NSMutableArray *)
-refreshMovementState       : (CBCharacteristic*)   characteristic
-nowStoredMovementState  : (NSMutableArray *)    now_Stored_Movement_State
+refreshMovementState    : (NSData *)   characteristic_Value
 storedDevices           : (NSMutableArray *)    StoredDevices
 movementScanTime        : (NSInteger)           MovementScanTime
 index                   : (NSUInteger)          index;
+    
+- (NSMutableArray *)
+movementStateRefresh    : (NSData *)            characteristic_Value
+storedDeviceCell        : (StoredDevicesCell *) Stored_Device_Cell
+movementScanTime        : (NSInteger)           MovementScanTime;
     
 @end
 

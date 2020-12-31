@@ -13,6 +13,8 @@
     StoredDevicesCell *storedDevicesCell;
     CalFunc *CalculateFunc;
     KS4310Setting *ks4310Setting;
+    Convert4310Information *convert4310Information;
+    NSTimer *Write04TestTimer;
 }
 @end
 
@@ -27,9 +29,10 @@ dispatch_queue_t MainQueue;
     CalculateFunc = [CalFunc alloc];
     ks4310Setting = [KS4310Setting alloc];
     [ks4310Setting InitKS4310Setting];
+    convert4310Information = [Convert4310Information alloc];
     
-    // ---------------------- 初始化 Stored_Data -------------------
-    Stored_Data = [[NSMutableArray alloc] init];
+    // ---------------------- 初始化 self.Stored_Data -------------------
+    self.Stored_Data = [[NSMutableArray alloc] init];
     // ---------------------- 初始 cell ----------------------
     storedDevicesCell = [[StoredDevicesCell alloc] init];
     
@@ -82,11 +85,11 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     // ---------------------- 篩選出 Device name 為 KS-4310 的裝置 ----------------------
     if([peripheral.name isEqual: @"KS-4310"]) {
         // ---------------------- 判斷新搜尋到的 Device 有沒有在已搜尋到的裝置中 ----------------------
-        Boolean Device_Contain = [self searchSDDeviceContain:peripheral stored_Peripheral:[self getStoredDataPeripheralArray:Stored_Data]];
+        Boolean Device_Contain = [self searchSDDeviceContain:peripheral stored_Peripheral:[self getStoredDataPeripheralArray:self.Stored_Data]];
         // ---------------------- 如果已搜尋到的 Stored_Devices 中不包含新搜尋到的 Device ----------------------
         if(Device_Contain == false) {
             // ---------------------- 新增至 Stored_Devices ----------------------
-            [self addNewDeviceToStored:Stored_Data peripheral:peripheral];
+            [self addNewDeviceToStored:self.Stored_Data peripheral:peripheral];
             // ---------------------- 連接 Peripheral ----------------------
             [central connectPeripheral:peripheral options:nil];
         }
@@ -135,7 +138,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
             error                               :(NSError *)            error {
     // ---------------------- Stored Devices 在這次的 index ----------------------
     int8_t Index_Of_Stored_Devices = [self getIndexOfStoredDevices:peripheral];
-    
+    NSLog(@"characteristic.value = %@", [characteristic value]);
     /**
      * 在首次進入時會 write 04 並且會獲得記憶體回傳的 04........ update value
      * 一般情況下會持續收到 00....... update value
@@ -143,53 +146,110 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
      */
     // ---------------------- KS-4310 ----------------------
     if([[peripheral name] isEqual:@"KS-4310"]) {
+        NSLog(@"it'sKS-4310");
+        StoredDevicesCell *storedCell = [[StoredDevicesCell alloc] init];
+        StoredDevicesCell *Previous_Stored_Deivce_Cell = [[StoredDevicesCell alloc] init];
+        Previous_Stored_Deivce_Cell = [self.Stored_Data objectAtIndex:Index_Of_Stored_Devices];
+
+
         // ---------------------- 判別這次手機發出的模式 ----------------------
         NSData *Mode_Identifier = [[characteristic value] subdataWithRange:NSMakeRange(0, 1)];
         
+        // ---------------------- 如果是首次進入 ----------------------
+        if(!Previous_Stored_Deivce_Cell.Characteristic) {
+            NSLog(@"首次進入喔");
+            // TODO: Write 04
+            // ---------------------- 測試用 TIMER : 寫入 05 ----------------------
+        }
         // ---------------------- Mode_Identifier == @"00" ----------------------
         if([Mode_Identifier isEqual:ks4310Setting.Sense_Identifier]) {
-            NSLog(@"Characteristic = %@", characteristic);
-            NSMutableArray *now_Stored_Movement_State = [[Stored_Data objectAtIndex:Index_Of_Stored_Devices] Stored_Movement_State];
-            NSString *Previous_Characteristic = [CalculateFunc getHEX:[[[Stored_Data objectAtIndex:Index_Of_Stored_Devices] Previous_Device_Information] value]];
-//            if() {
-//
-//            }
-            [storedDevicesCell  cell                        : peripheral
-                                nowDeviceInformation        : characteristic
-                                previousDeviceInformation   : [[Stored_Data objectAtIndex:Index_Of_Stored_Devices] Now_Device_Information]
-                                babyInformation             : [[Stored_Data objectAtIndex:Index_Of_Stored_Devices] Baby_Information]
-                                storedMovementState         : nil
-                                deviceName                  : [[Stored_Data objectAtIndex:Index_Of_Stored_Devices] Device_Name]
-                                deviceID                    : [[Stored_Data objectAtIndex:Index_Of_Stored_Devices] Device_ID]
-                                deviceSex                   : [[Stored_Data objectAtIndex:Index_Of_Stored_Devices] Device_Sex]];
-            [Stored_Data replaceObjectAtIndex:Index_Of_Stored_Devices withObject:storedDevicesCell];
-        }
-        // ---------------------- Mode_Identifier == @"05" ----------------------
-        else if([Mode_Identifier isEqual:ks4310Setting.Write_Identifier]) {
-            
+            // ---------------------- Movement ----------------------
+            // ---------------------- 如果上次的 Device Information 已經被給值 ----------------------
+            if([Previous_Stored_Deivce_Cell Device_Information]) {
+                NSLog(@"Previous_Stored_Deivce_Cell = %@", Previous_Stored_Deivce_Cell);
+                // ---------------------- 更新 Movement state array ----------------------
+                NSMutableArray *Movement_State_Array = [convert4310Information movementStateRefresh : [characteristic value]
+                                                                               storedDeviceCell     : Previous_Stored_Deivce_Cell
+                                                                               movementScanTime     : ks4310Setting.Movement_Scan_Time];
+                NSLog(@"Movement_State_Array = %@", Movement_State_Array);
+
+                // ---------------------- 更新裝置感測資訊至 Storeed_Data ----------------------
+                [self refreshSensorInformationToStored:self.Stored_Data index:Index_Of_Stored_Devices peripheral:peripheral storedCell:Previous_Stored_Deivce_Cell incomingCharacteristicValue:[characteristic value] movementStateArray:Movement_State_Array];
+            }
+            else {
+                // ---------------------- 首次更新裝置感測資訊至 Storeed_Data ----------------------
+                // ---------------------- 與上差別在於無更新呼吸起伏 ----------------------
+                [self firstTimeRefreshSensorInformationToStored:self.Stored_Data index:Index_Of_Stored_Devices peripheral:peripheral storedCell:Previous_Stored_Deivce_Cell incomingCharacteristicValue:[characteristic value]];
+            }
         }
         // ---------------------- Mode_Identifier == @"04" ----------------------
         else if([Mode_Identifier isEqual:ks4310Setting.Baby_Information_Identifier]) {
-            
+           
+        }
+        // ---------------------- Mode_Identifier == @"05" ----------------------
+        else if([Mode_Identifier isEqual:ks4310Setting.Write_Identifier]) {
+            // TODO: Write 04
         }
     }
 }
-
-#pragma mark - Methods
-// ---------------------- 新增裝置至 Stored_Devices ----------------------
-- (void) addNewDeviceToStored : (NSMutableArray *)  stored_Devices
-         peripheral :           (CBPeripheral *)    peripheral {
-    [storedDevicesCell cell:peripheral
-       nowDeviceInformation:nil
-  previousDeviceInformation:nil
-            babyInformation:nil
-        storedMovementState:[[NSMutableArray alloc] init]
-                 deviceName:nil
-                   deviceID:nil
-                  deviceSex:nil];
-    [Stored_Data addObject:storedDevicesCell];
+#pragma mark - Core Bluetooth Delegate - Device 斷線
+-(void)     centralManager : (CBCentralManager *) central
+   didDisconnectPeripheral : (CBPeripheral *) peripheral
+                     error : (NSError *) error {
+    uint8_t Index_Of_Disconnected_Device = [self getIndexOfStoredDevices:peripheral];
+    [self.Stored_Data removeObjectAtIndex:Index_Of_Disconnected_Device];
 }
 
+#pragma mark - Methods
+// ---------------------- 新增裝置至 Stored_Data ----------------------
+- (void) addNewDeviceToStored : (NSMutableArray *)  stored_Devices
+         peripheral :           (CBPeripheral *)    peripheral {
+    [storedDevicesCell  cell                        : peripheral
+                        characteristic              : nil
+                        deviceInformation           : nil
+                        babyInformation             : nil
+                        storedMovementState         : [[NSMutableArray alloc] init]
+                        deviceName                  : nil
+                        deviceID                    : nil
+                        deviceSex                   : nil];
+    [stored_Devices addObject:storedDevicesCell];
+}
+
+// ---------------------- 更新裝置感測資訊至 Storeed_Data ----------------------
+- (void)  refreshSensorInformationToStored : (NSMutableArray *) stored_Data
+                                     index : (u_int8_t) index
+                                peripheral : (CBPeripheral *) peripheral
+                                storedCell : (StoredDevicesCell *) stored_Cell
+               incomingCharacteristicValue : (NSData *) incoming_Characteristic_Value
+                        movementStateArray : (NSMutableArray *) movement_State_Array {
+    [stored_Cell  cell                        : peripheral
+                  characteristic              : incoming_Characteristic_Value
+                  deviceInformation           : incoming_Characteristic_Value
+                  babyInformation             : stored_Cell.Baby_Information
+                  storedMovementState         : movement_State_Array
+                  deviceName                  : stored_Cell.Device_Name
+                  deviceID                    : stored_Cell.Device_ID
+                  deviceSex                   : stored_Cell.Device_Sex];
+    [stored_Data replaceObjectAtIndex:index withObject:stored_Cell];
+}
+
+// ---------------------- 首次更新裝置感測資訊至 Storeed_Data ----------------------
+// ---------------------- 與上差別在於無更新呼吸起伏 ----------------------
+- (void)  firstTimeRefreshSensorInformationToStored : (NSMutableArray *) stored_Data
+                                              index : (u_int8_t) index
+                                         peripheral : (CBPeripheral *) peripheral
+                                         storedCell : (StoredDevicesCell *) stored_Cell
+                        incomingCharacteristicValue : (NSData *) incoming_Characteristic_Value {
+    [stored_Cell  cell                        : peripheral
+                  characteristic              : incoming_Characteristic_Value
+                  deviceInformation           : incoming_Characteristic_Value
+                  babyInformation             : stored_Cell.Baby_Information
+                  storedMovementState         : stored_Cell.Stored_Movement_State
+                  deviceName                  : stored_Cell.Device_Name
+                  deviceID                    : stored_Cell.Device_ID
+                  deviceSex                   : stored_Cell.Device_Sex];
+    [stored_Data replaceObjectAtIndex:index withObject:stored_Cell];
+}
 // ---------------------- 判斷新搜尋到的 Device 有沒有在已搜尋到的裝置中 ----------------------
 - (BOOL) searchSDDeviceContain : (CBPeripheral *)   peripheral
              stored_Peripheral : (NSMutableArray *) stored_Peripheral {
@@ -204,18 +264,18 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     return Device_Contain;
 }
 // ---------------------- 將 Stored_Devices 裡面的 Peripheral 另外取出為 NSMutableArray -----------------
-- (NSMutableArray *) getStoredDataPeripheralArray : (NSMutableArray *) stored_Data {
+- (NSMutableArray *) getStoredDataPeripheralArray : (NSMutableArray *) Stored_Data {
     NSMutableArray *Stored_Devices_Peripheral = [[NSMutableArray alloc] init];
-    for (NSUInteger i = 0; i < [stored_Data count]; i++) {
-        [Stored_Devices_Peripheral addObject:[[stored_Data objectAtIndex:i] Peripheral]];
+    for (NSUInteger i = 0; i < [self.Stored_Data count]; i++) {
+        [Stored_Devices_Peripheral addObject:[[Stored_Data objectAtIndex:i] Peripheral]];
     }
     return Stored_Devices_Peripheral;
 }
 
 // ---------------------- 找出 Stored_Devices 在這次的 index -----------------
 - (int8_t) getIndexOfStoredDevices : (CBPeripheral *) peripheral {
-    for(uint8_t i = 0; i < [Stored_Data count]; i++)
-        if([[Stored_Data objectAtIndex:i] Peripheral] == peripheral)
+    for(uint8_t i = 0; i < [self.Stored_Data count]; i++)
+        if([[self.Stored_Data objectAtIndex:i] Peripheral] == peripheral)
             return i;
     return -1;
 }
@@ -237,5 +297,32 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     }
     NSLog(@"commandToSend = %@", commandToSend);
     return commandToSend;
+}
+
+// ---------------------- Write 04 -----------------
+- (void)
+write04ToKS4310     : (StoredDevicesCell *) Stored_Device_Cell
+{
+    CBPeripheral *peripheral = [Stored_Device_Cell Peripheral];
+    CBService *service = [[peripheral services] objectAtIndex:2];
+    CBCharacteristic *characteristic = [[service characteristics] objectAtIndex:2];
+    
+    //wirte to get information setting in device.
+ 
+    const uint8_t bytes[] = {0x04};
+    
+    NSData *data = [NSData dataWithBytes:bytes
+                                  length:sizeof(bytes)];
+    [peripheral writeValue : data
+         forCharacteristic : characteristic
+                      type : CBCharacteristicWriteWithResponse];
+}
+
+- (void) enableWrite04TestTimer {
+    Write04TestTimer = [NSTimer scheduledTimerWithTimeInterval:1
+                                     target:self
+                                   selector:@selector(write04ToKS4310:) withObject:myCell
+                                   userInfo:nil
+                                    repeats:YES];
 }
 @end
