@@ -10,9 +10,9 @@
 @interface BLEFor4310 ()
 {
     CBCentralManager *My_CB_Central_Manager;
-    NSMutableArray *Stored_Devices;
-    cellData *CD;
+    StoredDevicesCell *storedDevicesCell;
     CalFunc *CalculateFunc;
+    KS4310Setting *ks4310Setting;
 }
 @end
 
@@ -25,17 +25,20 @@ dispatch_queue_t MainQueue;
 }
 -(instancetype)init {
     CalculateFunc = [CalFunc alloc];
+    ks4310Setting = [KS4310Setting alloc];
+    [ks4310Setting InitKS4310Setting];
+    
+    // ---------------------- 初始化 Stored_Data -------------------
+    Stored_Data = [[NSMutableArray alloc] init];
+    // ---------------------- 初始 cell ----------------------
+    storedDevicesCell = [[StoredDevicesCell alloc] init];
     
     BLEQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     MainQueue = dispatch_get_main_queue();
     
     NSLog(@"Delegate = %@", self);
-    // ---------------------- 初始眾 Function ----------------------
-    CD = [[cellData alloc] init];
     // ---------------------- 初始化 CB Central Manager ----------------------
     _CM = [[CBCentralManager alloc] initWithDelegate:self queue:BLEQueue];
-    // ---------------------- 初始化儲存的資訊 ----------------------
-    Stored_Devices = [[NSMutableArray alloc] init];
     
     return self;
 }
@@ -79,11 +82,11 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     // ---------------------- 篩選出 Device name 為 KS-4310 的裝置 ----------------------
     if([peripheral.name isEqual: @"KS-4310"]) {
         // ---------------------- 判斷新搜尋到的 Device 有沒有在已搜尋到的裝置中 ----------------------
-        Boolean Device_Contain = [self searchSDDeviceContain:peripheral stored_Peripheral:[self getSDPeripheralArray:Stored_Devices]];
+        Boolean Device_Contain = [self searchSDDeviceContain:peripheral stored_Peripheral:[self getStoredDataPeripheralArray:Stored_Data]];
         // ---------------------- 如果已搜尋到的 Stored_Devices 中不包含新搜尋到的 Device ----------------------
         if(Device_Contain == false) {
             // ---------------------- 新增至 Stored_Devices ----------------------
-            [self addNewDeviceToStored:Stored_Devices peripheral:peripheral];
+            [self addNewDeviceToStored:Stored_Data peripheral:peripheral];
             // ---------------------- 連接 Peripheral ----------------------
             [central connectPeripheral:peripheral options:nil];
         }
@@ -130,31 +133,43 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
 - (void)    peripheral                          :(CBPeripheral *)       peripheral
             didUpdateValueForCharacteristic     :(CBCharacteristic *)   characteristic
             error                               :(NSError *)            error {
+    // ---------------------- Stored Devices 在這次的 index ----------------------
+    int8_t Index_Of_Stored_Devices = [self getIndexOfStoredDevices:peripheral];
+    
+    /**
+     * 在首次進入時會 write 04 並且會獲得記憶體回傳的 04........ update value
+     * 一般情況下會持續收到 00....... update value
+     * write 05 後會收到0555AA後再 write 04 並會因此收到記憶體回傳的 04....... update value
+     */
+    // ---------------------- KS-4310 ----------------------
     if([[peripheral name] isEqual:@"KS-4310"]) {
-        // ---------------------- Stored Devices 在這次的 index ----------------------
-        int8_t Index_Of_Stored_Devices = [self getIndexOfStoredDevices:peripheral];
+        // ---------------------- 判別這次手機發出的模式 ----------------------
+        NSData *Mode_Identifier = [[characteristic value] subdataWithRange:NSMakeRange(0, 1)];
         
-        // ---------------------- 前兩個字元 ----------------------
-        NSString *Characteristic_Head_String = [[CalculateFunc getHEX:[characteristic value]]substringWithRange:NSMakeRange(0, 2)];
-        /**
-         * 在首次進入時會 write 04 並且會獲得記憶體回傳的 04........ update value
-         * 一般情況下會持續收到 00....... update value
-         * write 05 後會收到0555AA後再 write 04 並會因此收到記憶體回傳的 04....... update value
-         */
-        NSLog(@"testForFork");
-        NSLog(@"TestForFork2");
-        NSLog(@"TestForFork3");
-        NSLog(@"TestForFork4");
-        NSLog(@"TestForFork5");
-        NSLog(@"TestForFork6");
-        NSLog(@"TestForFork7");
-        if([Characteristic_Head_String isEqual:@"00"]) {
+        // ---------------------- Mode_Identifier == @"00" ----------------------
+        if([Mode_Identifier isEqual:ks4310Setting.Sense_Identifier]) {
+            NSLog(@"Characteristic = %@", characteristic);
+            NSMutableArray *now_Stored_Movement_State = [[Stored_Data objectAtIndex:Index_Of_Stored_Devices] Stored_Movement_State];
+            NSString *Previous_Characteristic = [CalculateFunc getHEX:[[[Stored_Data objectAtIndex:Index_Of_Stored_Devices] Previous_Device_Information] value]];
+//            if() {
+//
+//            }
+            [storedDevicesCell  cell                        : peripheral
+                                nowDeviceInformation        : characteristic
+                                previousDeviceInformation   : [[Stored_Data objectAtIndex:Index_Of_Stored_Devices] Now_Device_Information]
+                                babyInformation             : [[Stored_Data objectAtIndex:Index_Of_Stored_Devices] Baby_Information]
+                                storedMovementState         : nil
+                                deviceName                  : [[Stored_Data objectAtIndex:Index_Of_Stored_Devices] Device_Name]
+                                deviceID                    : [[Stored_Data objectAtIndex:Index_Of_Stored_Devices] Device_ID]
+                                deviceSex                   : [[Stored_Data objectAtIndex:Index_Of_Stored_Devices] Device_Sex]];
+            [Stored_Data replaceObjectAtIndex:Index_Of_Stored_Devices withObject:storedDevicesCell];
+        }
+        // ---------------------- Mode_Identifier == @"05" ----------------------
+        else if([Mode_Identifier isEqual:ks4310Setting.Write_Identifier]) {
             
         }
-        else if([Characteristic_Head_String isEqual:@"04"]) {
-            
-        }
-        else if([Characteristic_Head_String isEqual:@"05"]) {
+        // ---------------------- Mode_Identifier == @"04" ----------------------
+        else if([Mode_Identifier isEqual:ks4310Setting.Baby_Information_Identifier]) {
             
         }
     }
@@ -162,26 +177,25 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
 
 #pragma mark - Methods
 // ---------------------- 新增裝置至 Stored_Devices ----------------------
-- (void) addNewDeviceToStored : (NSMutableArray *)  Stored_Devices
-         peripheral :           (CBPeripheral *)    Peripheral {
-    [CD addObj                                  :Peripheral
-        nowDeviceInformationCharacteristic      :nil
-        previousCharacteristic                  :nil
-        nowBabyInformationCharacteristic        :nil
-        CurrentCharacteristic                   :nil
-        storedMovementState                     :nil
-        deviceName                              :nil
-        deviceID                                :nil
-        deviceSex                               :nil];
-    [Stored_Devices addObject:CD];
+- (void) addNewDeviceToStored : (NSMutableArray *)  stored_Devices
+         peripheral :           (CBPeripheral *)    peripheral {
+    [storedDevicesCell cell:peripheral
+       nowDeviceInformation:nil
+  previousDeviceInformation:nil
+            babyInformation:nil
+        storedMovementState:[[NSMutableArray alloc] init]
+                 deviceName:nil
+                   deviceID:nil
+                  deviceSex:nil];
+    [Stored_Data addObject:storedDevicesCell];
 }
 
 // ---------------------- 判斷新搜尋到的 Device 有沒有在已搜尋到的裝置中 ----------------------
 - (BOOL) searchSDDeviceContain : (CBPeripheral *)   peripheral
-             stored_Peripheral : (NSMutableArray *) Stored_Peripheral {
+             stored_Peripheral : (NSMutableArray *) stored_Peripheral {
     BOOL Device_Contain = NO;
-    for(NSUInteger i = 0;i < [Stored_Peripheral count]; i++) {
-        NSString *device_Identifier = [[Stored_Peripheral objectAtIndex:i] identifier];
+    for(NSUInteger i = 0;i < [stored_Peripheral count]; i++) {
+        NSString *device_Identifier = [[stored_Peripheral objectAtIndex:i] identifier];
         if([device_Identifier isEqual:[peripheral identifier]]) {
             Device_Contain = YES;
             break;
@@ -190,19 +204,38 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     return Device_Contain;
 }
 // ---------------------- 將 Stored_Devices 裡面的 Peripheral 另外取出為 NSMutableArray -----------------
-- (NSMutableArray *) getSDPeripheralArray : (NSMutableArray *) Stored_Devices {
+- (NSMutableArray *) getStoredDataPeripheralArray : (NSMutableArray *) stored_Data {
     NSMutableArray *Stored_Devices_Peripheral = [[NSMutableArray alloc] init];
-    for (NSUInteger i = 0; i < [Stored_Devices count]; i++) {
-        [Stored_Devices_Peripheral addObject:[[Stored_Devices objectAtIndex:i] getPeripheral]];
+    for (NSUInteger i = 0; i < [stored_Data count]; i++) {
+        [Stored_Devices_Peripheral addObject:[[stored_Data objectAtIndex:i] Peripheral]];
     }
     return Stored_Devices_Peripheral;
 }
 
 // ---------------------- 找出 Stored_Devices 在這次的 index -----------------
 - (int8_t) getIndexOfStoredDevices : (CBPeripheral *) peripheral {
-    for(uint8_t i = 0; i < [Stored_Devices count]; i++)
-        if([[Stored_Devices objectAtIndex:i] getPeripheral] == peripheral)
+    for(uint8_t i = 0; i < [Stored_Data count]; i++)
+        if([[Stored_Data objectAtIndex:i] Peripheral] == peripheral)
             return i;
     return -1;
+}
+
+// ---------------------- 將 String 轉換為 NSData -----------------
+- (NSData *) stringToNSData : (NSString *) data_String {
+    NSString *command = data_String;
+
+    command = [command stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSMutableData *commandToSend= [[NSMutableData alloc] init];
+    unsigned char whole_byte;
+    char byte_chars[3] = {'\0','\0','\0'};
+    int i;
+    for (i=0; i < [command length]/2; i++) {
+        byte_chars[0] = [command characterAtIndex:i*2];
+        byte_chars[1] = [command characterAtIndex:i*2+1];
+        whole_byte = strtol(byte_chars, NULL, 16);
+        [commandToSend appendBytes:&whole_byte length:1];
+    }
+    NSLog(@"commandToSend = %@", commandToSend);
+    return commandToSend;
 }
 @end

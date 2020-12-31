@@ -30,7 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
     NSUInteger Identifier_From_Recieve_Characteristic_Full_Bytes_String_Length;
     NSUInteger Identifier_From_Recieve_Characteristic_Bytes_String_Cut_Location;
     
-    
+    NSData *Sense_Identifier;
+    NSData *Write_Identifier;
+    NSData *Baby_Information_Identifier;
 }
 @property (readwrite, nonatomic) NSUInteger Movement_Scan_Time;
 @property (readwrite, nonatomic) NSUInteger HighTemperatureword;
@@ -50,6 +52,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, nonatomic) NSString *Identifier_From_Recieve_Characteristic_Full_Bytes_String;
 @property (readwrite, nonatomic) NSUInteger Identifier_From_Recieve_Characteristic_Full_Bytes_String_Length;
 @property (readwrite, nonatomic) NSUInteger Identifier_From_Recieve_Characteristic_Bytes_String_Cut_Location;
+
+@property (readwrite, nonatomic) NSData *Sense_Identifier;
+@property (readwrite, nonatomic) NSData *Write_Identifier;
+@property (readwrite, nonatomic) NSData *Baby_Information_Identifier;
 
 - (void) InitKS4310Setting;
 

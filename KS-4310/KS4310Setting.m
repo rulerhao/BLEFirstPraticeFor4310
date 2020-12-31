@@ -38,7 +38,13 @@
     Identifier_From_Recieve_Characteristic_Full_Bytes_String = @"0000F8FA";
     Identifier_From_Recieve_Characteristic_Full_Bytes_String_Length = 8;
     Identifier_From_Recieve_Characteristic_Bytes_String_Cut_Location = 0;
+    
+    // ---------------------- Identifier_NSData -----------------
+    Sense_Identifier = [self stringToNSData:@"00"];
+    Write_Identifier = [self stringToNSData:@"05"];
+    Baby_Information_Identifier = [self stringToNSData:@"04"];
 }
+
 
 @synthesize Movement_Scan_Time;
 @synthesize HighTemperatureword;
@@ -58,5 +64,28 @@
 @synthesize Identifier_From_Recieve_Characteristic_Full_Bytes_String;
 @synthesize Identifier_From_Recieve_Characteristic_Full_Bytes_String_Length;
 @synthesize Identifier_From_Recieve_Characteristic_Bytes_String_Cut_Location;
+
+@synthesize Sense_Identifier;
+@synthesize Write_Identifier;
+@synthesize Baby_Information_Identifier;
+
+// ---------------------- 將 String 轉換為 NSData -----------------
+- (NSData *) stringToNSData : (NSString *) data_String {
+    NSString *command = data_String;
+
+    command = [command stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSMutableData *commandToSend= [[NSMutableData alloc] init];
+    unsigned char whole_byte;
+    char byte_chars[3] = {'\0','\0','\0'};
+    int i;
+    for (i=0; i < [command length]/2; i++) {
+        byte_chars[0] = [command characterAtIndex:i*2];
+        byte_chars[1] = [command characterAtIndex:i*2+1];
+        whole_byte = strtol(byte_chars, NULL, 16);
+        [commandToSend appendBytes:&whole_byte length:1];
+    }
+    NSLog(@"commandToSend = %@", commandToSend);
+    return commandToSend;
+}
 
 @end

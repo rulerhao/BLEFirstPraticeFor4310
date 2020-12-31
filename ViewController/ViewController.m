@@ -75,6 +75,7 @@ BOOL EnabledOrder;
 }
 //--------------- 按下回前個畫面按鈕 ---------------
 - (IBAction)Touch_Back_Button:(id)sender {
+    [RootNavigationView popViewControllerAnimated:NO];
 }
 //--------------- 按下回登入畫面按鈕 ---------------
 - (IBAction)Button_To_Return_LogIn:(id)sender {
@@ -408,7 +409,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                    [Previous_Characteristic isEqual:ks4310Setting.Identifier_From_Recieve_Characteristic_Full_Bytes_String]) {
                     NSLog(@"characteristic too short = :%@", [characteristic value]);
                     Convert4310Information *convert = [[Convert4310Information alloc] init];
-                    now_Stored_Movement_State = [convert refreshMovementState         :   characteristic
+                    now_Stored_Movement_State = [convert refreshMovementState      :   characteristic
                                                          nowStoredMovementState    :   now_Stored_Movement_State
                                                          storedDevices             :   _StoredDevices
                                                          movementScanTime          :   ks4310Setting.Movement_Scan_Time

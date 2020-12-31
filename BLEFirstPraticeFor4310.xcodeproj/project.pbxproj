@@ -34,6 +34,7 @@
 		635E307D25934434009298FA /* BLEFor4310.m in Sources */ = {isa = PBXBuildFile; fileRef = 635E307C25934434009298FA /* BLEFor4310.m */; };
 		63746DF8258857650011D283 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 63746DF7258857650011D283 /* Reachability.m */; };
 		63746DFC258886A40011D283 /* NetworkReachAbility.m in Sources */ = {isa = PBXBuildFile; fileRef = 63746DFB258886A40011D283 /* NetworkReachAbility.m */; };
+		6388C700259C631900052795 /* StoredDevicesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6388C6FF259C631900052795 /* StoredDevicesCell.m */; };
 		63AF37E62548FE1900D6F804 /* baby_card_girl_photo_background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37DB2548FE1900D6F804 /* baby_card_girl_photo_background2.png */; };
 		63AF37E72548FE1900D6F804 /* baby_card_boy_information_bar_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37DC2548FE1900D6F804 /* baby_card_boy_information_bar_background.png */; };
 		63AF37E82548FE1900D6F804 /* baby_card_warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37DD2548FE1900D6F804 /* baby_card_warning.png */; };
@@ -42,7 +43,6 @@
 		63AF37F02548FE1900D6F804 /* baby_card_boy_photo_background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37E52548FE1900D6F804 /* baby_card_boy_photo_background2.png */; };
 		63AF37F925496D1E00D6F804 /* StringProcessFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AF37F825496D1E00D6F804 /* StringProcessFunc.m */; };
 		63B153B0256F897B00FD435F /* SwitchDevices.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B153AF256F897B00FD435F /* SwitchDevices.m */; };
-		63B153B4256F904900FD435F /* DeviceSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B153B3256F904900FD435F /* DeviceSettingController.m */; };
 		63CF82632583503E00438317 /* IDFVProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF82552583503E00438317 /* IDFVProcess.m */; };
 		63CF82642583503E00438317 /* MQTTConnectImplementation.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF82562583503E00438317 /* MQTTConnectImplementation.m */; };
 		63CF82652583503E00438317 /* StampTimeProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF82572583503E00438317 /* StampTimeProcess.m */; };
@@ -809,6 +809,8 @@
 		63746DF7258857650011D283 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = BLEFirstPraticeFor4310/Reachability.m; sourceTree = "<group>"; };
 		63746DFA258886A40011D283 /* NetworkReachAbility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkReachAbility.h; sourceTree = "<group>"; };
 		63746DFB258886A40011D283 /* NetworkReachAbility.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkReachAbility.m; sourceTree = "<group>"; };
+		6388C6FE259C631900052795 /* StoredDevicesCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoredDevicesCell.h; sourceTree = "<group>"; };
+		6388C6FF259C631900052795 /* StoredDevicesCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StoredDevicesCell.m; sourceTree = "<group>"; };
 		63AF37DB2548FE1900D6F804 /* baby_card_girl_photo_background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_girl_photo_background2.png; path = res/baby_card_girl_photo_background2.png; sourceTree = SOURCE_ROOT; };
 		63AF37DC2548FE1900D6F804 /* baby_card_boy_information_bar_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_boy_information_bar_background.png; path = res/baby_card_boy_information_bar_background.png; sourceTree = SOURCE_ROOT; };
 		63AF37DD2548FE1900D6F804 /* baby_card_warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_warning.png; path = res/baby_card_warning.png; sourceTree = SOURCE_ROOT; };
@@ -819,8 +821,6 @@
 		63AF37F825496D1E00D6F804 /* StringProcessFunc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StringProcessFunc.m; sourceTree = "<group>"; };
 		63B153AE256F897B00FD435F /* SwitchDevices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwitchDevices.h; sourceTree = "<group>"; };
 		63B153AF256F897B00FD435F /* SwitchDevices.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SwitchDevices.m; sourceTree = "<group>"; };
-		63B153B2256F904900FD435F /* DeviceSettingController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceSettingController.h; sourceTree = "<group>"; };
-		63B153B3256F904900FD435F /* DeviceSettingController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceSettingController.m; sourceTree = "<group>"; };
 		63CF82552583503E00438317 /* IDFVProcess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDFVProcess.m; sourceTree = "<group>"; };
 		63CF82562583503E00438317 /* MQTTConnectImplementation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTTConnectImplementation.m; sourceTree = "<group>"; };
 		63CF82572583503E00438317 /* StampTimeProcess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StampTimeProcess.m; sourceTree = "<group>"; };
@@ -1587,13 +1587,42 @@
 		637DAF8125875A5C00425A66 /* KS-4310 */ = {
 			isa = PBXGroup;
 			children = (
+				630720B9256E463B0000F7C7 /* KS4310Setting.h */,
+				630720BA256E463B0000F7C7 /* KS4310Setting.m */,
+				633BBB1C252D8AD3003544A1 /* Convert4310Information.h */,
+				633BBB1D252D8AD3003544A1 /* Convert4310Information.m */,
 			);
 			path = "KS-4310";
+			sourceTree = "<group>";
+		};
+		6388C6FB259C616100052795 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				630EFD21258B55300027B07E /* RoomController.h */,
+				630EFD22258B55300027B07E /* RoomController.m */,
+				635146282591C982008A3BAE /* FloorController.h */,
+				635146272591C982008A3BAE /* FloorController.m */,
+				630EFD1D258B47980027B07E /* OrganizationController.h */,
+				630EFD1E258B47980027B07E /* OrganizationController.m */,
+				630EFD19258B08DE0027B07E /* MyNavigationController.h */,
+				630EFD1A258B08DE0027B07E /* MyNavigationController.m */,
+				6342EE212589D80000280BCF /* LogInController.h */,
+				6342EE222589D80000280BCF /* LogInController.m */,
+				635E304A2592D9E9009298FA /* OuhealthcareWebViewController.h */,
+				635E304B2592D9E9009298FA /* OuhealthcareWebViewController.m */,
+				6322A7AA254FB792007ACEF0 /* CameraController.h */,
+				6322A7AB254FB792007ACEF0 /* CameraController.m */,
+				63DB0E52251DC2E000FA3D39 /* ViewController.h */,
+				63DB0E53251DC2E000FA3D39 /* ViewController.m */,
+			);
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		63B153B8256F9F0700FD435F /* MQTT */ = {
 			isa = PBXGroup;
 			children = (
+				63CF841625836A7600438317 /* PublishDataFor4320.h */,
+				63CF841525836A7600438317 /* PublishDataFor4320.m */,
 			);
 			path = MQTT;
 			sourceTree = "<group>";
@@ -1658,21 +1687,12 @@
 		63DB0E40251DC2E000FA3D39 = {
 			isa = PBXGroup;
 			children = (
+				6388C6FE259C631900052795 /* StoredDevicesCell.h */,
+				6388C6FF259C631900052795 /* StoredDevicesCell.m */,
+				6388C6FB259C616100052795 /* ViewController */,
 				635E307B25934434009298FA /* BLEFor4310.h */,
 				635E307C25934434009298FA /* BLEFor4310.m */,
-				635E304A2592D9E9009298FA /* OuhealthcareWebViewController.h */,
-				635E304B2592D9E9009298FA /* OuhealthcareWebViewController.m */,
 				63F08B6E2590316600424EFD /* res */,
-				630EFD21258B55300027B07E /* RoomController.h */,
-				630EFD22258B55300027B07E /* RoomController.m */,
-				635146282591C982008A3BAE /* FloorController.h */,
-				635146272591C982008A3BAE /* FloorController.m */,
-				630EFD1D258B47980027B07E /* OrganizationController.h */,
-				630EFD1E258B47980027B07E /* OrganizationController.m */,
-				630EFD19258B08DE0027B07E /* MyNavigationController.h */,
-				630EFD1A258B08DE0027B07E /* MyNavigationController.m */,
-				6342EE212589D80000280BCF /* LogInController.h */,
-				6342EE222589D80000280BCF /* LogInController.m */,
 				63746DFA258886A40011D283 /* NetworkReachAbility.h */,
 				63746DFB258886A40011D283 /* NetworkReachAbility.m */,
 				63746DF6258857650011D283 /* Reachability.h */,
@@ -1711,34 +1731,22 @@
 				63DB0E50251DC2E000FA3D39 /* SceneDelegate.m */,
 				632D1371252F099B00073BC9 /* cellData.h */,
 				632D1372252F099B00073BC9 /* cellData.m */,
-				633BBB1C252D8AD3003544A1 /* Convert4310Information.h */,
-				633BBB1D252D8AD3003544A1 /* Convert4310Information.m */,
 				631E68752546AAEB00C1B051 /* CalFunc.h */,
 				631E68762546AAEB00C1B051 /* CalFunc.m */,
 				6322A7B6255001B1007ACEF0 /* SketchView.h */,
 				6322A7B7255001B1007ACEF0 /* SketchView.m */,
-				63DB0E52251DC2E000FA3D39 /* ViewController.h */,
-				63DB0E53251DC2E000FA3D39 /* ViewController.m */,
 				63AF37F725496D1E00D6F804 /* StringProcessFunc.h */,
 				63AF37F825496D1E00D6F804 /* StringProcessFunc.m */,
-				6322A7AA254FB792007ACEF0 /* CameraController.h */,
-				6322A7AB254FB792007ACEF0 /* CameraController.m */,
 				6352680B2558D2A90071F655 /* ChangeBetweenWriteStringViewController.h */,
 				6352680C2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m */,
 				6352680F2558E49F0071F655 /* InformationRunnable.h */,
 				635268102558E49F0071F655 /* InformationRunnable.m */,
 				630720B3256E3FC70000F7C7 /* SaveInformationFunc.h */,
 				630720B4256E3FC70000F7C7 /* SaveInformationFunc.m */,
-				630720B9256E463B0000F7C7 /* KS4310Setting.h */,
-				630720BA256E463B0000F7C7 /* KS4310Setting.m */,
 				63B153AE256F897B00FD435F /* SwitchDevices.h */,
 				63B153AF256F897B00FD435F /* SwitchDevices.m */,
-				63B153B2256F904900FD435F /* DeviceSettingController.h */,
-				63B153B3256F904900FD435F /* DeviceSettingController.m */,
 				63CF841025835B7600438317 /* TypesConversion.h */,
 				63CF840F25835B7600438317 /* TypesConversion.m */,
-				63CF841625836A7600438317 /* PublishDataFor4320.h */,
-				63CF841525836A7600438317 /* PublishDataFor4320.m */,
 			);
 			path = BLEFirstPraticeFor4310;
 			sourceTree = "<group>";
@@ -3491,6 +3499,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6388C700259C631900052795 /* StoredDevicesCell.m in Sources */,
 				63CF83F12583507300438317 /* HTMLProcess.m in Sources */,
 				63CF83EE2583507300438317 /* JSONProcess.m in Sources */,
 				630EFD23258B55300027B07E /* RoomController.m in Sources */,
@@ -3516,7 +3525,6 @@
 				63CF83EF2583507300438317 /* RequestOAuth2Steps.m in Sources */,
 				63CF83F62583507300438317 /* sensor.proto in Sources */,
 				63CF82662583503E00438317 /* MQTTMain.m in Sources */,
-				63B153B4256F904900FD435F /* DeviceSettingController.m in Sources */,
 				63CF82652583503E00438317 /* StampTimeProcess.m in Sources */,
 				633BBB1E252D8AD3003544A1 /* Convert4310Information.m in Sources */,
 				631E68772546AAEB00C1B051 /* CalFunc.m in Sources */,

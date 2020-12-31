@@ -12,6 +12,7 @@ BLEFor4310 *BLE;
 NSString *Now_Time;
 NSString *Now_Navigation_Name;
 dispatch_queue_t GlobalQueue;
+NSMutableArray *Stored_Data;
 
 @interface AppDelegate ()
 

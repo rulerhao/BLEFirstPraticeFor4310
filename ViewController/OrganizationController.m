@@ -52,7 +52,7 @@
     Stored_Organizations = [[NSMutableArray alloc] init];
     [Stored_Organizations addObject:@"凱健企業股份有限公司"];
     self.Time_Text_Field.text = Now_Time;
-    NSLog(@"EnterOrgController");
+    NSLog(@"EnterOrgController123");
 }
 
 - (NSInteger)

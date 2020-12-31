@@ -7,6 +7,8 @@
 
 #import "ViewController.h"
 #import "CalFunc.h"
+#import "StoredDevicesCell.h"
+#import "KS4310Setting.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
