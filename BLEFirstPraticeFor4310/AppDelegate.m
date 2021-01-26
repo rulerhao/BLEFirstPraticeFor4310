@@ -7,6 +7,7 @@
 
 #import "AppDelegate.h"
 
+CurrenctController currentController;
 MyNavigationController *RootNavigationView;
 BLEFor4310 *BLE;
 NSString *Now_Time;

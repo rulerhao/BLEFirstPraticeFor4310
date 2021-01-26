@@ -7,6 +7,7 @@ PODS:
   - CocoaLumberjack (3.7.0):
     - CocoaLumberjack/Core (= 3.7.0)
   - CocoaLumberjack/Core (3.7.0)
+  - Masonry (1.1.0)
   - MQTTClient (0.15.3):
     - MQTTClient/Core (= 0.15.3)
   - MQTTClient/Core (0.15.3):
@@ -31,6 +32,7 @@ PODS:
 
 DEPENDENCIES:
   - AppAuth
+  - Masonry
   - MQTTClient
   - MQTTClient/ManagerL
   - MQTTClient/MinL
@@ -43,6 +45,7 @@ SPEC REPOS:
   trunk:
     - AppAuth
     - CocoaLumberjack
+    - Masonry
     - MQTTClient
     - Protobuf
     - ProtocolBuffers
@@ -51,11 +54,12 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MQTTClient: 0dfa04e789479c2e461786464969895c1fcb0875
   Protobuf: 4f17d10ac4c40626e36f2612842f1a9bc9cf734f
   ProtocolBuffers: d509225eb2ea43d9582a59e94348fcf86e2abd65
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
 
-PODFILE CHECKSUM: e5e00bc1c4fec309647659842b172969eb9746c9
+PODFILE CHECKSUM: 83bd3aac9dc6ab2f985bb27e87fd3a630d63d8c2
 
 COCOAPODS: 1.10.0

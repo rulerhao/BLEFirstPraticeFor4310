@@ -10,6 +10,9 @@
 #import "OrganizationController.h"
 #import "BLEFor4310.h"
 #import "StoredDevicesCell.h"
+#import "ShowViewController.h"
+#import "OrganizationPage.h"
+#import "Sensor4310Page.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LogInController : UIViewController <UITextFieldDelegate>

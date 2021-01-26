@@ -43,13 +43,25 @@
     
     // ------------------ Run BLEFor4310 ---------------
     BLE = [BLEFor4310 new];
-    // ------------------ 跳到機構畫面 ---------------
-    UIStoryboard *StoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    OrganizationController *OrganizationController = [StoryBoard instantiateViewControllerWithIdentifier:@"OrganizationUIViewController"];
-    [RootNavigationView pushViewController:OrganizationController animated:NO];
+    // ------------------ 跳到測試畫面 ---------------
+//    ShowViewController *showViewController = [[ShowViewController alloc] init];
+//    [showViewController setCurrentController:ViewController_Root];
+//    [showViewController setModalPresentationStyle:UIModalPresentationFullScreen];
+//    [RootNavigationView pushViewController:showViewController animated:NO];
+//    // ------------------ 跳到機構畫面 ---------------
+//    UIStoryboard *StoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    OrganizationController *OrganizationController = [StoryBoard instantiateViewControllerWithIdentifier:@"OrganizationUIViewController"];
+//    [RootNavigationView pushViewController:OrganizationController animated:NO];
     
-    // ---------------------- Now Navigation Name -------------------
-    Now_Navigation_Name = @"機構";
+//    OrganizationPage *organizationPage = [[OrganizationPage alloc] init];
+//    [organizationPage setModalPresentationStyle:UIModalPresentationFullScreen];
+//    [RootNavigationView pushViewController:organizationPage animated:NO];
+    Sensor4310Page *sensor4310Page = [[Sensor4310Page alloc] init];
+    [sensor4310Page setModalPresentationStyle:UIModalPresentationFullScreen];
+    [RootNavigationView pushViewController:sensor4310Page animated:NO];
+//
+//    // ---------------------- Now Navigation Name -------------------
+//    Now_Navigation_Name = @"機構";
 }
 
 @end

@@ -14,7 +14,6 @@
     CalFunc *CalculateFunc;
     KS4310Setting *ks4310Setting;
     Convert4310Information *convert4310Information;
-    NSTimer *Write04TestTimer;
 }
 @end
 
@@ -48,7 +47,7 @@ dispatch_queue_t MainQueue;
 
 #pragma mark - Core Bluetooth Delegate
 
-#pragma mark - Core Bluetooth Delegate - CB Central Manager 狀態變更時的 Delegate
+//---------------------- Core Bluetooth Delegate - CB Central Manager 狀態變更時的 Delegate ------------------
 - (void)
 centralManagerDidUpdateState:(CBCentralManager *)central {
     NSLog(@"DidUpdateState");
@@ -76,7 +75,8 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
             break;
     }
 }
-#pragma mark - Core Bluetooth Delegate - 搜尋到附近的 Peripheral 時的 Delegate
+
+//---------------------- Core Bluetooth Delegate - 搜尋到附近的 Peripheral 時的 Delegate ------------------
 - (void)
         centralManager          :(CBCentralManager *)               central
         didDiscoverPeripheral   :(CBPeripheral *)                   peripheral
@@ -95,16 +95,14 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         }
     }
 }
-
-#pragma mark - Core Bluetooth Delegate - 當連接到 Peripheral 時的 Delegate
+//---------------------- Core Bluetooth Delegate - 當連接到 Peripheral 時的 Delegate ------------------
 - (void) centralManager          :(CBCentralManager *) central
          didConnectPeripheral    :(CBPeripheral *)     peripheral {
     NSLog(@"didConnectPeripheral.peripheral = %@", peripheral);
     peripheral.delegate = self;
     [peripheral discoverServices:nil];
 }
-
-#pragma mark - Core Bluetooth Delegate - 發現到 Services 時的 Delegate
+//---------------------- Core Bluetooth Delegate - 發現到 Services 時的 Delegate ------------------
 - (void)     peripheral              :(CBPeripheral *)   peripheral
              didDiscoverServices     :(NSError *)        error {
     NSLog(@"didDiscoverServices.services = %@", [peripheral services]);
@@ -116,8 +114,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     [peripheral discoverCharacteristics:nil
                              forService:[[peripheral services] objectAtIndex:2]];
 }
-
-#pragma mark - Core Bluetooth Delegate - 發現到 Characteristics 時的 Delegate
+//---------------------- Core Bluetooth Delegate - 發現到 Characteristics 時的 Delegate ------------------
 - (void) peripheral                              : (CBPeripheral *)   peripheral
          didDiscoverCharacteristicsForService    : (CBService *)      service
          error                                   : (NSError *)        error {
@@ -132,7 +129,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     [peripheral setNotifyValue:true forCharacteristic:CBChar];
 }
 
-#pragma mark - Core Bluetooth Delegate - Characteristics 改變時的 Delegate
+//---------------------- Core Bluetooth Delegate - Characteristics 改變時的 Delegate ------------------
 - (void)    peripheral                          :(CBPeripheral *)       peripheral
             didUpdateValueForCharacteristic     :(CBCharacteristic *)   characteristic
             error                               :(NSError *)            error {
@@ -147,7 +144,6 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     // ---------------------- KS-4310 ----------------------
     if([[peripheral name] isEqual:@"KS-4310"]) {
         NSLog(@"it'sKS-4310");
-        StoredDevicesCell *storedCell = [[StoredDevicesCell alloc] init];
         StoredDevicesCell *Previous_Stored_Deivce_Cell = [[StoredDevicesCell alloc] init];
         Previous_Stored_Deivce_Cell = [self.Stored_Data objectAtIndex:Index_Of_Stored_Devices];
 
@@ -158,8 +154,8 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         // ---------------------- 如果是首次進入 ----------------------
         if(!Previous_Stored_Deivce_Cell.Characteristic) {
             NSLog(@"首次進入喔");
-            // TODO: Write 04
-            // ---------------------- 測試用 TIMER : 寫入 05 ----------------------
+            /* Write 04 to get device memory */
+            [self write04ToKS4310:peripheral];
         }
         // ---------------------- Mode_Identifier == @"00" ----------------------
         if([Mode_Identifier isEqual:ks4310Setting.Sense_Identifier]) {
@@ -184,15 +180,16 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         }
         // ---------------------- Mode_Identifier == @"04" ----------------------
         else if([Mode_Identifier isEqual:ks4310Setting.Baby_Information_Identifier]) {
-           
+            [self refreshBabyInformationToStored:self.Stored_Data index:Index_Of_Stored_Devices peripheral:peripheral storedCell:Previous_Stored_Deivce_Cell incomingCharacteristicValue:[characteristic value]];
         }
         // ---------------------- Mode_Identifier == @"05" ----------------------
         else if([Mode_Identifier isEqual:ks4310Setting.Write_Identifier]) {
-            // TODO: Write 04
+            // ---------------------- Write 04 ----------------------
+            [self write04ToKS4310:peripheral];
         }
     }
 }
-#pragma mark - Core Bluetooth Delegate - Device 斷線
+//---------------------- Core Bluetooth Delegate - Device 斷線------------------
 -(void)     centralManager : (CBCentralManager *) central
    didDisconnectPeripheral : (CBPeripheral *) peripheral
                      error : (NSError *) error {
@@ -227,6 +224,23 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                   deviceInformation           : incoming_Characteristic_Value
                   babyInformation             : stored_Cell.Baby_Information
                   storedMovementState         : movement_State_Array
+                  deviceName                  : stored_Cell.Device_Name
+                  deviceID                    : stored_Cell.Device_ID
+                  deviceSex                   : stored_Cell.Device_Sex];
+    [stored_Data replaceObjectAtIndex:index withObject:stored_Cell];
+}
+
+// ---------------------- 更新 Baby Information 資訊至 Storeed_Data ----------------------
+- (void)  refreshBabyInformationToStored : (NSMutableArray *) stored_Data
+                                     index : (u_int8_t) index
+                                peripheral : (CBPeripheral *) peripheral
+                                storedCell : (StoredDevicesCell *) stored_Cell
+               incomingCharacteristicValue : (NSData *) incoming_Characteristic_Value {
+    [stored_Cell  cell                        : peripheral
+                  characteristic              : incoming_Characteristic_Value
+                  deviceInformation           : stored_Cell.Device_Information
+                  babyInformation             : incoming_Characteristic_Value
+                  storedMovementState         : stored_Cell.Stored_Movement_State
                   deviceName                  : stored_Cell.Device_Name
                   deviceID                    : stored_Cell.Device_ID
                   deviceSex                   : stored_Cell.Device_Sex];
@@ -301,9 +315,9 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
 
 // ---------------------- Write 04 -----------------
 - (void)
-write04ToKS4310     : (StoredDevicesCell *) Stored_Device_Cell
+write04ToKS4310     : (CBPeripheral *) Peripheral
 {
-    CBPeripheral *peripheral = [Stored_Device_Cell Peripheral];
+    CBPeripheral *peripheral = Peripheral;
     CBService *service = [[peripheral services] objectAtIndex:2];
     CBCharacteristic *characteristic = [[service characteristics] objectAtIndex:2];
     
@@ -318,11 +332,21 @@ write04ToKS4310     : (StoredDevicesCell *) Stored_Device_Cell
                       type : CBCharacteristicWriteWithResponse];
 }
 
-- (void) enableWrite04TestTimer {
-    Write04TestTimer = [NSTimer scheduledTimerWithTimeInterval:1
-                                     target:self
-                                   selector:@selector(write04ToKS4310:) withObject:myCell
-                                   userInfo:nil
-                                    repeats:YES];
+// ---------------------- Timer Write 04 -----------------
+- (void)
+timerWrite04ToKS4310 : (CBPeripheral *) peripheral
+{
+    CBService *service = [[peripheral services] objectAtIndex:2];
+    CBCharacteristic *characteristic = [[service characteristics] objectAtIndex:2];
+    
+    //wirte to get information setting in device.
+ 
+    const uint8_t bytes[] = {0x04};
+    
+    NSData *data = [NSData dataWithBytes:bytes
+                                  length:sizeof(bytes)];
+    [peripheral writeValue : data
+         forCharacteristic : characteristic
+                      type : CBCharacteristicWriteWithResponse];
 }
 @end

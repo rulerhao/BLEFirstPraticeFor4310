@@ -20,5 +20,6 @@ target 'BLEFirstPraticeFor4310' do
 	pod 'MQTTClient/WebsocketL'
 	pod 'Protobuf', '~> 4.0.0-rc1'
 	pod 'AppAuth'
+	pod 'Masonry'
 
 end

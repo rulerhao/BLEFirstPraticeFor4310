@@ -479,7 +479,7 @@ movementScanTime        : (NSInteger)           MovementScanTime {
                                                previous_x             :Previous_Location_X
                                                previous_y             :Previous_Location_Y
                                                previous_z             :Previous_Location_Z];
-    NSLog(@"TestForMovement.Locate.Location_X = %ld", (long)Location_X);
+    NSLog(@"TestForMowvement.Locate.Location_X = %ld", (long)Location_X);
     NSLog(@"TestForMovement.Locate.Location_Y = %ld", (long)Location_Y);
     NSLog(@"TestForMovement.Locate.Location_Z = %ld", (long)Location_Z);
     NSLog(@"TestForMovement.Locate.Previous_Location_X = %ld", (long)Previous_Location_X);
