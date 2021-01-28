@@ -7,7 +7,7 @@
 
 #import "Sensor4310Page.h"
 
-@interface Sensor4310Page ()
+@interface Sensor4310Page () <ShowViewControllerDelegate>
 
 @property(nonatomic, strong) ShowViewController *showViewController;
 
@@ -18,6 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    NSLog(@"NowController = Sensor4310Page");
     self.CurrentController = ViewController_Sensor4310;
     
     [self viewInit];
@@ -31,16 +32,19 @@
     //--------------------- View -----------------------
     
     //--------------------- ViewController -----------------------
-    self.showViewController = [ShowViewController alloc];
+    
+    self.showViewController = [[ShowViewController alloc] init];
     [self.showViewController.view setAutoresizingMask:UIViewAutoresizingNone];
     [self.showViewController.view setUserInteractionEnabled:YES];
+    
     NSLog(@"self.CurrentControllerInSensor4310 = %ld", self.CurrentController);
     [self.showViewController setCurrentController:self.CurrentController];
+    self.showViewController.delegate = self;
     
     [self addChildViewController:self.showViewController];
-    
     [self.view addSubview:self.showViewController.view];
     [self.showViewController didMoveToParentViewController:self];
+    [self.showViewController controllerInit];
 }
 
 #pragma mark - Constraints
@@ -52,5 +56,9 @@
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
     }];
+}
+
+- (NSInteger)getCurrentController_ShowViewController {
+    return self.CurrentController;
 }
 @end

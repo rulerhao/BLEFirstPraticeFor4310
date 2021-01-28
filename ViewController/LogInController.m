@@ -56,6 +56,9 @@
 //    OrganizationPage *organizationPage = [[OrganizationPage alloc] init];
 //    [organizationPage setModalPresentationStyle:UIModalPresentationFullScreen];
 //    [RootNavigationView pushViewController:organizationPage animated:NO];
+//    OrganizationPage *organizationPage = [[OrganizationPage alloc] init];
+//    [organizationPage setModalPresentationStyle:UIModalPresentationFullScreen];
+//    [RootNavigationView pushViewController:organizationPage animated:NO];
     Sensor4310Page *sensor4310Page = [[Sensor4310Page alloc] init];
     [sensor4310Page setModalPresentationStyle:UIModalPresentationFullScreen];
     [RootNavigationView pushViewController:sensor4310Page animated:NO];

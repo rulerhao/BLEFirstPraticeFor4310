@@ -16,9 +16,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class ShowViewController;
+
+@protocol ShowViewControllerDelegate <NSObject>
+
+@optional
+- (NSInteger)getCurrentController_ShowViewController;
+@end
+
 @interface ShowViewController : UIViewController
 
+@property (assign) id <ShowViewControllerDelegate> delegate;
 @property (readwrite, nonatomic) NSInteger CurrentController;
+- (void) controllerInit;
 
 @end
 

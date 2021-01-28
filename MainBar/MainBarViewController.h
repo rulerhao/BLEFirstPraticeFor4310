@@ -6,14 +6,25 @@
 //
 
 #import "ViewController.h"
+#import <Masonry.h>
 #import "Sensor4310MainBarViewController.h"
 #import "OrganizationMainBarViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class MainBarViewController;
+
+@protocol MainBarViewControllerDelegate <NSObject>
+
+@optional
+- (NSInteger)getCurrentController_MainBarViewControlelr;
+@end
+//
 @interface MainBarViewController : UIViewController
 
+@property (assign) id <MainBarViewControllerDelegate> delegate;
 @property(readwrite, nonatomic) NSInteger CurrentController;
+- (void)controllerInit;
 
 @end
 

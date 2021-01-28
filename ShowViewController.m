@@ -6,7 +6,7 @@
 //
 
 #import "ShowViewController.h"
-@interface ShowViewController () <FunctionBarViewControllerDelegate>
+@interface ShowViewController () <FunctionBarViewControllerDelegate, MainBarViewControllerDelegate>
 {
     ImageSetting *imageSetting;
 }
@@ -23,10 +23,24 @@
 @end
 
 @implementation ShowViewController
-
+	
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+}
+- (void) viewDidAppear:(BOOL)animated {
+    NSLog(@"functionBarViewControllerHeight = %f", self.functionBarViewController.view.bounds.size.height);
+    NSLog(@"functionBarViewControllerWidth = %f", self.functionBarViewController.view.bounds.size.width);
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+    NSLog(@"ShowViewControllerMovetoParent");
+}
+
+- (void) controllerInit {
+    NSLog(@"self.CurrentController = %ld", self.CurrentController);
+    NSLog(@"NowController = ShowViewController");
+    NSLog(@"adasd = %ld", [self.delegate getCurrentController_ShowViewController]);
+
     imageSetting = [[ImageSetting alloc] init];
     
     //--------------------- Init -----------------------
@@ -35,10 +49,6 @@
     [self viewInit];
     //--------------------- Constraints set -----------------------
     [self updateConstraints];
-}
-- (void) viewDidAppear:(BOOL)animated {
-    NSLog(@"functionBarViewControllerHeight = %f", self.functionBarViewController.view.bounds.size.height);
-    NSLog(@"functionBarViewControllerWidth = %f", self.functionBarViewController.view.bounds.size.width);
 }
 #pragma mark - View Initial
 
@@ -83,9 +93,11 @@
     
     NSLog(@"CurrentControllerInShowViewController = %ld", self.CurrentController);
     [self.mainBarViewController setCurrentController:self.CurrentController];
+    self.mainBarViewController.delegate = self;
     
     [self.view addSubview:self.mainBarViewController.view];
     [self.mainBarViewController didMoveToParentViewController:self];
+    [self.mainBarViewController controllerInit];
     
     //--------------------- adBarView -----------------------
     self.adBarView = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -154,5 +166,9 @@
 // 按下時觸發
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     NSLog(@"ShowtouchesBegan");
+}
+
+- (NSInteger)getCurrentController_MainBarViewControlelr {
+    return self.CurrentController;
 }
 @end

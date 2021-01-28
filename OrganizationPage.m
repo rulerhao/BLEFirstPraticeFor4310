@@ -39,6 +39,8 @@
     
     [self.view addSubview:self.showViewController.view];
     [self.showViewController didMoveToParentViewController:self];
+    [self.showViewController controllerInit];
+
 }
 #pragma mark - Constraints
 - (void)updateConstraints {

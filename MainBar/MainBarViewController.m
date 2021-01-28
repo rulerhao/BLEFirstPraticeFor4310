@@ -10,6 +10,8 @@
 @interface MainBarViewController ()
 
 @property(nonatomic, strong) ShowViewController *showViewController;
+@property(nonatomic, strong) Sensor4310MainBarViewController *sensor4310MainBarViewController;
+@property(nonatomic, strong) OrganizationMainBarViewController *organizationMainBarViewController;
 
 @end
 
@@ -17,18 +19,24 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+}
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+    NSLog(@"MainBarViewControllerMovetoParent");
+}
+- (void)controllerInit {
+    NSLog(@"NowController = MainBarViewController");
+    NSLog(@"DelegateCurrentController = %ld", [self.delegate getCurrentController_MainBarViewControlelr]);
     [self viewInit];
     
-    [self updateConstraints];
+    NSLog(@"organizationMainBarViewController.height = %f", self.organizationMainBarViewController.view.bounds.size.height);
+    //[self updateConstraints];
 }
-
 #pragma mark - View Initial
 
 - (void) viewInit {
     //--------------------- View -----------------------
-    
     //--------------------- ViewController -----------------------
-    NSLog(@"self.CurrentControllerMainBarViewController = %ld", (long)self.CurrentController);
+    NSLog(@"self.CurrentControllerMainBarViewController = %ld", self.CurrentController);
     switch (self.CurrentController) {
         case ViewController_Sensor4310:
             [self addSensor4310MainBarViewController];
@@ -43,32 +51,53 @@
 
 #pragma mark - Constraints
 - (void)updateConstraints {
-    
 }
 
 - (void) addSensor4310MainBarViewController {
-    Sensor4310MainBarViewController *sensor4310MainBarViewController = [[Sensor4310MainBarViewController alloc] init];
-    sensor4310MainBarViewController.CurrentController = self.CurrentController;
-    [sensor4310MainBarViewController.view setAutoresizingMask:UIViewAutoresizingNone];
-    [sensor4310MainBarViewController.view setUserInteractionEnabled:YES];
-    [sensor4310MainBarViewController setCurrentController:self.CurrentController];
+    self.sensor4310MainBarViewController = [[Sensor4310MainBarViewController alloc] init];
+    self.sensor4310MainBarViewController.CurrentController = self.CurrentController;
+    [self.sensor4310MainBarViewController.view setAutoresizingMask:UIViewAutoresizingNone];
+    [self.sensor4310MainBarViewController.view setUserInteractionEnabled:YES];
+    [self.sensor4310MainBarViewController setCurrentController:self.CurrentController];
     
-    [self addChildViewController:sensor4310MainBarViewController];
+    [self addChildViewController:self.sensor4310MainBarViewController];
     
-    [self.view addSubview:sensor4310MainBarViewController.view];
-    [sensor4310MainBarViewController didMoveToParentViewController:self];
+    [self.view addSubview:self.sensor4310MainBarViewController.view];
+    [self.sensor4310MainBarViewController didMoveToParentViewController:self];
+    
+    //--------------------- Constraints -----------------------
+    [self.sensor4310MainBarViewController.view mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_top);
+        make.bottom.equalTo(self.view.mas_bottom);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+    }];
+    
+    [self.sensor4310MainBarViewController controllerInit];
 }
 
 - (void) addOrganizationMainBarViewController {
-    OrganizationMainBarViewController *organizationMainBarViewController = [[OrganizationMainBarViewController alloc] init];
-    organizationMainBarViewController.CurrentController = self.CurrentController;
-    [organizationMainBarViewController.view setAutoresizingMask:UIViewAutoresizingNone];
-    [organizationMainBarViewController.view setUserInteractionEnabled:YES];
-    [organizationMainBarViewController setCurrentController:self.CurrentController];
+    self.organizationMainBarViewController = [[OrganizationMainBarViewController alloc] init];
+    self.organizationMainBarViewController.CurrentController = self.CurrentController;
+    [self.organizationMainBarViewController.view setAutoresizingMask:UIViewAutoresizingNone];
+    [self.organizationMainBarViewController.view setUserInteractionEnabled:YES];
+    //[self.organizationMainBarViewController.view setBackgroundColor:[UIColor blackColor]];
+    [self.organizationMainBarViewController setCurrentController:self.CurrentController];
     
-    [self addChildViewController:organizationMainBarViewController];
+    [self addChildViewController:self.organizationMainBarViewController];
     
-    [self.view addSubview:organizationMainBarViewController.view];
-    [organizationMainBarViewController didMoveToParentViewController:self];
+    [self.view addSubview:self.organizationMainBarViewController.view];
+    [self.organizationMainBarViewController didMoveToParentViewController:self];
+    
+    //--------------------- Constraints -----------------------
+    [self.organizationMainBarViewController.view mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_top);
+        make.bottom.equalTo(self.view.mas_bottom);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+    }];
+    [self.organizationMainBarViewController controllerInit];
+    
 }
+
 @end
