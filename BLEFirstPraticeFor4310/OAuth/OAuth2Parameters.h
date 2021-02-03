@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OAuthParameters : UIViewController
+@interface OAuth2Parameters : UIViewController
 - (NSMutableArray *) logInParameters;
 - (NSMutableArray *) logInBodyParameters;
 - (NSString *) logInURLWithParameters;

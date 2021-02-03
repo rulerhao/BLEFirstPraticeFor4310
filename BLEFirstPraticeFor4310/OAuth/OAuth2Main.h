@@ -10,7 +10,7 @@
 #import <OIDAuthorizationRequest.h>
 #import <OIDAuthState.h>
 #import <OIDAuthorizationService.h>
-#import "OAuthParameters.h"
+#import "OAuth2Parameters.h"
 #import "URLProcess.h"
 #import "HTMLProcess.h"
 #import "JSONProcess.h"

@@ -26,7 +26,7 @@
     View_Controller_For_Notify = View_Controller;
     WKWeb_View = [[WKWebView alloc] init];
     [self setupWebView : WKWeb_View];
-    OAuthParameters *oAuthParameters = [OAuthParameters alloc];
+    OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
     NSString *RequestURL = [oAuthParameters logInURLWithParameters];
     RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
     if([[Reachability reachabilityWithHostName:@"https://healthng.oucare.com/site/login"] currentReachabilityStatus] == 1) {
@@ -60,10 +60,11 @@ didFinishNavigation :(WKNavigation *)   navigation {
     }
     // 在取得 Access Token 後
     // 這裡有兩個可能會進入
-    // 1. 是在完成以 code 來取得 Access token 和 Refresh toekn
+    // 1. 是在完成以 code 來取得 Access token 和 Refresh token
     // 2. 是在完成以 refresh token 來取得 Access token 和 Refresh token
     else if ([[URL_Components path]  isEqual: @"/oauth/token"]) {
         //get_HTMLString_Notification_Center = [NSNotificationCenter defaultCenter];
+        NSLog(@"URL_Components = %@",URL_Components);
         [[NSNotificationCenter defaultCenter]
             addObserver:self
             selector:@selector(getHTMLStringNotification:) //接收到該Notification時要call的function
@@ -92,6 +93,7 @@ didFinishNavigation :(WKNavigation *)   navigation {
         if([[[Code_Dict allKeys]objectAtIndex:0] isEqual:Code_Key]) {
             NSLog(@"getintocodekey");
             NSString *Code_Value = [Code_Dict valueForKey:Code_Key];
+            NSLog(@"Code_Value = %@", Code_Value);
             RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
             [requestOAuth2Steps takeAccessToken:Code_Value
                                       wKWebView:webView];
@@ -253,7 +255,8 @@ getHTMLStringNotification:(NSNotification *)notification {
         RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
         [requestOAuth2Steps takeOTP : Access_Token
                            wKWebView: WKWeb_View];
-    } else if ([HTTP_String_Key  isEqual: @"/api/v1/ouhub/otp"]) {
+    }
+    else if ([HTTP_String_Key  isEqual: @"/api/v1/ouhub/otp"]) {
         NSString *Client_ID = [Json_Dictionary valueForKey:@"client_id"];
         NSString *User_Name = [Json_Dictionary valueForKey:@"username"];
         NSString *OTP = [Json_Dictionary valueForKey:@"otp"];

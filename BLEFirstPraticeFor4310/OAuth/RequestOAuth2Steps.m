@@ -22,7 +22,7 @@
 logIn       :   (NSString *)    requestURLString
 wKWebView   :   (WKWebView *)   WKWebView {
     NSURL *url = [[NSURL alloc] initWithString: requestURLString];
-    OAuthParameters *oAuthParameters = [OAuthParameters alloc];
+    OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
     NSString *Body_String = [oAuthParameters Parameters_Merge:[oAuthParameters logInBodyParameters] ];
     NSData *Body = [Body_String dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSLog(@"BodyTest = %@", Body);
@@ -56,7 +56,7 @@ wKWebView   :   (WKWebView *)   WKWebView {
     }];
     headers = [NSHTTPCookie requestHeaderFieldsWithCookies:cookieArray];
     
-    OAuthParameters *oAuthParameters = [OAuthParameters alloc];
+    OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
     NSString *urlString = [oAuthParameters takeCodeURLWithParameters];
     NSLog(@"urlString1234 = %@", urlString);
     NSURL *url = [[NSURL alloc] initWithString: urlString];
@@ -73,8 +73,7 @@ wKWebView   :   (WKWebView *)   WKWebView {
 - (void)
 takeAccessToken : (NSString *) Code_Value
 wKWebView       : (WKWebView *) WKWebView {
-    // get URL with Parameters
-    OAuthParameters *oAuthParameters = [OAuthParameters alloc];
+    OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
     NSURL *url = [[NSURL alloc] initWithString: [oAuthParameters takeAccessTokenURLWithCodeParameters]];
     
     NSString *Body_String = [oAuthParameters Parameters_Merge:[oAuthParameters takeAccessTokenBodyParameters:Code_Value] ];;
@@ -96,7 +95,7 @@ wKWebView       : (WKWebView *) WKWebView {
 takeRefreshAccesssTokenThroughRefreshToken : (NSString *)  Refresh_Token
 wKWebView                                  : (WKWebView *) WKWebView {
     // get URL with Parameters
-    OAuthParameters *oAuthParameters = [OAuthParameters alloc];
+    OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
     NSURL *url = [[NSURL alloc] initWithString: [oAuthParameters takeRefreshTokenURLWithCodeParameters]];
     
     // set Body
@@ -118,7 +117,7 @@ wKWebView                                  : (WKWebView *) WKWebView {
 - (void)
 takeOTP         : (NSString *)  Access_Token
 wKWebView       : (WKWebView *) WKWebView {
-    OAuthParameters *oAuthParemeters = [OAuthParameters alloc];
+    OAuth2Parameters *oAuthParemeters = [OAuth2Parameters alloc];
     NSURL *URL = [[NSURL alloc] initWithString: [oAuthParemeters takeBearerTokenURLWithCodeParameters]];
     NSString *JSON_String = [oAuthParemeters takeBearerTokenBodyParameters];
     NSData *requestData = [NSData dataWithBytes:[JSON_String UTF8String] length:[JSON_String lengthOfBytesUsingEncoding:NSUTF8StringEncoding]];

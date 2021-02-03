@@ -5,13 +5,13 @@
 //  Created by louie on 2020/12/2.
 //
 
-#import "OAuthParameters.h"
+#import "OAuth2Parameters.h"
 
-@interface OAuthParameters ()
+@interface OAuth2Parameters ()
 
 @end
 
-@implementation OAuthParameters
+@implementation OAuth2Parameters
 
 /**
  * 例如 Parameter[0] 現在變成 Cilent_ID
@@ -22,28 +22,28 @@
     NSMutableArray *Parameters = [[NSMutableArray alloc] init];
     
     NSString *Client_ID_Title = @"client_id";
-    NSString *Client_ID_Value = @"c90ccc18-2fab-11eb-a13f-02420a00080e";
+    NSString *Client_ID_Value = @"29e8b6d5-0c51-11eb-9788-0242ac160004";
     NSMutableArray *Parameters_For_Client_ID =[[NSMutableArray alloc] init];
     [Parameters_For_Client_ID addObject:Client_ID_Title];
     [Parameters_For_Client_ID addObject:Client_ID_Value];
     [Parameters addObject:Parameters_For_Client_ID];
     
     NSString *Redirect_URL_Title = @"redirect_uri";
-    NSString *Redirect_URL_Value = @"oucare://oauth2/callback";
+    NSString *Redirect_URL_Value = @"https://healthng.oucare.com";
     NSMutableArray *Parameters_For_Redirect_URL =[[NSMutableArray alloc] init];
     [Parameters_For_Redirect_URL addObject:Redirect_URL_Title];
     [Parameters_For_Redirect_URL addObject:Redirect_URL_Value];
     [Parameters addObject:Parameters_For_Redirect_URL];
     
     NSString *Scope_Title = @"scope";
-    NSString *Scope_Value = @"connect-ouhub";
+    NSString *Scope_Value = @"ouhub.connect";
     NSMutableArray *Parameters_For_Scope =[[NSMutableArray alloc] init];
     [Parameters_For_Scope addObject:Scope_Title];
     [Parameters_For_Scope addObject:Scope_Value];
     [Parameters addObject:Parameters_For_Scope];
     
     NSString *Response_Mode_Title = @"response_mode";
-    NSString *Response_Mode_Value = @"json";
+    NSString *Response_Mode_Value = @"redirect";
     NSMutableArray *Parameters_For_Response_Mode =[[NSMutableArray alloc] init];
     [Parameters_For_Response_Mode addObject:Response_Mode_Title];
     [Parameters_For_Response_Mode addObject:Response_Mode_Value];
@@ -102,7 +102,7 @@
     NSMutableArray *Parameters = [[NSMutableArray alloc] init];
     
     NSString *Client_ID_Title = @"client_id";
-    NSString *Client_ID_Value = @"c90ccc18-2fab-11eb-a13f-02420a00080e";
+    NSString *Client_ID_Value = @"29e8b6d5-0c51-11eb-9788-0242ac160004";
     NSMutableArray *Parameters_For_Client_ID =[[NSMutableArray alloc] init];
     [Parameters_For_Client_ID addObject:Client_ID_Title];
     [Parameters_For_Client_ID addObject:Client_ID_Value];
@@ -116,7 +116,7 @@
     [Parameters addObject:Parameters_For_Response_Type];
     
     NSString *Redirect_URI_Title = @"redirect_uri";
-    NSString *Redirect_URI_Value = @"https://healthng.oucare.com";
+    NSString *Redirect_URI_Value = @"https://healthng.oucare.com/oauth/devdump";
     NSMutableArray *Parameters_For_Redirect_URI =[[NSMutableArray alloc] init];
     [Parameters_For_Redirect_URI addObject:Redirect_URI_Title];
     [Parameters_For_Redirect_URI addObject:Redirect_URI_Value];
@@ -165,7 +165,7 @@
     NSMutableArray *Parameters = [[NSMutableArray alloc] init];
     
     NSString *Client_ID_Title = @"client_id";
-    NSString *Client_ID_Value = @"c90ccc18-2fab-11eb-a13f-02420a00080e";
+    NSString *Client_ID_Value = @"29e8b6d5-0c51-11eb-9788-0242ac160004";
     NSMutableArray *Parameters_For_Client_ID =[[NSMutableArray alloc] init];
     [Parameters_For_Client_ID addObject:Client_ID_Title];
     [Parameters_For_Client_ID addObject:Client_ID_Value];
@@ -186,7 +186,7 @@
     [Parameters addObject:Parameters_For_Parameter_Code];
     
     NSString *Redirect_URI_Title = @"redirect_uri";
-    NSString *Redirect_URI_Value = @"https://healthng.oucare.com";
+    NSString *Redirect_URI_Value = @"https://healthng.oucare.com/oauth/devdump";
     NSMutableArray *Parameters_For_Redirect_URI =[[NSMutableArray alloc] init];
     [Parameters_For_Redirect_URI addObject:Redirect_URI_Title];
     [Parameters_For_Redirect_URI addObject:Redirect_URI_Value];
@@ -212,7 +212,7 @@
     NSMutableArray *Parameters = [[NSMutableArray alloc] init];
     
     NSString *Client_ID_Title = @"client_id";
-    NSString *Client_ID_Value = @"c90ccc18-2fab-11eb-a13f-02420a00080e";
+    NSString *Client_ID_Value = @"29e8b6d5-0c51-11eb-9788-0242ac160004";
     NSMutableArray *Parameters_For_Client_ID =[[NSMutableArray alloc] init];
     [Parameters_For_Client_ID addObject:Client_ID_Title];
     [Parameters_For_Client_ID addObject:Client_ID_Value];

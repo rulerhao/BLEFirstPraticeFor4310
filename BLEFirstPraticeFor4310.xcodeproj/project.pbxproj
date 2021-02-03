@@ -61,7 +61,7 @@
 		63CF83ED2583507300438317 /* URLProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83642583507200438317 /* URLProcess.m */; };
 		63CF83EE2583507300438317 /* JSONProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83652583507200438317 /* JSONProcess.m */; };
 		63CF83EF2583507300438317 /* RequestOAuth2Steps.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83672583507200438317 /* RequestOAuth2Steps.m */; };
-		63CF83F02583507300438317 /* OAuthParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83682583507200438317 /* OAuthParameters.m */; };
+		63CF83F02583507300438317 /* OAuth2Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83682583507200438317 /* OAuth2Parameters.m */; };
 		63CF83F12583507300438317 /* HTMLProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF836A2583507200438317 /* HTMLProcess.m */; };
 		63CF83F22583507300438317 /* OAuth2Main.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CF836E2583507200438317 /* OAuth2Main.m */; };
 		63CF83F32583507300438317 /* device.proto in Sources */ = {isa = PBXBuildFile; fileRef = 63CF83722583507200438317 /* device.proto */; };
@@ -769,6 +769,8 @@
 		63F090F425903BB400424EFD /* Battery-2-Bak.png in Resources */ = {isa = PBXBuildFile; fileRef = 63F090F025903BB400424EFD /* Battery-2-Bak.png */; };
 		63F090F525903BB400424EFD /* Battery-4-Bak.png in Resources */ = {isa = PBXBuildFile; fileRef = 63F090F125903BB400424EFD /* Battery-4-Bak.png */; };
 		63FAF46B25C2BFEE000A60F0 /* Sensor4310Setting.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FAF46A25C2BFEE000A60F0 /* Sensor4310Setting.m */; };
+		63FC7F7C25CA857C00A3FE92 /* OAuthLogIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FC7F7B25CA857C00A3FE92 /* OAuthLogIn.m */; };
+		63FC7F8125CA860200A3FE92 /* OAuthMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FC7F8025CA860200A3FE92 /* OAuthMain.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -870,14 +872,14 @@
 		63CF83652583507200438317 /* JSONProcess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONProcess.m; sourceTree = "<group>"; };
 		63CF83662583507200438317 /* HTMLProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLProcess.h; sourceTree = "<group>"; };
 		63CF83672583507200438317 /* RequestOAuth2Steps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestOAuth2Steps.m; sourceTree = "<group>"; };
-		63CF83682583507200438317 /* OAuthParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthParameters.m; sourceTree = "<group>"; };
+		63CF83682583507200438317 /* OAuth2Parameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuth2Parameters.m; sourceTree = "<group>"; };
 		63CF83692583507200438317 /* OAuth2Main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuth2Main.h; sourceTree = "<group>"; };
 		63CF836A2583507200438317 /* HTMLProcess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLProcess.m; sourceTree = "<group>"; };
 		63CF836B2583507200438317 /* URLProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLProcess.h; sourceTree = "<group>"; };
 		63CF836C2583507200438317 /* JSONProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONProcess.h; sourceTree = "<group>"; };
 		63CF836D2583507200438317 /* RequestOAuth2Steps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestOAuth2Steps.h; sourceTree = "<group>"; };
 		63CF836E2583507200438317 /* OAuth2Main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuth2Main.m; sourceTree = "<group>"; };
-		63CF836F2583507200438317 /* OAuthParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthParameters.h; sourceTree = "<group>"; };
+		63CF836F2583507200438317 /* OAuth2Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuth2Parameters.h; sourceTree = "<group>"; };
 		63CF83712583507200438317 /* Device.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.pbobjc.h; sourceTree = "<group>"; };
 		63CF83722583507200438317 /* device.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = device.proto; sourceTree = "<group>"; };
 		63CF83732583507200438317 /* Sensor.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sensor.pbobjc.h; sourceTree = "<group>"; };
@@ -1604,6 +1606,10 @@
 		63F090F125903BB400424EFD /* Battery-4-Bak.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Battery-4-Bak.png"; path = "../../BLEFirstPraticeFor4310/BLEFirstPraticeFor4310/Battery-4-Bak.png"; sourceTree = "<group>"; };
 		63FAF46925C2BFEE000A60F0 /* Sensor4310Setting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sensor4310Setting.h; sourceTree = "<group>"; };
 		63FAF46A25C2BFEE000A60F0 /* Sensor4310Setting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Sensor4310Setting.m; sourceTree = "<group>"; };
+		63FC7F7A25CA857C00A3FE92 /* OAuthLogIn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OAuthLogIn.h; sourceTree = "<group>"; };
+		63FC7F7B25CA857C00A3FE92 /* OAuthLogIn.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OAuthLogIn.m; sourceTree = "<group>"; };
+		63FC7F7F25CA860200A3FE92 /* OAuthMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OAuthMain.h; sourceTree = "<group>"; };
+		63FC7F8025CA860200A3FE92 /* OAuthMain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OAuthMain.m; sourceTree = "<group>"; };
 		87E46CD961BC891A64EBC105 /* Pods-BLEFirstPraticeFor4310.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLEFirstPraticeFor4310.debug.xcconfig"; path = "Target Support Files/Pods-BLEFirstPraticeFor4310/Pods-BLEFirstPraticeFor4310.debug.xcconfig"; sourceTree = "<group>"; };
 		B1C9614A219060EC16AA474F /* Pods_BLEFirstPraticeFor4310.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BLEFirstPraticeFor4310.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1756,8 +1762,8 @@
 				63CF836E2583507200438317 /* OAuth2Main.m */,
 				63CF836C2583507200438317 /* JSONProcess.h */,
 				63CF83652583507200438317 /* JSONProcess.m */,
-				63CF836F2583507200438317 /* OAuthParameters.h */,
-				63CF83682583507200438317 /* OAuthParameters.m */,
+				63CF836F2583507200438317 /* OAuth2Parameters.h */,
+				63CF83682583507200438317 /* OAuth2Parameters.m */,
 			);
 			name = OAuth;
 			path = BLEFirstPraticeFor4310/OAuth;
@@ -1783,6 +1789,7 @@
 		63DB0E40251DC2E000FA3D39 = {
 			isa = PBXGroup;
 			children = (
+				63FC7F7925CA854700A3FE92 /* OAuth2 */,
 				6327C6C025BFC396000D2BD4 /* Sensor4310Page.h */,
 				6327C6C125BFC396000D2BD4 /* Sensor4310Page.m */,
 				6314669F25A403A400A263CA /* Sense4310ViewController.h */,
@@ -1801,9 +1808,9 @@
 				631466A725A4732600A263CA /* CollectionViewCell.m */,
 				6388C6FE259C631900052795 /* StoredDevicesCell.h */,
 				6388C6FF259C631900052795 /* StoredDevicesCell.m */,
-				6388C6FB259C616100052795 /* ViewController */,
 				635E307B25934434009298FA /* BLEFor4310.h */,
 				635E307C25934434009298FA /* BLEFor4310.m */,
+				6388C6FB259C616100052795 /* ViewController */,
 				63F08B6E2590316600424EFD /* res */,
 				63746DFA258886A40011D283 /* NetworkReachAbility.h */,
 				63746DFB258886A40011D283 /* NetworkReachAbility.m */,
@@ -2776,6 +2783,17 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		63FC7F7925CA854700A3FE92 /* OAuth2 */ = {
+			isa = PBXGroup;
+			children = (
+				63FC7F7F25CA860200A3FE92 /* OAuthMain.h */,
+				63FC7F8025CA860200A3FE92 /* OAuthMain.m */,
+				63FC7F7A25CA857C00A3FE92 /* OAuthLogIn.h */,
+				63FC7F7B25CA857C00A3FE92 /* OAuthLogIn.m */,
+			);
+			path = OAuth2;
+			sourceTree = "<group>";
+		};
 		73AE7946AF1BA1075DA1F951 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -3639,6 +3657,7 @@
 				631466A825A4732600A263CA /* CollectionViewCell.m in Sources */,
 				63CF82692583503E00438317 /* MQTTSubscribeSetting.m in Sources */,
 				63CF83F42583507300438317 /* Message.pbobjc.m in Sources */,
+				63FC7F7C25CA857C00A3FE92 /* OAuthLogIn.m in Sources */,
 				63DBA1B825AEA5B4007AC413 /* ShowViewController.m in Sources */,
 				63DB0E51251DC2E000FA3D39 /* SceneDelegate.m in Sources */,
 				63DBA1B425AEA596007AC413 /* TitleBarViewController.m in Sources */,
@@ -3662,7 +3681,7 @@
 				63746DFC258886A40011D283 /* NetworkReachAbility.m in Sources */,
 				63B153B0256F897B00FD435F /* SwitchDevices.m in Sources */,
 				630720B5256E3FC70000F7C7 /* SaveInformationFunc.m in Sources */,
-				63CF83F02583507300438317 /* OAuthParameters.m in Sources */,
+				63CF83F02583507300438317 /* OAuth2Parameters.m in Sources */,
 				6322A7AC254FB792007ACEF0 /* CameraController.m in Sources */,
 				63CF841125835B7600438317 /* TypesConversion.m in Sources */,
 				6322A7B8255001B1007ACEF0 /* SketchView.m in Sources */,
@@ -3670,6 +3689,7 @@
 				632D1373252F099B00073BC9 /* cellData.m in Sources */,
 				63CF83F82583507300438317 /* message.proto in Sources */,
 				63FAF46B25C2BFEE000A60F0 /* Sensor4310Setting.m in Sources */,
+				63FC7F8125CA860200A3FE92 /* OAuthMain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

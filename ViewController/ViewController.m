@@ -826,6 +826,7 @@ index               : (NSUInteger)          Index {
         }
     }
 }
+
 // 得到 OTP 走這
 - (void)
 didGetOAuthOTPNotification:(NSNotification *)notification {

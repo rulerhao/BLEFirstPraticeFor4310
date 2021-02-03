@@ -8,12 +8,16 @@
 #import <UIKit/UIKit.h>
 #import "MyNavigationController.h"
 #import "SettingEnum.h"
+#import "OAuth2Main.h"
 @class MyNavigationController;
 @class BLEFor4310;
+@class OAuth2Main;
 
 extern CurrenctController currentController;
 extern MyNavigationController *RootNavigationView;
 extern BLEFor4310 *BLE;
+extern OAuth2Main *OAuth;
+
 extern NSString *Now_Time;
 extern NSString *Now_Navigation_Name;
 

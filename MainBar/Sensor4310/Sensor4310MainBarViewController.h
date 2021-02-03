@@ -6,7 +6,9 @@
 //
 
 #import "ViewController.h"
-
+#import "Sensor4310Setting.h"
+#import "BLEFor4310.h"
+#import "StoredDevicesCell.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Sensor4310MainBarViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>

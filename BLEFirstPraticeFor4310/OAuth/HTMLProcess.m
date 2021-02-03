@@ -30,6 +30,7 @@ webView         : (WKWebView *)         WebView {
         if (error == nil) {
             if (result != nil) {
                 Return_HTML_String = [NSString stringWithFormat:@"%@", result];
+                NSLog(@"Return_HTML_String = %@", Return_HTML_String);
                 NSMutableArray *Information = [[NSMutableArray alloc] init];
                 [Information addObject: Return_HTML_String];
                 [Information addObject: WebView];

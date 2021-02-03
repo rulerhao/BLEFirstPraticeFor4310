@@ -42,6 +42,14 @@ dispatch_queue_t MainQueue;
     // ---------------------- 初始化 CB Central Manager ----------------------
     _CM = [[CBCentralManager alloc] initWithDelegate:self queue:BLEQueue];
     
+    //Return_HTML_String = [NSString stringWithFormat:@"%@", result];
+    NSMutableArray *Testttt;
+    
+    [[NSNotificationCenter defaultCenter]
+        postNotificationName:@"NotificationName" //Notification以一個字串(Name)下去辨別
+        object:self
+        userInfo:Testttt];
+    
     return self;
 }
 
@@ -90,11 +98,13 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         if(Device_Contain == false) {
             // ---------------------- 新增至 Stored_Devices ----------------------
             [self addNewDeviceToStored:self.Stored_Data peripheral:peripheral];
+            [self.delegate addNewDevice:peripheral];
             // ---------------------- 連接 Peripheral ----------------------
             [central connectPeripheral:peripheral options:nil];
         }
     }
 }
+
 //---------------------- Core Bluetooth Delegate - 當連接到 Peripheral 時的 Delegate ------------------
 - (void) centralManager          :(CBCentralManager *) central
          didConnectPeripheral    :(CBPeripheral *)     peripheral {
@@ -102,6 +112,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     peripheral.delegate = self;
     [peripheral discoverServices:nil];
 }
+
 //---------------------- Core Bluetooth Delegate - 發現到 Services 時的 Delegate ------------------
 - (void)     peripheral              :(CBPeripheral *)   peripheral
              didDiscoverServices     :(NSError *)        error {
@@ -114,6 +125,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     [peripheral discoverCharacteristics:nil
                              forService:[[peripheral services] objectAtIndex:2]];
 }
+
 //---------------------- Core Bluetooth Delegate - 發現到 Characteristics 時的 Delegate ------------------
 - (void) peripheral                              : (CBPeripheral *)   peripheral
          didDiscoverCharacteristicsForService    : (CBService *)      service
@@ -133,6 +145,16 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
 - (void)    peripheral                          :(CBPeripheral *)       peripheral
             didUpdateValueForCharacteristic     :(CBCharacteristic *)   characteristic
             error                               :(NSError *)            error {
+    NSLog(@"characteristic = %@", [characteristic value]);
+    NSLog(@"BLE.Delegate = %@", self.delegate);
+    if(self.delegate.class == Sensor4310MainBarViewController.class) {
+        NSLog(@"TestClass = %@", self.delegate.class);
+        NSLog(@"TestClass2 = %@", Sensor4310MainBarViewController.class);
+        //[self.delegate addNewDevice:peripheral];
+        [self.delegate updateCharacteristic:peripheral characteristic:characteristic];
+    }
+    // TestForBusy
+    [self.delegate updateForBusy:self.Stored_Data];
     // ---------------------- Stored Devices 在這次的 index ----------------------
     int8_t Index_Of_Stored_Devices = [self getIndexOfStoredDevices:peripheral];
     NSLog(@"characteristic.value = %@", [characteristic value]);
@@ -144,6 +166,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     // ---------------------- KS-4310 ----------------------
     if([[peripheral name] isEqual:@"KS-4310"]) {
         NSLog(@"it'sKS-4310");
+        // ---------------------- 該次的 Cell ----------------------
         StoredDevicesCell *Previous_Stored_Deivce_Cell = [[StoredDevicesCell alloc] init];
         Previous_Stored_Deivce_Cell = [self.Stored_Data objectAtIndex:Index_Of_Stored_Devices];
 
@@ -210,6 +233,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                         deviceID                    : nil
                         deviceSex                   : nil];
     [stored_Devices addObject:storedDevicesCell];
+    NSLog(@"self.delegate in addNewDevice = %@", self.delegate);
 }
 
 // ---------------------- 更新裝置感測資訊至 Storeed_Data ----------------------
@@ -349,4 +373,5 @@ timerWrite04ToKS4310 : (CBPeripheral *) peripheral
          forCharacteristic : characteristic
                       type : CBCharacteristicWriteWithResponse];
 }
+
 @end
