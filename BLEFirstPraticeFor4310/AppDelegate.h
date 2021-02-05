@@ -18,6 +18,7 @@ extern MyNavigationController *RootNavigationView;
 extern BLEFor4310 *BLE;
 extern OAuth2Main *OAuth;
 
+
 extern NSString *Now_Time;
 extern NSString *Now_Navigation_Name;
 

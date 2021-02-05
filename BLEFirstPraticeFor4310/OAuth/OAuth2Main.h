@@ -22,6 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)InitEnter : (UIViewController *) View_Controller;
 
+@property(readwrite, nonatomic) WKWebView *WKWeb_View;
+@property(readwrite, nonatomic) NSString *Access_Token;
+@property(readwrite, nonatomic) NSString *Refresh_Token;
+
 @end
 
 NS_ASSUME_NONNULL_END

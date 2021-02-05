@@ -18,6 +18,7 @@
 }
 
 // 登錄用的URL設定
+// ------------------- Step 1 - App 登入 -------------------
 - (void)
 logIn       :   (NSString *)    requestURLString
 wKWebView   :   (WKWebView *)   WKWebView {
@@ -40,6 +41,7 @@ wKWebView   :   (WKWebView *)   WKWebView {
     [WKWebView loadRequest: request];
 }
 
+// ------------------- Step 2 取得 Auth Code (使用 PKCE) -------------------
 - (void)takeCode : (WKWebView *) WKWebView {
     // cookies
     WKHTTPCookieStore *cookieStore = WKWebView.configuration.websiteDataStore.httpCookieStore;
@@ -69,10 +71,11 @@ wKWebView   :   (WKWebView *)   WKWebView {
     [request setHTTPShouldHandleCookies:true];
     [WKWebView loadRequest: request];
 }
-
+// ------------------- Step 3 Access Token -------------------
 - (void)
 takeAccessToken : (NSString *) Code_Value
 wKWebView       : (WKWebView *) WKWebView {
+    NSLog(@"Code_Value = %@", Code_Value);
     OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
     NSURL *url = [[NSURL alloc] initWithString: [oAuthParameters takeAccessTokenURLWithCodeParameters]];
     
@@ -88,9 +91,10 @@ wKWebView       : (WKWebView *) WKWebView {
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPShouldHandleCookies:true];
+    NSLog(@"request = %@", request);
     [WKWebView loadRequest: request];
 }
-  
+
 - (void)
 takeRefreshAccesssTokenThroughRefreshToken : (NSString *)  Refresh_Token
 wKWebView                                  : (WKWebView *) WKWebView {
@@ -133,5 +137,24 @@ wKWebView       : (WKWebView *) WKWebView {
     [request setHTTPShouldHandleCookies:true];
 
     [WKWebView loadRequest: request];
+}
+
+- (void)
+takeDevicesInformation          : (NSString *)  Access_Token
+             wKWebView          : (WKWebView *) WKWebView {
+    
+    OAuth2Parameters *oAuthParemeters = [OAuth2Parameters alloc];
+    NSURL *URL = [[NSURL alloc] initWithString: [oAuthParemeters takeDevicesInformationURLWithParameters]];
+    
+    NSString *authValue = [NSString stringWithFormat:@"Bearer %@", Access_Token];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:URL];
+    [request setHTTPMethod:@"GET"];
+    [request setValue:authValue forHTTPHeaderField:@"Authorization"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPShouldHandleCookies:true];
+
+    [OAuth.WKWeb_View loadRequest: request];
 }
 @end

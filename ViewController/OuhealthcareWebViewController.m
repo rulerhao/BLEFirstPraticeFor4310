@@ -47,6 +47,7 @@ didFinishNavigation :(WKNavigation *)   navigation {
 webView                             : (WKWebView *)                             webView
 decidePolicyForNavigationResponse   : (WKNavigationResponse *)                  navigationResponse
 decisionHandler                     : (void (^)(WKNavigationResponsePolicy))    decisionHandler {
+    navigationResponse.response.URL;
     decisionHandler(WKNavigationResponsePolicyAllow);
 }
 

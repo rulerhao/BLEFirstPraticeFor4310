@@ -26,6 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *) takeBearerTokenURLWithCodeParameters;
 - (NSString *) takeBearerTokenBodyParameters;
 
+- (NSString *) takeDevicesInformationURLWithParameters;
+
+#pragma mark -- Methods
+
 - (NSString *) Parameters_Merge : (NSMutableArray *) Parameters;
 @end
 

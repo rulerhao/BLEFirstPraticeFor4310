@@ -6,7 +6,7 @@
 //
 
 #import "ViewController.h"
-
+#import <WebKit/WebKit.h>
 NS_ASSUME_NONNULL_BEGIN
 
 @interface RequestOAuth2Steps : UIViewController
@@ -30,6 +30,9 @@ wKWebView                                  : (WKWebView *) WKWebView;
 takeOTP         : (NSString *)  Access_Token
 wKWebView       : (WKWebView *) WKWebView;
 
+- (void)
+takeDevicesInformation          : (NSString *)  Access_Token
+wKWebView          : (WKWebView *) WKWebView;
 @end
 
 NS_ASSUME_NONNULL_END

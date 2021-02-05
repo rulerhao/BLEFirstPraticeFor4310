@@ -10,7 +10,6 @@
 
 @interface OAuth2Main ()
 {
-    WKWebView *WKWeb_View;
     UIViewController *View_Controller_For_Notify;
     //NSNotificationCenter *get_HTMLString_Notification_Center;
 }
@@ -24,14 +23,14 @@
 
 - (void)InitEnter : (UIViewController *) View_Controller {
     View_Controller_For_Notify = View_Controller;
-    WKWeb_View = [[WKWebView alloc] init];
-    [self setupWebView : WKWeb_View];
+    self.WKWeb_View = [[WKWebView alloc] init];
+    [self setupWebView : self.WKWeb_View];
     OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
     NSString *RequestURL = [oAuthParameters logInURLWithParameters];
     RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
     if([[Reachability reachabilityWithHostName:@"https://healthng.oucare.com/site/login"] currentReachabilityStatus] == 1) {
         [requestOAuth2Steps     logIn : RequestURL
-                            wKWebView : WKWeb_View];
+                            wKWebView : self.WKWeb_View];
         // 當登錄完成後做 get code 動作
     }
     NSLog(@"afterLogin");
@@ -54,9 +53,18 @@ didFinishNavigation :(WKNavigation *)   navigation {
     NSLog(@"didFinishNavigation URL = %@", [webView URL]);
     NSURL *URL = webView.URL;
     NSURLComponents *URL_Components = [NSURLComponents componentsWithString:URL.absoluteString];
+    NSLog(@"[URL_Components path] = %@", [URL_Components path]);
     if([[URL_Components path]  isEqual: @"/oauth/login"]) {
+        NSLog(@"didFinishNavigation_oauth/login");
         RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
         [requestOAuth2Steps takeCode:webView];
+    }
+    else if([[URL_Components path]  isEqual: @"/oauth/authorize"]) {
+        HTMLProcess *htmlProcess = [HTMLProcess alloc];
+        NSString *Return_String = [htmlProcess getHTMLString   : self
+                                               webView         : webView];
+        NSLog(@"Return_String = %@", Return_String);
+        
     }
     // 在取得 Access Token 後
     // 這裡有兩個可能會進入
@@ -76,32 +84,39 @@ didFinishNavigation :(WKNavigation *)   navigation {
     }
     else if ([[URL_Components path]  isEqual: @"/api/v1/ouhub/otp"]) {
         NSLog(@"GetOTP");
-        HTMLProcess *htmlProcess = [HTMLProcess alloc];
-        [htmlProcess getHTMLString   : self
-                     webView         : webView];
+//        HTMLProcess *htmlProcess = [HTMLProcess alloc];
+//        [htmlProcess getHTMLString   : self
+//                     webView         : webView];
     }
-    else {
-        // 取得 code
-        URLProcess *urlProcess = [URLProcess alloc];
-        NSString *URL_Query = [[webView URL] query];
-        NSMutableArray *Parameters = [urlProcess getURLParameters:URL_Query];
-        
-        NSMutableDictionary *Code_Dict = [Parameters objectAtIndex:0];
-        NSString *Code_Key = @"code";
-        NSLog(@"NotYetGetInto = %@", [Code_Dict allKeys]);
-        // 取得 access token
-        if([[[Code_Dict allKeys]objectAtIndex:0] isEqual:Code_Key]) {
-            NSLog(@"getintocodekey");
-            NSString *Code_Value = [Code_Dict valueForKey:Code_Key];
-            NSLog(@"Code_Value = %@", Code_Value);
-            RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
-            [requestOAuth2Steps takeAccessToken:Code_Value
-                                      wKWebView:webView];
-        }
+    else if([[URL_Components path]  isEqual: @"/api/v1/devices/d35e9666-6149-11eb-9f01-02420a00080a"]) {
+        NSLog(@"Finally Enter Here");
     }
+//    else {
+//        // 取得 code
+//        URLProcess *urlProcess = [URLProcess alloc];
+//        NSString *URL_Query = [[webView URL] query];
+//        NSLog(@"URL_Query = %@", URL_Query);
+//        NSMutableArray *Parameters = [urlProcess getURLParameters:URL_Query];
+//        NSLog(@"Parameters = %@", Parameters);
+//        NSMutableDictionary *Code_Dict = [Parameters objectAtIndex:0];
+//        NSLog(@"Code_Dict = %@", Code_Dict);
+//        NSString *Code_Key = @"code";
+//        NSLog(@"NotYetGetInto = %@", [Code_Dict allKeys]);
+//        // 取得 access token
+//        if([[[Code_Dict allKeys]objectAtIndex:0] isEqual:Code_Key]) {
+//            NSLog(@"getintocodekey");
+//            NSString *Code_Value = [Code_Dict valueForKey:Code_Key];
+//            NSLog(@"Code_Value = %@", Code_Value);
+////            RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
+////            [requestOAuth2Steps takeAccessToken:Code_Value
+////                                      wKWebView:webView];
+//            HTMLProcess *htmlProcess = [HTMLProcess alloc];
+//            [htmlProcess getHTMLString   : self
+//                         webView         : webView];
+//        }
+//    }
     NSLog(@"didFinishNavigation");
 }
-
 // 在收到 response 後，决定是否跳轉
 // 步驟請參考公司 pigo 建置的 github document
 // https://github.com/kjws/ouhealth-ng/blob/master/docs/API-OAuth2.md
@@ -116,25 +131,24 @@ decisionHandler                     : (void (^)(WKNavigationResponsePolicy))    
     
     URLProcess *urlProcess = [URLProcess alloc];
     // 只顯示參數的部分
+    NSString *URL_Host = [URL_Components host];
     NSString *URL_Query = [URL_Components query];
     NSMutableArray *Parameters = [[NSMutableArray alloc] init];
     Parameters = [urlProcess getURLParameters:URL_Query];
     NSLog(@"Parameters = %@", Parameters);
-
-    if([[URL_Components path]  isEqual: @"/oauth/login"]) {
-        decisionHandler(WKNavigationResponsePolicyAllow);
-    } else if([[URL_Components path]  isEqual: @"/oauth/token"]) {
-        decisionHandler(WKNavigationResponsePolicyAllow);
-    } else {
-        decisionHandler(WKNavigationResponsePolicyAllow);
+    if([URL_Host isEqual:@"healthng.oucare.com"]) {
+        if([[URL_Components path]  isEqual: @"/oauth/login"]) {
+        } else if([[URL_Components path]  isEqual: @"/oauth/token"]) {
+        } else if([[URL_Components path]  isEqual: @"/"]){
+            if([[URL_Query substringWithRange:NSMakeRange(0, 4)] isEqual:@"code"]) {
+                NSString *Code = [URL_Query substringFromIndex:5];
+                RequestOAuth2Steps *requestOAuth2Steps = [[RequestOAuth2Steps alloc] init];
+                [requestOAuth2Steps takeAccessToken:Code wKWebView:webView];
+            }
+        } else {
+        }
     }
-}
-- (void)
-webView:(WKWebView *)webView
-didStartProvisionalNavigation:(WKNavigation *)navigation {
-    NSLog(@"didStartProvisionalNavigation");
-    NSLog(@"webView = %@", webView.URL);
-    NSLog(@"           ");
+    decisionHandler(WKNavigationResponsePolicyAllow);
 }
 
 - (void)
@@ -230,6 +244,7 @@ decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
 
 - (void)
 getHTMLStringNotification:(NSNotification *)notification {
+    NSLog(@"getIntogetHTMLStringNotification");
     NSDictionary * userInfo = [notification userInfo]; //讀取userInfo
     NSString *HTTP_String_Key = [[userInfo allKeys] objectAtIndex:0];
     NSMutableArray *HTTP_Information = [[userInfo allValues] objectAtIndex:0];
@@ -244,17 +259,17 @@ getHTMLStringNotification:(NSNotification *)notification {
     NSDictionary *Json_Dictionary = [Json_Process NSStringToJSONDict:HTTP_String_JSON];
 
     if([HTTP_String_Key isEqual: @"/oauth/token"]) {
-        NSString *Access_Token = [Json_Dictionary valueForKey:@"access_token"];
-        NSString *Refresh_Token = [Json_Dictionary valueForKey:@"refresh_token"];
+        self.Access_Token = [Json_Dictionary valueForKey:@"access_token"];
+        self.Refresh_Token = [Json_Dictionary valueForKey:@"refresh_token"];
         
-        NSLog(@"Access_Token = %@", Access_Token);
-        NSLog(@"Refresh_Token123 = %@", Refresh_Token);
+        NSLog(@"Access_Token = %@", self.Access_Token);
+        NSLog(@"Refresh_Token123 = %@", self.Refresh_Token);
         
         //    暫時沒有使用 Refresh Token 來做 Refresh 的動作
         //    [self takeRefreshAccesssTokenThroughRefreshToken:Refresh_Token];
-        RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
-        [requestOAuth2Steps takeOTP : Access_Token
-                           wKWebView: WKWeb_View];
+//        RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
+//        [requestOAuth2Steps takeOTP : Access_Token
+//                           wKWebView: WKWeb_View];
     }
     else if ([HTTP_String_Key  isEqual: @"/api/v1/ouhub/otp"]) {
         NSString *Client_ID = [Json_Dictionary valueForKey:@"client_id"];
@@ -284,4 +299,9 @@ getHTMLStringNotification:(NSNotification *)notification {
                                                       object:nil];
     }
 }
+//
+- (void) getDevicesInformationNotification:(NSNotification *)notification {
+    
+}
+
 @end

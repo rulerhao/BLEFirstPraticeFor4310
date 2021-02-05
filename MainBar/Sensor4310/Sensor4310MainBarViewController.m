@@ -174,6 +174,11 @@
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
     return UIEdgeInsetsMake(sensor4310Setting.Inset_Top_Down, sensor4310Setting.Inset_Left_Right, sensor4310Setting.Inset_Top_Down, sensor4310Setting.Inset_Left_Right);
 }
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    RequestOAuth2Steps *requestOAuth2Steps = [[RequestOAuth2Steps alloc] init];
+    [requestOAuth2Steps takeDevicesInformation:OAuth.Access_Token wKWebView:OAuth.WKWeb_View];
+}
 #pragma mark - View Initial
 
 - (void) viewInit {

@@ -18,6 +18,7 @@
  * Parameter[0][0] 現在變成 Client_ID_Title
  * Parameter[0][1] 現在變成 Client_ID_Value
  */
+
 - (NSMutableArray *) logInParameters {
     NSMutableArray *Parameters = [[NSMutableArray alloc] init];
     
@@ -116,7 +117,7 @@
     [Parameters addObject:Parameters_For_Response_Type];
     
     NSString *Redirect_URI_Title = @"redirect_uri";
-    NSString *Redirect_URI_Value = @"https://healthng.oucare.com/oauth/devdump";
+    NSString *Redirect_URI_Value = @"https://healthng.oucare.com";
     NSMutableArray *Parameters_For_Redirect_URI =[[NSMutableArray alloc] init];
     [Parameters_For_Redirect_URI addObject:Redirect_URI_Title];
     [Parameters_For_Redirect_URI addObject:Redirect_URI_Value];
@@ -186,7 +187,7 @@
     [Parameters addObject:Parameters_For_Parameter_Code];
     
     NSString *Redirect_URI_Title = @"redirect_uri";
-    NSString *Redirect_URI_Value = @"https://healthng.oucare.com/oauth/devdump";
+    NSString *Redirect_URI_Value = @"https://healthng.oucare.com";
     NSMutableArray *Parameters_For_Redirect_URI =[[NSMutableArray alloc] init];
     [Parameters_For_Redirect_URI addObject:Redirect_URI_Title];
     [Parameters_For_Redirect_URI addObject:Redirect_URI_Value];
@@ -258,6 +259,63 @@
     NSLog(@"Bearer_URL = %@", JSON_Data);
     return JSON_Data;
 }
+
+
+// 取得裝置資訊
+- (NSString *) takeDevicesInformationURLWithParameters {
+    NSString *Origin_URL = @"https://healthng.oucare.com/api/v1/devices/d35e9666-6149-11eb-9f01-02420a00080a";
+    return Origin_URL;
+}
+// 更新裝置狀態
+- (NSString *) refreshDevicesInformationURLWithParameters {
+    NSString *Origin_URL = @"https://healthng.oucare.com/api/v1/devices/d35e9666-6149-11eb-9f01-02420a00080a/status";
+    return Origin_URL;
+}
+
+- (NSMutableArray *) refreshDevicesInformationBodyParameters : (NSString *) Code_Value {
+    NSMutableArray *Parameters = [[NSMutableArray alloc] init];
+    
+    NSString *Client_ID_Title = @"client_id";
+    NSString *Client_ID_Value = @"29e8b6d5-0c51-11eb-9788-0242ac160004";
+    NSMutableArray *Parameters_For_Client_ID =[[NSMutableArray alloc] init];
+    [Parameters_For_Client_ID addObject:Client_ID_Title];
+    [Parameters_For_Client_ID addObject:Client_ID_Value];
+    [Parameters addObject:Parameters_For_Client_ID];
+    
+    NSString *Grant_Type_Title = @"grant_type";
+    NSString *Grant_Type_Value = @"authorization_code";
+    NSMutableArray *Parameters_For_Grant_Type =[[NSMutableArray alloc] init];
+    [Parameters_For_Grant_Type addObject:Grant_Type_Title];
+    [Parameters_For_Grant_Type addObject:Grant_Type_Value];
+    [Parameters addObject:Parameters_For_Grant_Type];
+    
+    NSString *Parameter_Code_Title = @"code";
+    NSString *Parameter_Code_Value = Code_Value;
+    NSMutableArray *Parameters_For_Parameter_Code =[[NSMutableArray alloc] init];
+    [Parameters_For_Parameter_Code addObject:Parameter_Code_Title];
+    [Parameters_For_Parameter_Code addObject:Parameter_Code_Value];
+    [Parameters addObject:Parameters_For_Parameter_Code];
+    
+    NSString *Redirect_URI_Title = @"redirect_uri";
+    NSString *Redirect_URI_Value = @"https://healthng.oucare.com";
+    NSMutableArray *Parameters_For_Redirect_URI =[[NSMutableArray alloc] init];
+    [Parameters_For_Redirect_URI addObject:Redirect_URI_Title];
+    [Parameters_For_Redirect_URI addObject:Redirect_URI_Value];
+    [Parameters addObject:Parameters_For_Redirect_URI];
+    
+    NSString *Code_Verifier_Method_Title = @"code_verifier";
+    NSString *Code_Verifier_Method_Value = @"ThisIsntRandomButItNeedsToBe43CharactersLong";
+    NSMutableArray *Parameters_For_Code_Verifier_Method =[[NSMutableArray alloc] init];
+    [Parameters_For_Code_Verifier_Method addObject:Code_Verifier_Method_Title];
+    [Parameters_For_Code_Verifier_Method addObject:Code_Verifier_Method_Value];
+    [Parameters addObject:Parameters_For_Code_Verifier_Method];
+    
+    NSLog(@"parametersForCode = %@", Parameters);
+    NSLog(@"TestParameters = %@", [[Parameters objectAtIndex:0] objectAtIndex:0]);
+    return Parameters;
+}
+
+#pragma mark -- Methods
 
 - (NSString *) Parameters_Merge : (NSMutableArray *) Parameters {
     NSUInteger Parameters_Number = [Parameters count];
