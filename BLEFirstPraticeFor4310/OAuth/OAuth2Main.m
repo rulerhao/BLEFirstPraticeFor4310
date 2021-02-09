@@ -84,12 +84,29 @@ didFinishNavigation :(WKNavigation *)   navigation {
     }
     else if ([[URL_Components path]  isEqual: @"/api/v1/ouhub/otp"]) {
         NSLog(@"GetOTP");
-//        HTMLProcess *htmlProcess = [HTMLProcess alloc];
-//        [htmlProcess getHTMLString   : self
-//                     webView         : webView];
+        HTMLProcess *htmlProcess = [HTMLProcess alloc];
+        [htmlProcess getHTMLString   : self
+                     webView         : webView];
     }
     else if([[URL_Components path]  isEqual: @"/api/v1/devices/d35e9666-6149-11eb-9f01-02420a00080a"]) {
         NSLog(@"Finally Enter Here");
+    }
+    else {
+        __block NSString *Return_HTML_String = nil;
+        [webView evaluateJavaScript:@"document.documentElement.outerHTML"
+                  completionHandler:^(id result, NSError *error) {
+            NSLog(@"Evaluateerror = %@", error);
+            NSLog(@"Evaluateresult = %@", result);
+            if (error == nil) {
+                if (result != nil) {
+                    Return_HTML_String = [NSString stringWithFormat:@"%@", result];
+                    NSLog(@"Return_HTML_String = %@", Return_HTML_String);
+                }
+            } else {
+                NSLog(@"evaluateJavaScript error : %@", error.localizedDescription);
+            }
+        }];
+        NSLog(@"didfinishnavigation path = %@", [URL_Components path]);
     }
 //    else {
 //        // 取得 code
@@ -136,10 +153,15 @@ decisionHandler                     : (void (^)(WKNavigationResponsePolicy))    
     NSMutableArray *Parameters = [[NSMutableArray alloc] init];
     Parameters = [urlProcess getURLParameters:URL_Query];
     NSLog(@"Parameters = %@", Parameters);
+    NSString *URL_Path = [URL_Components path];
+    NSLog(@"URL_Path = %@", URL_Path);
     if([URL_Host isEqual:@"healthng.oucare.com"]) {
         if([[URL_Components path]  isEqual: @"/oauth/login"]) {
         } else if([[URL_Components path]  isEqual: @"/oauth/token"]) {
-        } else if([[URL_Components path]  isEqual: @"/"]){
+            
+        }
+        // Log in回傳的
+        else if([[URL_Components path]  isEqual: @"/"]){
             if([[URL_Query substringWithRange:NSMakeRange(0, 4)] isEqual:@"code"]) {
                 NSString *Code = [URL_Query substringFromIndex:5];
                 RequestOAuth2Steps *requestOAuth2Steps = [[RequestOAuth2Steps alloc] init];
@@ -245,7 +267,7 @@ decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
 - (void)
 getHTMLStringNotification:(NSNotification *)notification {
     NSLog(@"getIntogetHTMLStringNotification");
-    NSDictionary * userInfo = [notification userInfo]; //讀取userInfo
+    NSDictionary *userInfo = [notification userInfo]; //讀取userInfo
     NSString *HTTP_String_Key = [[userInfo allKeys] objectAtIndex:0];
     NSMutableArray *HTTP_Information = [[userInfo allValues] objectAtIndex:0];
     NSString *HTTP_String_Value = [HTTP_Information objectAtIndex:0];
@@ -266,10 +288,10 @@ getHTMLStringNotification:(NSNotification *)notification {
         NSLog(@"Refresh_Token123 = %@", self.Refresh_Token);
         
         //    暫時沒有使用 Refresh Token 來做 Refresh 的動作
-        //    [self takeRefreshAccesssTokenThroughRefreshToken:Refresh_Token];
-//        RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
-//        [requestOAuth2Steps takeOTP : Access_Token
-//                           wKWebView: WKWeb_View];
+//        [self takeRefreshAccesssTokenThroughRefreshToken:Refresh_Token];
+        RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
+        [requestOAuth2Steps takeOTP   : self.Access_Token
+                            wKWebView : WKWeb_View];
     }
     else if ([HTTP_String_Key  isEqual: @"/api/v1/ouhub/otp"]) {
         NSString *Client_ID = [Json_Dictionary valueForKey:@"client_id"];

@@ -24,7 +24,7 @@
 dispatch_queue_t BLEQueue;
 dispatch_queue_t MainQueue;
 }
--(instancetype)init {
+- (instancetype) init {
     CalculateFunc = [CalFunc alloc];
     ks4310Setting = [KS4310Setting alloc];
     [ks4310Setting InitKS4310Setting];

@@ -49,7 +49,7 @@ typedef NS_ENUM(NSInteger, FunctionButtonEnum){
     for(NSInteger i = 0; i < Button_Number; i++) {
         UIButton *TestButton = [[UIButton alloc] initWithFrame:CGRectZero];
         [TestButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [TestButton addTarget:self action:@selector(functionName:) forControlEvents:UIControlEventTouchUpInside];
+        [TestButton addTarget:self action:@selector(buttonBeClicked:) forControlEvents:UIControlEventTouchUpInside];
         [TestButton setImage:[self Function_Button_Image_Filter:[[Button_Type_List objectAtIndex:i] integerValue]] forState:UIControlStateNormal];
         [self.view addSubview:TestButton];
 
@@ -84,7 +84,7 @@ typedef NS_ENUM(NSInteger, FunctionButtonEnum){
 }
 #pragma mark - Methods
 
-- (void) functionName:(UIButton *) sender {
+- (void) buttonBeClicked:(UIButton *) sender {
     for(NSInteger i = 0; i < Button_Number; i++) {
         UIButton *Index_Button = [self.Button_Array_List objectAtIndex:i];
         if(Index_Button == sender) {

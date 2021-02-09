@@ -19,6 +19,7 @@
  * Parameter[0][1] 現在變成 Client_ID_Value
  */
 
+// 登入
 - (NSMutableArray *) logInParameters {
     NSMutableArray *Parameters = [[NSMutableArray alloc] init];
     
@@ -99,6 +100,7 @@
     return URL_With_Parameters;
 }
 
+// 取得 code
 - (NSMutableArray *) takeCodeParameter {
     NSMutableArray *Parameters = [[NSMutableArray alloc] init];
     
@@ -162,6 +164,7 @@
     return URL_With_Parameters;
 }
 
+// 取得 Access token
 - (NSMutableArray *) takeAccessTokenBodyParameters : (NSString *) Code_Value {
     NSMutableArray *Parameters = [[NSMutableArray alloc] init];
     
@@ -248,19 +251,62 @@
     return Origin_URL;
 }
 
-- (NSString *) takeBearerTokenBodyParameters {
+- (NSString *) takeBearerTokenBodyParameters : (NSString *) Device_Type
+                                  deviceUUID : (NSString *) Device_UUID {
     NSString *Origin_URL = @"https://healthng.oucare.com/api/v1/ouhub/otp";
     NSString *Device_Type_Title = @"device_type";
-    NSString *Device_Type_Value = @"ios";
+    NSString *Device_Type_Value = Device_Type;
     NSString *Device_UUID_Ttile = @"device_uuid";
-    NSString *Device_UUID_Value = @"11111111-2222-3333-444444444444";
+    NSString *Device_UUID_Value = Device_UUID;
     
     NSString *JSON_Data = [NSString stringWithFormat:@"{\"%@\":\"%@\",\"%@\":\"%@\"}", Device_Type_Title, Device_Type_Value, Device_UUID_Ttile, Device_UUID_Value];
     NSLog(@"Bearer_URL = %@", JSON_Data);
     return JSON_Data;
 }
 
+// 註冊裝置
+- (NSString *) signUpDevicesURLWithParameters : (NSString *) OrgunitsUUID {
+    NSMutableString *URL = [[NSMutableString alloc] init];
+    NSString *Origin_URL = @"https://healthng.oucare.com/api/v1/orgunits/";
+    NSString *Origin_URL2 = @"/devices/registration";
+    
+    [URL appendString:Origin_URL];
+    [URL appendString:OrgunitsUUID];
+    [URL appendString:Origin_URL2];
+    
+    return URL;
+}
 
+- (NSMutableArray *) signUpDevicesBodyParameters : (NSString *) OrgunitsUUID {
+    EncodeOrguitsUUIDAndTimeStamp *encodeOrguitsUUIDAndTimeStamp = [[EncodeOrguitsUUIDAndTimeStamp alloc] init];
+    NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
+    NSMutableArray *Parameters = [[NSMutableArray alloc] init];
+    
+    NSString *Model_Title = @"model";
+    NSString *Model_Value = @"KS-4310";
+    NSMutableArray *Parameters_For_Model =[[NSMutableArray alloc] init];
+    [Parameters_For_Model addObject:Model_Title];
+    [Parameters_For_Model addObject:Model_Value];
+    [Parameters addObject:Parameters_For_Model];
+    
+    NSString *Serial_Title = @"serial";
+    NSString *Serial_Value = [encodeOrguitsUUIDAndTimeStamp getSerialString:OrgunitsUUID timeInterval:timeInterval];
+    NSMutableArray *Parameters_For_Serial =[[NSMutableArray alloc] init];
+    [Parameters_For_Serial addObject:Serial_Title];
+    [Parameters_For_Serial addObject:Serial_Value];
+    [Parameters addObject:Parameters_For_Serial];
+    
+    NSString *Time_Title = @"time";
+    NSString *Time_Value = [NSString stringWithFormat:@"%f", timeInterval];
+    NSMutableArray *Parameters_For_Time = [[NSMutableArray alloc] init];
+    [Parameters_For_Time addObject:Time_Title];
+    [Parameters_For_Time addObject:Time_Value];
+    [Parameters addObject:Parameters_For_Time];
+    
+    NSLog(@"parametersForCode = %@", Parameters);
+    NSLog(@"TestParameters = %@", [[Parameters objectAtIndex:0] objectAtIndex:0]);
+    return Parameters;
+}
 // 取得裝置資訊
 - (NSString *) takeDevicesInformationURLWithParameters {
     NSString *Origin_URL = @"https://healthng.oucare.com/api/v1/devices/d35e9666-6149-11eb-9f01-02420a00080a";
@@ -314,6 +360,7 @@
     NSLog(@"TestParameters = %@", [[Parameters objectAtIndex:0] objectAtIndex:0]);
     return Parameters;
 }
+
 
 #pragma mark -- Methods
 

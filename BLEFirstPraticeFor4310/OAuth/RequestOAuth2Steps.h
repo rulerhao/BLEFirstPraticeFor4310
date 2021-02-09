@@ -7,6 +7,7 @@
 
 #import "ViewController.h"
 #import <WebKit/WebKit.h>
+#import "EncodeOrguitsUUIDAndTimeStamp.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface RequestOAuth2Steps : UIViewController
@@ -32,7 +33,12 @@ wKWebView       : (WKWebView *) WKWebView;
 
 - (void)
 takeDevicesInformation          : (NSString *)  Access_Token
-wKWebView          : (WKWebView *) WKWebView;
+wKWebView                       : (WKWebView *) WKWebView;
+
+- (void)
+signUpDevices          : (NSString *)  Access_Token
+orgunits               : (NSString *)  Orgunits
+wKWebView              : (WKWebView *) WKWebView;
 @end
 
 NS_ASSUME_NONNULL_END

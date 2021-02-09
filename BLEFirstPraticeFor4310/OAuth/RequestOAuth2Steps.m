@@ -118,33 +118,54 @@ wKWebView                                  : (WKWebView *) WKWebView {
     [WKWebView loadRequest: request];
 }
 
+// Take OTP
 - (void)
 takeOTP         : (NSString *)  Access_Token
 wKWebView       : (WKWebView *) WKWebView {
-    OAuth2Parameters *oAuthParemeters = [OAuth2Parameters alloc];
-    NSURL *URL = [[NSURL alloc] initWithString: [oAuthParemeters takeBearerTokenURLWithCodeParameters]];
-    NSString *JSON_String = [oAuthParemeters takeBearerTokenBodyParameters];
-    NSData *requestData = [NSData dataWithBytes:[JSON_String UTF8String] length:[JSON_String lengthOfBytesUsingEncoding:NSUTF8StringEncoding]];
+    NSLog(@"takeOTP");
+    // URL
+    OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
+    NSURL *URL = [[NSURL alloc] initWithString: [oAuthParameters takeOTPBodyParameters:@"ios" deviceUUID:@"92ee96a5-ff9a-11ea-8fd3-0242ac160004"]];
     
+    NSLog(@"sign up url = %@", URL);
+    
+    // Authorization
     NSString *authValue = [NSString stringWithFormat:@"Bearer %@", Access_Token];
     
+    // Body
+    EncodeOrguitsUUIDAndTimeStamp *encodeOrguitsUUIDAndTimeStamp = [[EncodeOrguitsUUIDAndTimeStamp alloc] init];
+    NSDate *start = [NSDate date];
+    NSDictionary *PostDict = [[NSDictionary alloc] initWithDictionary:[encodeOrguitsUUIDAndTimeStamp getDeviceSerialDictionary:@"KS-4310" inputString:Orgunits timeInterval:[start timeIntervalSince1970]]];
+    
+    NSLog(@"PostDict = %@", PostDict);
+
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:PostDict options:0 error:nil];
+    NSString *urlString =  [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+
+    NSLog(@"stringData = %@", urlString);
+    NSData *requestBodyData = [urlString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSString *requestBodyDataLength = [NSString stringWithFormat:@"%lu", (unsigned long)[requestBodyData length]];
+
+    // Set Request
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:URL];
     [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:requestData];
+    [request setHTTPBody:requestBodyData];
+    [request setValue:requestBodyDataLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:authValue forHTTPHeaderField:@"Authorization"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPShouldHandleCookies:true];
 
-    [WKWebView loadRequest: request];
+    [OAuth.WKWeb_View loadRequest: request];
 }
 
 - (void)
 takeDevicesInformation          : (NSString *)  Access_Token
              wKWebView          : (WKWebView *) WKWebView {
     
-    OAuth2Parameters *oAuthParemeters = [OAuth2Parameters alloc];
-    NSURL *URL = [[NSURL alloc] initWithString: [oAuthParemeters takeDevicesInformationURLWithParameters]];
+    OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
+    NSURL *URL = [[NSURL alloc] initWithString: [oAuthParameters takeDevicesInformationURLWithParameters]];
     
     NSString *authValue = [NSString stringWithFormat:@"Bearer %@", Access_Token];
     
@@ -153,6 +174,49 @@ takeDevicesInformation          : (NSString *)  Access_Token
     [request setHTTPMethod:@"GET"];
     [request setValue:authValue forHTTPHeaderField:@"Authorization"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPShouldHandleCookies:true];
+
+    [OAuth.WKWeb_View loadRequest: request];
+}
+
+// 註冊裝置
+- (void)
+signUpDevices          : (NSString *)  Access_Token
+orgunits               : (NSString *)  Orgunits
+    wKWebView          : (WKWebView *) WKWebView {
+    NSLog(@"signUp");
+    // URL
+    OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
+    NSURL *URL = [[NSURL alloc] initWithString: [oAuthParameters signUpDevicesURLWithParameters:Orgunits]];
+    
+    NSLog(@"sign up url = %@", URL);
+    
+    // Authorization
+    NSString *authValue = [NSString stringWithFormat:@"Bearer %@", Access_Token];
+    
+    // Body
+    EncodeOrguitsUUIDAndTimeStamp *encodeOrguitsUUIDAndTimeStamp = [[EncodeOrguitsUUIDAndTimeStamp alloc] init];
+    NSDate *start = [NSDate date];
+    NSDictionary *PostDict = [[NSDictionary alloc] initWithDictionary:[encodeOrguitsUUIDAndTimeStamp getDeviceSerialDictionary:@"KS-4310" inputString:Orgunits timeInterval:[start timeIntervalSince1970]]];
+    
+    NSLog(@"PostDict = %@", PostDict);
+
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:PostDict options:0 error:nil];
+    NSString *urlString =  [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+
+    NSLog(@"stringData = %@", urlString);
+    NSData *requestBodyData = [urlString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSString *requestBodyDataLength = [NSString stringWithFormat:@"%lu", (unsigned long)[requestBodyData length]];
+
+    // Set Request
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:URL];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:requestBodyData];
+    [request setValue:requestBodyDataLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:authValue forHTTPHeaderField:@"Authorization"];
     [request setHTTPShouldHandleCookies:true];
 
     [OAuth.WKWeb_View loadRequest: request];

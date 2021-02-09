@@ -177,8 +177,10 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     RequestOAuth2Steps *requestOAuth2Steps = [[RequestOAuth2Steps alloc] init];
-    [requestOAuth2Steps takeDevicesInformation:OAuth.Access_Token wKWebView:OAuth.WKWeb_View];
+    //[requestOAuth2Steps takeDevicesInformation:OAuth.Access_Token wKWebView:OAuth.WKWeb_View];
+    [requestOAuth2Steps signUpDevices:OAuth.Access_Token orgunits:@"7da0f976-f732-11ea-b7aa-0242ac160004" wKWebView:OAuth.WKWeb_View];
 }
+
 #pragma mark - View Initial
 
 - (void) viewInit {
@@ -222,19 +224,19 @@
 
 #pragma mark - BLE Delegate
 
-- (void)addNewDevice:(CBPeripheral *)peripheral {
+- (void) addNewDevice:(CBPeripheral *)peripheral {
     
 }
 
-- (void)updateCharacteristic:(CBPeripheral *)peripheral characteristic :(CBCharacteristic *)characteristic {
+- (void) updateCharacteristic:(CBPeripheral *)peripheral characteristic :(CBCharacteristic *)characteristic {
     NSLog(@"TestBleDeleage = %@", characteristic);
 }
 
-- (void)synchronizeStoredDevices:(NSMutableArray *)stored_Devices {
+- (void) synchronizeStoredDevices:(NSMutableArray *)stored_Devices {
     Stored_Devices = stored_Devices;
 }
 
-- (void)updateForBusy:(NSMutableArray *)stored_Devices {
+- (void) updateForBusy:(NSMutableArray *)stored_Devices {
     Stored_Devices = stored_Devices;
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [self.myCollectionView reloadData];

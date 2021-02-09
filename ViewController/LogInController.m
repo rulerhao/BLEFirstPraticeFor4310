@@ -18,9 +18,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"LoginViewDidLoad");
     self.Account_Text_View.delegate = self;
     self.Password_Text_View.delegate = self;
     self.Time_Text_Field.text = Now_Time;
+}
+- (void)viewDidAppear:(BOOL)animated {
+    NSLog(@"LoginViewAppearLoad");
+    // 當重複讀取時關閉他們
+    if(BLE) {
+        BLE = nil;
+    }
+    if(OAuth) {
+        OAuth = nil;
+    }
+        
 }
 // ---------------------- TextField -------------------
 // 按return時觸發
