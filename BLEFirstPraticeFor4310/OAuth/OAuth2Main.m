@@ -311,11 +311,13 @@ getHTMLStringNotification:(NSNotification *)notification {
         [OTP_Information addObject: OTP];
         [OTP_Information addObject: OTP_Expired];
         NSDictionary *OTP_Information_Dictionary = [NSDictionary dictionaryWithObject:OTP_Information forKey:User_Name];
+        
         // Set notification to trigger getOAuth
         [[NSNotificationCenter defaultCenter]
             postNotificationName:@"getOAuthOTPNotification" //Notification以一個字串(Name)下去辨別
             object:View_Controller_For_Notify
             userInfo:OTP_Information_Dictionary];
+        
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:@"NotificationName"
                                                       object:nil];

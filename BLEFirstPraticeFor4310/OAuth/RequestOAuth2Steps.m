@@ -123,20 +123,26 @@ wKWebView                                  : (WKWebView *) WKWebView {
 takeOTP         : (NSString *)  Access_Token
 wKWebView       : (WKWebView *) WKWebView {
     NSLog(@"takeOTP");
+    
+    NSString *Device_Type = @"ios";
+    NSString *Device_UUID = @"92ee96a5-ff9a-11ea-8fd3-0242ac160004";
     // URL
-    OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
-    NSURL *URL = [[NSURL alloc] initWithString: [oAuthParameters takeOTPBodyParameters:@"ios" deviceUUID:@"92ee96a5-ff9a-11ea-8fd3-0242ac160004"]];
-    
+    NSURL *URL = [[NSURL alloc] initWithString:@"https://healthng.oucare.com/api/v1/ouhub/otp"];
+
     NSLog(@"sign up url = %@", URL);
-    
+
     // Authorization
     NSString *authValue = [NSString stringWithFormat:@"Bearer %@", Access_Token];
-    
+
     // Body
-    EncodeOrguitsUUIDAndTimeStamp *encodeOrguitsUUIDAndTimeStamp = [[EncodeOrguitsUUIDAndTimeStamp alloc] init];
-    NSDate *start = [NSDate date];
-    NSDictionary *PostDict = [[NSDictionary alloc] initWithDictionary:[encodeOrguitsUUIDAndTimeStamp getDeviceSerialDictionary:@"KS-4310" inputString:Orgunits timeInterval:[start timeIntervalSince1970]]];
     
+    NSMutableDictionary *Dict = [[NSMutableDictionary alloc] init];
+
+    [Dict setValue:Device_Type forKey:@"device_type"];
+    [Dict setValue:Device_UUID forKey:@"device_uuid"];
+    
+    NSDictionary *PostDict = [[NSDictionary alloc] initWithDictionary:Dict];
+
     NSLog(@"PostDict = %@", PostDict);
 
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:PostDict options:0 error:nil];
@@ -144,7 +150,7 @@ wKWebView       : (WKWebView *) WKWebView {
 
     NSLog(@"stringData = %@", urlString);
     NSData *requestBodyData = [urlString dataUsingEncoding:NSUTF8StringEncoding];
-    
+
     NSString *requestBodyDataLength = [NSString stringWithFormat:@"%lu", (unsigned long)[requestBodyData length]];
 
     // Set Request
