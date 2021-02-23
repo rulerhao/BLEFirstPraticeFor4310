@@ -56,6 +56,7 @@
     // ------------------ Run BLEFor4310 ---------------
     BLE = [BLEFor4310 new];
     OAuth = [OAuth2Main new];
+    
     [OAuth InitEnter:self];
     // ------------------ 跳到測試畫面 ---------------
 //    ShowViewController *showViewController = [[ShowViewController alloc] init];

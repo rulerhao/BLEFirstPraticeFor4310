@@ -14,7 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MQTTMain : UIViewController <MQTTSessionDelegate>
 
 - (void) mqttStart : (NSArray *) OAuth_Information
-    viewController : (UIViewController *) View_Controller;
+    viewController : (nullable UIViewController *) View_Controller;
+
 - (void) MQTTPublishImplementDefalut;
 
 - (void)
@@ -29,6 +30,8 @@ Breath                      : (BOOL)       bre
 Motion_X                    : (float)      motion_X
 Motion_Y                    : (float)      motion_Y
 Motion_Z                    : (float)      motion_Z;
+
+- (void) publishTest;
 
 @end
 

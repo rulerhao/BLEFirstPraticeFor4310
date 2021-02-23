@@ -12,12 +12,13 @@
 @class MyNavigationController;
 @class BLEFor4310;
 @class OAuth2Main;
+@class MQTTMain;
 
 extern CurrenctController currentController;
 extern MyNavigationController *RootNavigationView;
 extern BLEFor4310 *BLE;
 extern OAuth2Main *OAuth;
-
+extern MQTTMain *MqttMain;
 
 extern NSString *Now_Time;
 extern NSString *Now_Navigation_Name;

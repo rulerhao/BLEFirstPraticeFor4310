@@ -177,11 +177,11 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     // 註冊裝置
-    RequestOAuth2Steps *requestOAuth2Steps = [[RequestOAuth2Steps alloc] init];
-    
-    [requestOAuth2Steps signUpDevices:OAuth.Access_Token orgunits:@"7da0f976-f732-11ea-b7aa-0242ac160004" wKWebView:OAuth.WKWeb_View];
-    // MQTT Connect
-    
+//    RequestOAuth2Steps *requestOAuth2Steps = [[RequestOAuth2Steps alloc] init];
+//    
+//    [requestOAuth2Steps signUpDevices:OAuth.Access_Token orgunits:@"7da0f976-f732-11ea-b7aa-0242ac160004" wKWebView:OAuth.WKWeb_View];
+    // MQTT Publish
+    [MqttMain publishTest];
 }
 
 #pragma mark - View Initial

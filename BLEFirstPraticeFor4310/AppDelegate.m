@@ -11,6 +11,9 @@ CurrenctController currentController;
 MyNavigationController *RootNavigationView;
 BLEFor4310 *BLE;
 OAuth2Main *OAuth;
+MQTTMain *MqttMain;
+
+
 NSString *Now_Time;
 NSString *Now_Navigation_Name;
 dispatch_queue_t GlobalQueue;

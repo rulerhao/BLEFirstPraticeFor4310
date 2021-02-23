@@ -312,6 +312,9 @@ getHTMLStringNotification:(NSNotification *)notification {
         [OTP_Information addObject: OTP_Expired];
         NSDictionary *OTP_Information_Dictionary = [NSDictionary dictionaryWithObject:OTP_Information forKey:User_Name];
         
+        MqttMain = [MQTTMain new];
+        [MqttMain mqttStart:[OTP_Information_Dictionary allValues] viewController:nil];
+        
         // Set notification to trigger getOAuth
         [[NSNotificationCenter defaultCenter]
             postNotificationName:@"getOAuthOTPNotification" //Notification以一個字串(Name)下去辨別
