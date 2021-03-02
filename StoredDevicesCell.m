@@ -21,6 +21,9 @@ storedMovementState         : (nullable NSMutableArray *)   Stored_Movement_Stat
 deviceName                  : (nullable NSString *)         Device_Name
 deviceID                    : (nullable NSString *)         Device_ID
 deviceSex                   : (nullable NSString *)         Device_Sex
+deviceEPROM                 : (nullable NSString *)         Device_EPROM
+deviceUUID                  : (nullable NSString *)         Device_UUID
+deviceStatus                : (nullable NSString *)         Device_Status
 {
     self.Peripheral = Peripheral;
     self.Characteristic = Characteristic;
@@ -30,6 +33,9 @@ deviceSex                   : (nullable NSString *)         Device_Sex
     self.Device_Name = Device_Name;
     self.Device_ID = Device_ID;
     self.Device_Sex = Device_Sex;
+    self.Device_EPROM = Device_EPROM;
+    self.Device_UUID = Device_UUID;
+    self.Device_Status = Device_Status;
 }
 
 @synthesize Peripheral;
@@ -40,5 +46,8 @@ deviceSex                   : (nullable NSString *)         Device_Sex
 @synthesize Device_Name;
 @synthesize Device_ID;
 @synthesize Device_Sex;
+@synthesize Device_EPROM;
+@synthesize Device_UUID;
+@synthesize Device_Status;
 
 @end

@@ -31,14 +31,34 @@ wKWebView                                  : (WKWebView *) WKWebView;
 takeOTP         : (NSString *)  Access_Token
 wKWebView       : (WKWebView *) WKWebView;
 
-- (void)
-takeDevicesInformation          : (NSString *)  Access_Token
-wKWebView                       : (WKWebView *) WKWebView;
 
+// 註冊裝置
 - (void)
 signUpDevices          : (NSString *)  Access_Token
 orgunits               : (NSString *)  Orgunits
-wKWebView              : (WKWebView *) WKWebView;
+timeInterval : (NSTimeInterval) timeInterval 
+wKWebView          : (WKWebView *) WKWebView;
+
+// 取得裝置資訊
+- (void)
+takeDevicesInformation          : (NSString *)  Access_Token
+deviceUUID                      : (NSString *)  Device_UUID
+wKWebView                       : (WKWebView *) WKWebView;
+
+// 更新裝置資訊
+- (void) refreshDevicesInformation          : (NSString *)  Access_Token
+                            status          : (NSInteger)   Status
+                        deviceUUID          : (NSString *)  Device_UUID
+                         wKWebView          : (WKWebView *) WKWebView;
+
+// 機構裝置列表及過濾 過濾用法，用來搜尋特定型號序號
+- (void)
+getDeviceUUIDThroughModelAndSerial : (NSString *) Access_Token
+orgunits                           : (NSString *) Orgunits
+wKWebView                          : (WKWebView *) WkWenView
+model                              : (NSString *) Model
+serial                             : (NSString *) Serial;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -46,7 +46,7 @@
  0~18 之和的補數+1應為[19]
  */
 - (NSInteger) get_Location_X:(NSData *) data_Bytes {
-    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    CalFunc *CalculateFunc = [CalFunc alloc];
     
     NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
@@ -75,7 +75,7 @@
 }
 
 - (NSInteger) get_Location_Y:(NSData *) data_Bytes {
-    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    CalFunc *CalculateFunc = [CalFunc alloc];
     
     NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
@@ -102,7 +102,7 @@
 }
 
 - (NSInteger) get_Location_Z:(NSData *) data_Bytes {
-    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    CalFunc *CalculateFunc = [CalFunc alloc];
     
     NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
@@ -178,7 +178,7 @@ previous_z          :(NSInteger) previous_Z {
 }
 
 - (float)getTemperature_1:(NSData *) data_Bytes {
-    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    CalFunc *CalculateFunc = [CalFunc alloc];
     
     NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
@@ -206,7 +206,7 @@ previous_z          :(NSInteger) previous_Z {
 }
 
 - (float)getTemperature_2:(NSData *) data_Bytes {
-    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    CalFunc *CalculateFunc = [CalFunc alloc];
     
     NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
@@ -234,7 +234,7 @@ previous_z          :(NSInteger) previous_Z {
 }
 
 - (float)getTemperature_3:(NSData *) data_Bytes {
-    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    CalFunc *CalculateFunc = [CalFunc alloc];
     
     NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
@@ -262,7 +262,7 @@ previous_z          :(NSInteger) previous_Z {
 }
 
 - (float)getTemperature_4:(NSData *) data_Bytes {
-    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    CalFunc *CalculateFunc = [CalFunc alloc];
     
     NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
@@ -290,7 +290,7 @@ previous_z          :(NSInteger) previous_Z {
 }
 
 - (NSUInteger)getBattery_Volume:(NSData *) data_Bytes {
-    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    CalFunc *CalculateFunc = [CalFunc alloc];
     
     NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
@@ -312,7 +312,7 @@ previous_z          :(NSInteger) previous_Z {
 - (NSString *) getDeviceName:(NSData *) data_Bytes {
     StringProcessFunc *str_Process_Func = [[StringProcessFunc alloc] init];
     
-    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    CalFunc *CalculateFunc = [CalFunc alloc];
     
     NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
@@ -331,7 +331,7 @@ previous_z          :(NSInteger) previous_Z {
 - (NSString *) getDeviceID : (NSData *) data_Bytes {
     StringProcessFunc *str_Process_Func = [[StringProcessFunc alloc] init];
     
-    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    CalFunc *CalculateFunc = [CalFunc alloc];
     
     NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     
@@ -370,7 +370,7 @@ previous_z          :(NSInteger) previous_Z {
 - (NSString *) getDeviceSex : (NSData *) data_Bytes {
     StringProcessFunc *str_Process_Func = [[StringProcessFunc alloc] init];
     
-    CalFunc *CalculateFunc = [[CalFunc alloc] init];
+    CalFunc *CalculateFunc = [CalFunc alloc];
     
     NSString *HexString = [CalculateFunc getHEX:data_Bytes];
     

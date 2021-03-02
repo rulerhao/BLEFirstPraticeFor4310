@@ -13,6 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MQTTMain : UIViewController <MQTTSessionDelegate>
 
+@property(strong, nonatomic) NSMutableArray *MQTTMessage;
+
+@property(strong, nonatomic) NSString *Client_ID;
+@property(strong, nonatomic) NSString *User_Name;
+@property(strong, nonatomic) NSString *OTP;
+@property(strong, nonatomic) NSString *OTP_Expired;
 - (void) mqttStart : (NSArray *) OAuth_Information
     viewController : (nullable UIViewController *) View_Controller;
 
@@ -31,7 +37,17 @@ Motion_X                    : (float)      motion_X
 Motion_Y                    : (float)      motion_Y
 Motion_Z                    : (float)      motion_Z;
 
-- (void) publishTest;
+- (void) publishTest : (NSString *) Device_Type
+        deviceSerial : (NSString *) Device_Serial
+          deviceUUID : (NSString *) Device_UUID
+                  t1 : (NSInteger) T1
+                  t2 : (NSInteger) T2
+                  t3 : (NSInteger) T3
+             battery : (int) Battery
+              breath : (BOOL) Breath
+             motionX : (float) Motion_X
+             motionY : (float) Motion_Y
+             motionZ : (float) Motion_Z;
 
 @end
 

@@ -39,11 +39,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSMutableArray *) signUpDevicesBodyParameters : (NSString *) OrgunitsUUID;
 
 // 取得裝置資訊
-- (NSString *) takeDevicesInformationURLWithParameters;
+- (NSString *) takeDevicesInformationURLWithParameters : (NSString *) Device_UUID;
 
 // 更新裝置狀態
-- (NSString *) refreshDevicesInformationURLWithParameters;
+- (NSString *) refreshDevicesInformationURLWithParameters : (NSString *) Device_UUID;
+    
 - (NSMutableArray *) refreshDevicesInformationBodyParameters : (NSString *) Code_Value;
+
+// Log In URL 的 Parameters
+- (NSString *) getDeviceUUIDThroughModelAndSerialURLWithParameters : (NSString *) Orgunits_String
+                                                             model : (NSString *) Model
+                                                            serial : (NSString *) Serial;
 
 #pragma mark -- Methods
 

@@ -20,9 +20,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 }
+
 - (void)willMoveToParentViewController:(UIViewController *)parent {
     NSLog(@"MainBarViewControllerMovetoParent");
 }
+
 - (void)controllerInit {
     NSLog(@"NowController = MainBarViewController");
     NSLog(@"DelegateCurrentController = %ld", [self.delegate getCurrentController_MainBarViewControlelr]);
@@ -31,6 +33,7 @@
     NSLog(@"organizationMainBarViewController.height = %f", self.organizationMainBarViewController.view.bounds.size.height);
     //[self updateConstraints];
 }
+
 #pragma mark - View Initial
 
 - (void) viewInit {

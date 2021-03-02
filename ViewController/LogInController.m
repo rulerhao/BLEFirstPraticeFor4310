@@ -32,6 +32,9 @@
     if(OAuth) {
         OAuth = nil;
     }
+    if(MqttMain) {
+        MqttMain = nil;
+    }
         
 }
 // ---------------------- TextField -------------------
@@ -58,28 +61,36 @@
     OAuth = [OAuth2Main new];
     
     [OAuth InitEnter:self];
-    // ------------------ 跳到測試畫面 ---------------
-//    ShowViewController *showViewController = [[ShowViewController alloc] init];
-//    [showViewController setCurrentController:ViewController_Root];
-//    [showViewController setModalPresentationStyle:UIModalPresentationFullScreen];
-//    [RootNavigationView pushViewController:showViewController animated:NO];
-//    // ------------------ 跳到機構畫面 ---------------
-//    UIStoryboard *StoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    OrganizationController *OrganizationController = [StoryBoard instantiateViewControllerWithIdentifier:@"OrganizationUIViewController"];
-//    [RootNavigationView pushViewController:OrganizationController animated:NO];
     
-//    OrganizationPage *organizationPage = [[OrganizationPage alloc] init];
-//    [organizationPage setModalPresentationStyle:UIModalPresentationFullScreen];
-//    [RootNavigationView pushViewController:organizationPage animated:NO];
-//    OrganizationPage *organizationPage = [[OrganizationPage alloc] init];
-//    [organizationPage setModalPresentationStyle:UIModalPresentationFullScreen];
-//    [RootNavigationView pushViewController:organizationPage animated:NO];
+//    // ------------------ 跳到檢查畫面 ---------------
+    Mode = 0;
+    
     Sensor4310Page *sensor4310Page = [[Sensor4310Page alloc] init];
     [sensor4310Page setModalPresentationStyle:UIModalPresentationFullScreen];
     [RootNavigationView pushViewController:sensor4310Page animated:NO];
-//
-//    // ---------------------- Now Navigation Name -------------------
-//    Now_Navigation_Name = @"機構";
+}
+
+// ---------------------- 監測 Button -------------------
+- (IBAction)WatchButton:(id)sender {
+    NSString *Account = self.Account_Text_View.text;
+    NSString *Password = self.Password_Text_View.text;
+    NSLog(@"Account_Account = %@", Account);
+    NSLog(@"Account_Password = %@", Password);
+    
+    // ------------------ Run BLEFor4310 ---------------
+    OAuth = [OAuth2Main new];
+    
+    [OAuth InitEnter:self];
+    
+////    // ------------------ 跳到監測畫面 ---------------
+//    WatcherViewController *watcherViewController = [[WatcherViewController alloc] init];
+//    [watcherViewController setModalPresentationStyle:UIModalPresentationFullScreen];
+//    [RootNavigationView pushViewController:watcherViewController animated:NO];
+    //    // ------------------ 跳到檢查畫面 ---------------
+    Mode = 1;
+        Sensor4310Page *sensor4310Page = [[Sensor4310Page alloc] init];
+        [sensor4310Page setModalPresentationStyle:UIModalPresentationFullScreen];
+        [RootNavigationView pushViewController:sensor4310Page animated:NO];
 }
 
 @end

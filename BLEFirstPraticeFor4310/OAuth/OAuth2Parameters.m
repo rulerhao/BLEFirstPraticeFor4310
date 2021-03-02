@@ -62,6 +62,7 @@
     return Parameters;
 }
 
+// Log In 的 parameters
 - (NSMutableArray *) logInBodyParameters {
     NSMutableArray *Parameters = [[NSMutableArray alloc] init];
     NSString *User_Name_Title = @"username";
@@ -80,6 +81,7 @@
     return Parameters;
 }
 
+// Log In URL 的 Parameters
 - (NSString *) logInURLWithParameters {
     NSString *URL_With_Parameters = @"";
     NSString *Origin_URL = @"https://healthng.oucare.com/oauth/login";
@@ -100,7 +102,7 @@
     return URL_With_Parameters;
 }
 
-// 取得 code
+// 取得 code 的 Parameters
 - (NSMutableArray *) takeCodeParameter {
     NSMutableArray *Parameters = [[NSMutableArray alloc] init];
     
@@ -144,6 +146,7 @@
     return Parameters;
 }
 
+// 取得 Code 的 Parameters
 - (NSString *) takeCodeURLWithParameters {
     NSString *URL_With_Parameters = @"";
     NSString *Origin_URL = @"https://healthng.oucare.com/oauth/authorize";
@@ -164,7 +167,7 @@
     return URL_With_Parameters;
 }
 
-// 取得 Access token
+// 取得 Access token 的 Parameters
 - (NSMutableArray *) takeAccessTokenBodyParameters : (NSString *) Code_Value {
     NSMutableArray *Parameters = [[NSMutableArray alloc] init];
     
@@ -207,10 +210,13 @@
     NSLog(@"TestParameters = %@", [[Parameters objectAtIndex:0] objectAtIndex:0]);
     return Parameters;
 }
+
+// 取得 Access Token 的 Parameters
 - (NSString *) takeAccessTokenURLWithCodeParameters {
     NSString *Origin_URL = @"https://healthng.oucare.com/oauth/token";
     return Origin_URL;
 }
+
 // 第四步驟 用RefreshToken取得AccessToken時所需要的參數
 - (NSMutableArray *) takeRefreshTokenBodyParameters : (NSString *) Refresh_Token {
     NSMutableArray *Parameters = [[NSMutableArray alloc] init];
@@ -255,9 +261,9 @@
                                   deviceUUID : (NSString *) Device_UUID {
     NSString *Origin_URL = @"https://healthng.oucare.com/api/v1/ouhub/otp";
     NSString *Device_Type_Title = @"device_type";
-    NSString *Device_Type_Value = Device_Type;
+    NSString *Device_Type_Value = OAuth.Device_Type;
     NSString *Device_UUID_Ttile = @"device_uuid";
-    NSString *Device_UUID_Value = Device_UUID;
+    NSString *Device_UUID_Value = OAuth.Device_ID;
     
     NSString *JSON_Data = [NSString stringWithFormat:@"{\"%@\":\"%@\",\"%@\":\"%@\"}", Device_Type_Title, Device_Type_Value, Device_UUID_Ttile, Device_UUID_Value];
     NSLog(@"Bearer_URL = %@", JSON_Data);
@@ -308,13 +314,13 @@
     return Parameters;
 }
 // 取得裝置資訊
-- (NSString *) takeDevicesInformationURLWithParameters {
-    NSString *Origin_URL = @"https://healthng.oucare.com/api/v1/devices/d35e9666-6149-11eb-9f01-02420a00080a";
+- (NSString *) takeDevicesInformationURLWithParameters : (NSString *) Device_UUID {
+    NSString *Origin_URL = [[NSString alloc] initWithFormat:@"%@%@", @"https://healthng.oucare.com/api/v1/devices/", Device_UUID];
     return Origin_URL;
 }
 // 更新裝置狀態
-- (NSString *) refreshDevicesInformationURLWithParameters {
-    NSString *Origin_URL = @"https://healthng.oucare.com/api/v1/devices/d35e9666-6149-11eb-9f01-02420a00080a/status";
+- (NSString *) refreshDevicesInformationURLWithParameters : (NSString *) Device_UUID {
+    NSString *Origin_URL = [[NSString alloc] initWithFormat:@"%@%@%@", @"https://healthng.oucare.com/api/v1/devices/", Device_UUID, @"/status"];
     return Origin_URL;
 }
 
@@ -361,7 +367,50 @@
     return Parameters;
 }
 
+// 機構裝置列表及過濾 過濾用法，用來搜尋特定型號序號
+// Log In 的 parameters
+- (NSMutableArray *) getDeviceUUIDThroughModelAndSerialBodyParameters : (NSString *) model
+                     serial                                           : (NSString *) Serial{
+    NSMutableArray *Parameters = [[NSMutableArray alloc] init];
+    NSString *User_Name_Title = @"filter[model]";
+    NSString *Uesr_Name_Value = model;
+    NSMutableArray *Parameters_For_Uesr_Name =[[NSMutableArray alloc] init];
+    [Parameters_For_Uesr_Name addObject:User_Name_Title];
+    [Parameters_For_Uesr_Name addObject:Uesr_Name_Value];
+    [Parameters addObject:Parameters_For_Uesr_Name];
+    
+    NSString *Password_Title = @"filter[serial]";
+    NSString *Password_Value = Serial;
+    NSMutableArray *Parameters_For_Password =[[NSMutableArray alloc] init];
+    [Parameters_For_Password addObject:Password_Title];
+    [Parameters_For_Password addObject:Password_Value];
+    [Parameters addObject:Parameters_For_Password];
+    return Parameters;
+}
 
+// Log In URL 的 Parameters
+- (NSString *) getDeviceUUIDThroughModelAndSerialURLWithParameters : (NSString *) Orgunits_String
+                                                             model : (NSString *) Model
+                                                            serial : (NSString *) Serial {
+    NSString *URL_With_Parameters = @"";
+    NSString *Origin_URL = @"https://healthng.oucare.com/api/v1/orgunits";
+    NSString *Parameters_Syntax = @"?";
+    NSString *Orgunits_Parameters = [[NSString alloc] initWithFormat:@"%@%@%@", @"/", Orgunits_String, @"/devices"];
+    NSMutableArray *Parameters = [[NSMutableArray alloc] init];
+    
+    Parameters = [self getDeviceUUIDThroughModelAndSerialBodyParameters:Model
+                                                                 serial:Serial];
+    
+    NSString *Parameters_String;
+    // get string contains all parameters
+    Parameters_String = [self Parameters_Merge:Parameters];
+    NSLog(@"Parameters_String = %@", Parameters_String);
+    // get string url with all parameters
+    URL_With_Parameters = [NSString stringWithFormat:@"%@%@%@%@", Origin_URL, Orgunits_Parameters, Parameters_Syntax, Parameters_String];
+    NSLog(@"URL_With_Parameters = %@", URL_With_Parameters);
+    
+    return URL_With_Parameters;
+}
 #pragma mark -- Methods
 
 - (NSString *) Parameters_Merge : (NSMutableArray *) Parameters {

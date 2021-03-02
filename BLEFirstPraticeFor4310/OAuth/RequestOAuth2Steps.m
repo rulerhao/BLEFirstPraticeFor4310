@@ -124,8 +124,9 @@ takeOTP         : (NSString *)  Access_Token
 wKWebView       : (WKWebView *) WKWebView {
     NSLog(@"takeOTP");
     
-    NSString *Device_Type = @"ios";
-    NSString *Device_UUID = @"92ee96a5-ff9a-11ea-8fd3-0242ac160004";
+    NSString *Device_Type = OAuth.Device_Type;
+    // Vendor UUID
+    NSString *Device_UUID = OAuth.Device_ID;
     // URL
     NSURL *URL = [[NSURL alloc] initWithString:@"https://healthng.oucare.com/api/v1/ouhub/otp"];
 
@@ -166,12 +167,60 @@ wKWebView       : (WKWebView *) WKWebView {
     [OAuth.WKWeb_View loadRequest: request];
 }
 
+// 更新裝置資訊
+- (void) refreshDevicesInformation          : (NSString *)  Access_Token
+                            status          : (NSInteger)   Status
+                                 deviceUUID : (NSString *) Device_UUID
+                         wKWebView          : (WKWebView *) WKWebView {
+    NSLog(@"Refresh Status");
+    // URL
+    OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
+    
+    NSURL *URL = [[NSURL alloc] initWithString:[oAuthParameters refreshDevicesInformationURLWithParameters : Device_UUID]];
+
+    NSLog(@"sign up url = %@", URL);
+
+    // Authorization
+    NSString *authValue = [NSString stringWithFormat:@"Bearer %@", Access_Token];
+
+    // Body
+    
+    NSMutableDictionary *Dict = [[NSMutableDictionary alloc] init];
+    
+    [Dict setValue:[NSNumber numberWithInteger:Status] forKey:@"status"];
+    
+    NSDictionary *PostDict = [[NSDictionary alloc] initWithDictionary:Dict];
+
+    NSLog(@"PostDict = %@", PostDict);
+
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:PostDict options:0 error:nil];
+    NSString *urlString =  [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+
+    NSLog(@"stringData = %@", urlString);
+    NSData *requestBodyData = [urlString dataUsingEncoding:NSUTF8StringEncoding];
+
+    NSString *requestBodyDataLength = [NSString stringWithFormat:@"%lu", (unsigned long)[requestBodyData length]];
+
+    // Set Request
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:URL];
+    [request setHTTPMethod:@"PATCH"];
+    [request setHTTPBody:requestBodyData];
+    [request setValue:requestBodyDataLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:authValue forHTTPHeaderField:@"Authorization"];
+    [request setHTTPShouldHandleCookies:true];
+
+    [OAuth.WKWeb_View loadRequest: request];
+}
+// 取得裝置資訊
 - (void)
 takeDevicesInformation          : (NSString *)  Access_Token
+deviceUUID : (NSString *)  Device_UUID
              wKWebView          : (WKWebView *) WKWebView {
     
     OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
-    NSURL *URL = [[NSURL alloc] initWithString: [oAuthParameters takeDevicesInformationURLWithParameters]];
+    NSURL *URL = [[NSURL alloc] initWithString: [oAuthParameters takeDevicesInformationURLWithParameters:Device_UUID]];
     
     NSString *authValue = [NSString stringWithFormat:@"Bearer %@", Access_Token];
     
@@ -185,10 +234,42 @@ takeDevicesInformation          : (NSString *)  Access_Token
     [OAuth.WKWeb_View loadRequest: request];
 }
 
+// 機構裝置列表及過濾 過濾用法，用來搜尋特定型號序號
+- (void)
+getDeviceUUIDThroughModelAndSerial : (NSString *) Access_Token
+orgunits                           : (NSString *) Orgunits
+wKWebView                          : (WKWebView *) WkWenView
+model                              : (NSString *) Model
+serial                             : (NSString *) Serial {
+    OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
+    NSURL *URL = [[NSURL alloc] initWithString: [oAuthParameters getDeviceUUIDThroughModelAndSerialURLWithParameters:Orgunits
+                                                                                                               model:Model
+                                                                                                              serial:Serial]];
+    NSLog(@"URLForGetDeviceTest = %@", URL);
+    NSString *Body_String = [oAuthParameters Parameters_Merge:[oAuthParameters logInBodyParameters] ];
+    NSData *Body = [Body_String dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSLog(@"BodyTest = %@", Body);
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[Body length]];
+    
+    NSString *authValue = [NSString stringWithFormat:@"Bearer %@", Access_Token];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:URL];
+    [request setHTTPMethod:@"GET"];
+    [request setHTTPBody:Body];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:authValue forHTTPHeaderField:@"Authorization"];
+    [request setHTTPShouldHandleCookies:true];
+    NSLog(@"Request = %@", request);
+    [OAuth.WKWeb_View loadRequest: request];
+}
+
 // 註冊裝置
 - (void)
 signUpDevices          : (NSString *)  Access_Token
-orgunits               : (NSString *)  Orgunits
+orgunits               : (NSString *) Orgunits
+timeInterval           : (NSTimeInterval) timeInterval 
     wKWebView          : (WKWebView *) WKWebView {
     NSLog(@"signUp");
     // URL
@@ -202,8 +283,9 @@ orgunits               : (NSString *)  Orgunits
     
     // Body
     EncodeOrguitsUUIDAndTimeStamp *encodeOrguitsUUIDAndTimeStamp = [[EncodeOrguitsUUIDAndTimeStamp alloc] init];
-    NSDate *start = [NSDate date];
-    NSDictionary *PostDict = [[NSDictionary alloc] initWithDictionary:[encodeOrguitsUUIDAndTimeStamp getDeviceSerialDictionary:@"KS-4310" inputString:Orgunits timeInterval:[start timeIntervalSince1970]]];
+//    NSDate *start = [NSDate date];
+//    NSDictionary *PostDict = [[NSDictionary alloc] initWithDictionary:[encodeOrguitsUUIDAndTimeStamp getDeviceSerialDictionary:@"KS-4310" orgunits:Orgunits timeInterval:[start timeIntervalSince1970]]];
+    NSDictionary *PostDict = [[NSDictionary alloc] initWithDictionary:[encodeOrguitsUUIDAndTimeStamp getDeviceSerialDictionary:@"KS-4310" orgunits:Orgunits timeInterval:timeInterval]];
     
     NSLog(@"PostDict = %@", PostDict);
 

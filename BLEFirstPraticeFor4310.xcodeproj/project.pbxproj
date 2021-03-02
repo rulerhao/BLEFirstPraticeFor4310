@@ -38,6 +38,7 @@
 		635146292591C982008A3BAE /* FloorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 635146272591C982008A3BAE /* FloorController.m */; };
 		6352680D2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6352680C2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m */; };
 		635268112558E49F0071F655 /* InformationRunnable.m in Sources */ = {isa = PBXBuildFile; fileRef = 635268102558E49F0071F655 /* InformationRunnable.m */; };
+		6359F7F525E7926900742B80 /* WatcherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6359F7F425E7926900742B80 /* WatcherViewController.m */; };
 		635E304C2592D9E9009298FA /* OuhealthcareWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 635E304B2592D9E9009298FA /* OuhealthcareWebViewController.m */; };
 		635E307D25934434009298FA /* BLEFor4310.m in Sources */ = {isa = PBXBuildFile; fileRef = 635E307C25934434009298FA /* BLEFor4310.m */; };
 		6365CF0325CCE2580099F7C9 /* EncodeOrguitsUUIDAndTimeStamp.m in Sources */ = {isa = PBXBuildFile; fileRef = 6365CF0225CCE2580099F7C9 /* EncodeOrguitsUUIDAndTimeStamp.m */; };
@@ -834,6 +835,8 @@
 		6352680C2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChangeBetweenWriteStringViewController.m; sourceTree = "<group>"; };
 		6352680F2558E49F0071F655 /* InformationRunnable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InformationRunnable.h; sourceTree = "<group>"; };
 		635268102558E49F0071F655 /* InformationRunnable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InformationRunnable.m; sourceTree = "<group>"; };
+		6359F7F325E7926900742B80 /* WatcherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WatcherViewController.h; sourceTree = "<group>"; };
+		6359F7F425E7926900742B80 /* WatcherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WatcherViewController.m; sourceTree = "<group>"; };
 		635E304A2592D9E9009298FA /* OuhealthcareWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OuhealthcareWebViewController.h; sourceTree = "<group>"; };
 		635E304B2592D9E9009298FA /* OuhealthcareWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OuhealthcareWebViewController.m; sourceTree = "<group>"; };
 		635E307B25934434009298FA /* BLEFor4310.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLEFor4310.h; sourceTree = "<group>"; };
@@ -1719,6 +1722,8 @@
 				6322A7AB254FB792007ACEF0 /* CameraController.m */,
 				63DB0E52251DC2E000FA3D39 /* ViewController.h */,
 				63DB0E53251DC2E000FA3D39 /* ViewController.m */,
+				6359F7F325E7926900742B80 /* WatcherViewController.h */,
+				6359F7F425E7926900742B80 /* WatcherViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1775,13 +1780,13 @@
 		63CF83702583507200438317 /* proto files */ = {
 			isa = PBXGroup;
 			children = (
-				63CF83712583507200438317 /* Device.pbobjc.h */,
-				63CF83722583507200438317 /* device.proto */,
 				63CF83732583507200438317 /* Sensor.pbobjc.h */,
-				63CF83742583507200438317 /* Message.pbobjc.m */,
-				63CF83752583507200438317 /* Device.pbobjc.m */,
 				63CF83762583507200438317 /* sensor.proto */,
 				63CF83772583507200438317 /* Sensor.pbobjc.m */,
+				63CF83752583507200438317 /* Device.pbobjc.m */,
+				63CF83712583507200438317 /* Device.pbobjc.h */,
+				63CF83722583507200438317 /* device.proto */,
+				63CF83742583507200438317 /* Message.pbobjc.m */,
 				63CF83782583507200438317 /* message.proto */,
 				63CF83792583507200438317 /* Message.pbobjc.h */,
 			);
@@ -3687,6 +3692,7 @@
 				63746DFC258886A40011D283 /* NetworkReachAbility.m in Sources */,
 				63B153B0256F897B00FD435F /* SwitchDevices.m in Sources */,
 				630720B5256E3FC70000F7C7 /* SaveInformationFunc.m in Sources */,
+				6359F7F525E7926900742B80 /* WatcherViewController.m in Sources */,
 				63CF83F02583507300438317 /* OAuth2Parameters.m in Sources */,
 				6322A7AC254FB792007ACEF0 /* CameraController.m in Sources */,
 				63CF841125835B7600438317 /* TypesConversion.m in Sources */,

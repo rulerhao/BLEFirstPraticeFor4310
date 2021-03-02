@@ -31,6 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(strong, nonatomic) NSMutableArray *Stored_Data;
 @property(assign) id <BLEFor4310Delegate> delegate;
 
+- (void)
+write05ToKS4310EPROM     : (CBPeripheral *) Peripheral
+data:(NSData *) Data;
 @end
 
 NS_ASSUME_NONNULL_END

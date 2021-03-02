@@ -14,6 +14,8 @@
 #import "OrganizationPage.h"
 #import "Sensor4310Page.h"
 #import "EncodeOrguitsUUIDAndTimeStamp.h"
+#import "WatcherViewController.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LogInController : UIViewController <UITextFieldDelegate>

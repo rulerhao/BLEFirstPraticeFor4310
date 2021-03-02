@@ -12,11 +12,6 @@
     //UIViewController *View_Controller_For_Notify;
     NSString *SubscribeURL;
     
-    NSString *G_Client_ID;
-    NSString *G_User_Name;
-    NSString *G_OTP;
-    NSString *G_OTP_Expired;
-    
     MQTTSession *Session;
 }
 @end
@@ -32,6 +27,7 @@
     viewController : (nullable UIViewController *) View_Controller {
     //View_Controller_For_Notify = View_Controller;
     [self mqttConnect : OAuth_Information];
+    self.MQTTMessage = [[NSMutableArray alloc] init];
     SubscribeURL = [NSString alloc];
 }
 
@@ -59,10 +55,13 @@
     NSString *OTP = [[OAuth_Information objectAtIndex:0] objectAtIndex:2];
     NSString *OTP_Expired = [[OAuth_Information objectAtIndex:0] objectAtIndex:3];
     
-    G_Client_ID = Client_ID;
-    G_User_Name = User_Name;
-    G_OTP = OTP;
-    G_OTP_Expired = OTP_Expired;
+    self.Client_ID = Client_ID;
+    self.User_Name = User_Name;
+    self.OTP = OTP;
+    self.OTP_Expired = OTP_Expired;
+    
+    NSLog(@"TestOTPForDisconnect = %@", OTP);
+    //vln_IYImYM_B8NaX
 
     [MySession setClientId:Client_ID];
     [MySession setUserName:User_Name];
@@ -142,32 +141,46 @@ handleEvent:(MQTTSession *)     session
     }
 }
 
-- (void) publishTest {
+- (void) publishTest : (NSString *) Device_Type
+        deviceSerial : (NSString *) Device_Serial
+          deviceUUID : (NSString *) Device_UUID
+                  t1 : (NSInteger) T1
+                  t2 : (NSInteger) T2
+                  t3 : (NSInteger) T3
+             battery : (int) Battery
+              breath : (BOOL) Breath
+             motionX : (float) Motion_X
+             motionY : (float) Motion_Y
+             motionZ : (float) Motion_Z
+{
     PublishDataFor4320 *publishDataFor4320 = [[PublishDataFor4320 alloc] init];
 
-    NSString *Device_Type = @"KS-4310";
-    NSString *Serial = @"S10";
-    NSString *Baby_UUID = @"92ee96a5-ff9a-11ea-8fd3-0242ac160004";
-    
+//    NSString *Type = @"KS-4310";
+//    NSString *Serial = @"S10";
+//    NSString *Baby_UUID = @"92ee96a5-ff9a-11ea-8fd3-0242ac160004";
+    NSLog(@"PublishData-Device_Type = %@", Device_Type);
+    NSLog(@"PublishData-Device_Serial = %@", Device_Serial);
+    NSLog(@"PublishData-Device_UUID = %@", Device_UUID);
+    NSLog(@"PublishData-ClientID = %@", self.Client_ID);
+
     NSData *PublishData = [publishDataFor4320 getPublishData:Device_Type
-                                               Device_Serial:Serial
-                                                 Device_UUID:Baby_UUID
-                                                   client_ID:G_Client_ID
-                                                Temperature1:40
-                                                Temperature2:50
-                                                Temperature3:60
-                                                     Battery:70
-                                                      Breath:YES
-                                                    Motion_X:123.1
-                                                    Motion_Y:252.6
-                                                    Motion_Z:929.1];
+                                               Device_Serial:[Device_Serial uppercaseString]
+                                                 Device_UUID:Device_UUID
+                                                   client_ID:self.Client_ID
+                                                Temperature1:T1
+                                                Temperature2:T2
+                                                Temperature3:T3
+                                                     Battery:Battery
+                                                      Breath:Breath
+                                                    Motion_X:Motion_X
+                                                    Motion_Y:Motion_Y
+                                                    Motion_Z:Motion_Z];
     NSLog(@"PublishData = %@", PublishData);
     [Session publishData:PublishData
                  onTopic:@"/ouhub/requests"
                   retain:NO
                      qos:MQTTQosLevelAtMostOnce
           publishHandler:^(NSError *error) {
-        NSLog(@"subviewInPublish = %@",  self.view.subviews);
         if (error) {
             NSLog(@"失去MQTT Subscribe");
             // 重新讀取
@@ -190,16 +203,62 @@ handleEvent:(MQTTSession *)     session
     if ([topic rangeOfString:ORGTOPIC].location != NSNotFound) {
         // 由 data 反序列化 protobuf
         Message *message = [Message parseFromData:data error:nil];
+        
+        NSMutableDictionary *MessageDict = [[NSMutableDictionary alloc] init];
+        //[MessageDict setObject:<#(nonnull id)#> forKey:<#(nonnull id<NSCopying>)#>]
+        // Model
+        NSString *Model = [[[message.postMeasureRequest.recordArray objectAtIndex:0] deviceProperty] model];
+        [MessageDict setValue:Model forKey:@"Model"];
+        NSLog(@"ModelForMessage = %@", Model);
+        // Serial
+        NSString *Serial = [[[message.postMeasureRequest.recordArray objectAtIndex:0] deviceProperty] serial];
+        [MessageDict setValue:Serial forKey:@"Serial"];
+        NSLog(@"SerialForMessage = %@", Serial);
+        // UUID
+        NSString *UUID = [[[message.postMeasureRequest.recordArray objectAtIndex:0] deviceProperty] uuid];
+        [MessageDict setValue:UUID forKey:@"UUID"];
+        NSLog(@"UUIDForMessage = %@", UUID);
+
         // Temperature 1
-        NSLog(@"Temp1ForMessage = %f", [[[[[message.postMeasureRequest.recordArray objectAtIndex:0] sensorArray] objectAtIndex:0] temperatureProperty] value]);
+        float T1 = [[[[[message.postMeasureRequest.recordArray objectAtIndex:0] sensorArray] objectAtIndex:0] temperatureProperty] value];
+        NSNumber *T1_Number = [[NSNumber alloc] initWithFloat:T1];
+        [MessageDict setValue:T1_Number forKey:@"T1"];
+        NSLog(@"Temp1ForMessage = %f", T1);
         // Temperature 2
-        NSLog(@"Temp2ForMessage = %f", [[[[[message.postMeasureRequest.recordArray objectAtIndex:0] sensorArray] objectAtIndex:1] temperatureProperty] value]);
+        float T2 = [[[[[message.postMeasureRequest.recordArray objectAtIndex:0] sensorArray] objectAtIndex:1] temperatureProperty] value];
+        NSNumber *T2_Number = [[NSNumber alloc] initWithFloat:T2];
+        [MessageDict setValue:T2_Number forKey:@"T2"];
+        NSLog(@"Temp2ForMessage = %f", T2);
         // Temperature 3
-        NSLog(@"Temp3ForMessage = %f", [[[[[message.postMeasureRequest.recordArray objectAtIndex:0] sensorArray] objectAtIndex:2] temperatureProperty] value]);
+        float T3 = [[[[[message.postMeasureRequest.recordArray objectAtIndex:0] sensorArray] objectAtIndex:2] temperatureProperty] value];
+        NSNumber *T3_Number = [[NSNumber alloc] initWithFloat:T3];
+        [MessageDict setValue:T3_Number forKey:@"T3"];
+        NSLog(@"Temp3ForMessage = %f", T3);
         // Battery
-        NSLog(@"BatteryForMessage = %d", [[[[[message.postMeasureRequest.recordArray objectAtIndex:0] sensorArray] objectAtIndex:3] batteryProperty] value]);
+        int Battery = [[[[[message.postMeasureRequest.recordArray objectAtIndex:0] sensorArray] objectAtIndex:3] batteryProperty] value];
+        NSNumber *Battery_Number = [[NSNumber alloc] initWithInt:Battery];
+        [MessageDict setValue:Battery_Number forKey:@"Battery"];
+        NSLog(@"BatteryForMessage = %d", Battery);
         // Breath normal
-        NSLog(@"BreathForMessage = %d", [[[[[message.postMeasureRequest.recordArray objectAtIndex:0] sensorArray] objectAtIndex:4] breathProperty] value]);
+        BOOL Breath = [[[[[message.postMeasureRequest.recordArray objectAtIndex:0] sensorArray] objectAtIndex:4] breathProperty] value];
+        [MessageDict setValue:[NSNumber numberWithBool:Breath] forKey:@"Breath"];
+        NSLog(@"BreathForMessage = %d", Breath);
+        
+        int SerialSameIndex = -1;
+        for(int i = 0; i < self.MQTTMessage.count; i++) {
+            if([Serial isEqual:[[self.MQTTMessage objectAtIndex:i] valueForKey:@"Serial"]]) {
+                SerialSameIndex = i;
+                break;
+            }
+        }
+        if(SerialSameIndex == -1) {
+            [self.MQTTMessage addObject:MessageDict];
+        }
+        else {
+            [self.MQTTMessage replaceObjectAtIndex:SerialSameIndex withObject:MessageDict];
+        }
+        NSLog(@"MEssage Dict = %@", MessageDict);
+        NSLog(@"MEssage Dict Array = %@", self.MQTTMessage);
     }
     else {
     }

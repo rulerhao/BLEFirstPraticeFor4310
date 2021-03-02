@@ -14,6 +14,8 @@
     CalFunc *CalculateFunc;
     KS4310Setting *ks4310Setting;
     Convert4310Information *convert4310Information;
+    NSTimer *BLEConnectServerTimer;
+
 }
 @end
 
@@ -49,6 +51,13 @@ dispatch_queue_t MainQueue;
         postNotificationName:@"NotificationName" //Notification以一個字串(Name)下去辨別
         object:self
         userInfo:Testttt];
+    
+    // ---------------------- Device Connect Server Timer ----------------------
+    BLEConnectServerTimer = [NSTimer scheduledTimerWithTimeInterval:5
+                                     target:self
+                                   selector:@selector(detectDevicesConnect:)
+                                   userInfo:nil
+                                    repeats:YES];
     
     return self;
 }
@@ -157,6 +166,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     [self.delegate updateForBusy:self.Stored_Data];
     // ---------------------- Stored Devices 在這次的 index ----------------------
     int8_t Index_Of_Stored_Devices = [self getIndexOfStoredDevices:peripheral];
+    NSLog(@"Index_Of_Stored_Devices = %hhd", Index_Of_Stored_Devices);
     NSLog(@"characteristic.value = %@", [characteristic value]);
     /**
      * 在首次進入時會 write 04 並且會獲得記憶體回傳的 04........ update value
@@ -194,6 +204,28 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
 
                 // ---------------------- 更新裝置感測資訊至 Storeed_Data ----------------------
                 [self refreshSensorInformationToStored:self.Stored_Data index:Index_Of_Stored_Devices peripheral:peripheral storedCell:Previous_Stored_Deivce_Cell incomingCharacteristicValue:[characteristic value] movementStateArray:Movement_State_Array];
+                // ---------------------- Publish 至 ouhub ---------------------
+                StoredDevicesCell *storedDevicesCell = [StoredDevicesCell alloc];
+                storedDevicesCell = [BLE.Stored_Data objectAtIndex:Index_Of_Stored_Devices];
+                if(MqttMain.Client_ID) {
+                    NSLog(@"PublishTestStart1");
+                    NSLog(@"storedDevicesCell.Device_EPROM = %@", storedDevicesCell.Device_EPROM);
+                    NSLog(@"storedDevicesCell.Device_UUID = %@", storedDevicesCell.Device_UUID);
+                    if(storedDevicesCell.Device_EPROM && storedDevicesCell.Device_UUID) {
+                        NSLog(@"PublishTestStart");
+                        [MqttMain publishTest:@"KS-4310"
+                                 deviceSerial:storedDevicesCell.Device_EPROM
+                                   deviceUUID:storedDevicesCell.Device_UUID
+                                           t1:[convert4310Information getTemperature_1:[characteristic value]]
+                                           t2:[convert4310Information getTemperature_2:[characteristic value]]
+                                           t3:[convert4310Information getTemperature_3:[characteristic value]]
+                                      battery:(int) [convert4310Information getBattery_Volume:[characteristic value]]
+                                       breath:YES
+                                      motionX:10
+                                      motionY:20
+                                      motionZ:30];
+                    }
+                }
             }
             else {
                 // ---------------------- 首次更新裝置感測資訊至 Storeed_Data ----------------------
@@ -204,6 +236,44 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         // ---------------------- Mode_Identifier == @"04" ----------------------
         else if([Mode_Identifier isEqual:ks4310Setting.Baby_Information_Identifier]) {
             [self refreshBabyInformationToStored:self.Stored_Data index:Index_Of_Stored_Devices peripheral:peripheral storedCell:Previous_Stored_Deivce_Cell incomingCharacteristicValue:[characteristic value]];
+            // 向伺服器查證該裝置是否已註冊
+            NSData *EPROM = [NSData alloc];
+            EPROM = [[characteristic value] subdataWithRange:NSMakeRange(1, 11)];
+            NSLog(@"Device eprom = %@", EPROM);
+            
+            NSString *newStr = [[NSString alloc] initWithData:EPROM encoding:NSASCIIStringEncoding];
+            NSLog(@"newStrForEPROM = %@", newStr);
+            
+            NSString *EPROM_String = [self stringToHex:newStr];
+            NSLog(@"NewNewHexString = %@", EPROM_String);
+            
+            StoredDevicesCell *testStoredDeivicesCell = [self.Stored_Data objectAtIndex:Index_Of_Stored_Devices];
+            if(testStoredDeivicesCell.Device_EPROM) {
+                NSLog(@"EPROM Live");
+            } else {
+                NSLog(@"EPROM Not Live");
+            }
+            // 在取得裝置 EPROM 後更新儲存
+            [storedDevicesCell  cell                      : testStoredDeivicesCell.Peripheral
+                                characteristic            : testStoredDeivicesCell.Characteristic
+                                deviceInformation         : testStoredDeivicesCell.Device_Information
+                                babyInformation           : testStoredDeivicesCell.Baby_Information
+                                storedMovementState       : testStoredDeivicesCell.Stored_Movement_State
+                                deviceName                : testStoredDeivicesCell.Device_Name
+                                deviceID                  : testStoredDeivicesCell.Device_ID
+                                deviceSex                 : testStoredDeivicesCell.Device_Sex
+                                deviceEPROM               : EPROM_String
+                                deviceUUID                : testStoredDeivicesCell.Device_UUID
+                                deviceStatus              : testStoredDeivicesCell.Device_Status];
+            [self.Stored_Data replaceObjectAtIndex:Index_Of_Stored_Devices withObject:storedDevicesCell];
+            
+            NSLog(@"EPROM = %@", EPROM);
+            NSLog(@"OAuth.Access_Token = %@", OAuth.Access_Token);
+            if(EPROM && OAuth.Access_Token) {
+                NSLog(@"EPROM and OTP LIVE");
+                // 像伺服器求 Device UUID
+                [OAuth connectDeviceToServer:EPROM];
+            }
         }
         // ---------------------- Mode_Identifier == @"05" ----------------------
         else if([Mode_Identifier isEqual:ks4310Setting.Write_Identifier]) {
@@ -231,7 +301,11 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                         storedMovementState         : [[NSMutableArray alloc] init]
                         deviceName                  : nil
                         deviceID                    : nil
-                        deviceSex                   : nil];
+                        deviceSex                   : nil
+                        deviceEPROM                 : nil
+                        deviceUUID                  : nil
+                        deviceStatus                : nil];
+    
     [stored_Devices addObject:storedDevicesCell];
     NSLog(@"self.delegate in addNewDevice = %@", self.delegate);
 }
@@ -250,7 +324,10 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                   storedMovementState         : movement_State_Array
                   deviceName                  : stored_Cell.Device_Name
                   deviceID                    : stored_Cell.Device_ID
-                  deviceSex                   : stored_Cell.Device_Sex];
+                  deviceSex                   : stored_Cell.Device_Sex
+                  deviceEPROM                 : stored_Cell.Device_EPROM
+                  deviceUUID                  : stored_Cell.Device_UUID
+                  deviceStatus                : stored_Cell.Device_Status];
     [stored_Data replaceObjectAtIndex:index withObject:stored_Cell];
 }
 
@@ -267,7 +344,10 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                   storedMovementState         : stored_Cell.Stored_Movement_State
                   deviceName                  : stored_Cell.Device_Name
                   deviceID                    : stored_Cell.Device_ID
-                  deviceSex                   : stored_Cell.Device_Sex];
+                  deviceSex                   : stored_Cell.Device_Sex
+                  deviceEPROM                 : stored_Cell.Device_EPROM
+                  deviceUUID                  : stored_Cell.Device_UUID
+                  deviceStatus                : stored_Cell.Device_Status];
     [stored_Data replaceObjectAtIndex:index withObject:stored_Cell];
 }
 
@@ -285,7 +365,11 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                   storedMovementState         : stored_Cell.Stored_Movement_State
                   deviceName                  : stored_Cell.Device_Name
                   deviceID                    : stored_Cell.Device_ID
-                  deviceSex                   : stored_Cell.Device_Sex];
+                  deviceSex                   : stored_Cell.Device_Sex
+                  deviceEPROM                 : stored_Cell.Device_EPROM
+                  deviceUUID                  : stored_Cell.Device_UUID
+                  deviceStatus                : stored_Cell.Device_Status]
+                ;
     [stored_Data replaceObjectAtIndex:index withObject:stored_Cell];
 }
 // ---------------------- 判斷新搜尋到的 Device 有沒有在已搜尋到的裝置中 ----------------------
@@ -374,4 +458,90 @@ timerWrite04ToKS4310 : (CBPeripheral *) peripheral
                       type : CBCharacteristicWriteWithResponse];
 }
 
+// ---------------------- Write 05 -----------------
+- (void)
+write05ToKS4310     : (CBPeripheral *) Peripheral
+{
+    CBPeripheral *peripheral = Peripheral;
+    CBService *service = [[peripheral services] objectAtIndex:2];
+    CBCharacteristic *characteristic = [[service characteristics] objectAtIndex:2];
+    
+    //wirte to get information setting in device.
+ 
+    const uint8_t bytes[] = {0x05, 0x00};
+    
+    NSData *data = [NSData dataWithBytes:bytes
+                                  length:sizeof(bytes)];
+    [peripheral writeValue : data
+         forCharacteristic : characteristic
+                      type : CBCharacteristicWriteWithResponse];
+}
+// ---------------------- Write 05 to EPROM -----------------
+- (void)
+write05ToKS4310EPROM     : (CBPeripheral *) Peripheral
+data                     : (NSData *)       Data
+{
+    CBPeripheral *peripheral = Peripheral;
+    CBService *service = [[peripheral services] objectAtIndex:2];
+    CBCharacteristic *characteristic = [[service characteristics] objectAtIndex:2];
+    
+    [peripheral writeValue : Data
+         forCharacteristic : characteristic
+                      type : CBCharacteristicWriteWithResponse];
+}
+
+#pragma mark METHODS
+// String to HEX
+- (NSString *) stringToHex:(NSString *)str
+{
+    NSUInteger len = [str length];
+    unichar *chars = malloc(len * sizeof(unichar));
+    [str getCharacters:chars];
+
+    NSMutableString *hexString = [[NSMutableString alloc] init];
+
+    for(NSUInteger i = 0; i < len; i++ )
+    {
+        // [hexString [NSString stringWithFormat:@"%02x", chars[i]]]; /*previous input*/
+        [hexString appendFormat:@"%02x", chars[i]]; /*EDITED PER COMMENT BELOW*/
+    }
+
+    return hexString;
+}
+// hexStringToData
+- (NSData *) hexStringToData : (NSString *) Hex_String {
+    NSString *command = Hex_String;
+
+    command = [command stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSMutableData *commandToSend= [[NSMutableData alloc] init];
+    unsigned char whole_byte;
+    char byte_chars[3] = {'\0','\0','\0'};
+    int i;
+    for (i=0; i < [command length]/2; i++) {
+        byte_chars[0] = [command characterAtIndex:i*2];
+        byte_chars[1] = [command characterAtIndex:i*2+1];
+        whole_byte = strtol(byte_chars, NULL, 16);
+        [commandToSend appendBytes:&whole_byte length:1];
+    }
+    NSLog(@"%@", commandToSend);
+    return commandToSend;
+}
+
+// ------------- 連接裝置以用來知道是否註冊 如未註冊則註冊 -------------
+- (void) detectDevicesConnect :(NSTimer*)sender {
+    NSLog(@"Timer Run Once = %@", OAuth.Access_Token);
+    
+    if(OAuth.Access_Token) {
+        for(int i = 0; i < BLE.Stored_Data.count; i++) {
+            StoredDevicesCell *storedDevicesCell = [StoredDevicesCell alloc];
+            storedDevicesCell = [BLE.Stored_Data objectAtIndex:i];
+            NSString *EPROM_String = storedDevicesCell.Device_EPROM;
+            if(EPROM_String) {
+                NSData* EPROM = [self hexStringToData:EPROM_String];
+                NSLog(@"EPROM in timer = %@", EPROM);
+                [OAuth connectDeviceToServer:EPROM];
+            }
+        }
+    }
+}
 @end

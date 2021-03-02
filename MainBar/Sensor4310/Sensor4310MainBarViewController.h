@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Sensor4310MainBarViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property(readwrite, nonatomic) NSInteger CurrentController;
+
 - (void)controllerInit;
 @end
 

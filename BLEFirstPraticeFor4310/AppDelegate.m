@@ -13,6 +13,7 @@ BLEFor4310 *BLE;
 OAuth2Main *OAuth;
 MQTTMain *MqttMain;
 
+NSUInteger Mode;
 
 NSString *Now_Time;
 NSString *Now_Navigation_Name;

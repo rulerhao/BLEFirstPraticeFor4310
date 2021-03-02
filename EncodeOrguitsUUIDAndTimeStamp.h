@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *) getSerialString : (NSString *) InputString timeInterval : (NSTimeInterval) timeInterval;
 - (NSMutableDictionary *) getDeviceSerialDictionary : (NSString *) Model
-                                        inputString : (NSString *) InputString
+                                        orgunits : (NSString *) InputString
                                        timeInterval : (NSTimeInterval) timeInterval;
 @end
 

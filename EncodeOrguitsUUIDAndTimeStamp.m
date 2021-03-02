@@ -15,10 +15,15 @@
     NSString *UUIDString = Input_String;
     NSData* UUIDData = [UUIDString dataUsingEncoding:NSUTF8StringEncoding];
     
+    //-------------- NSData to NSString -------------
+    // NSString* newStr = [[NSString alloc] initWithData:UUIDData encoding:NSUTF8StringEncoding];
+    // NSLog(@"ReverseData = %@", newStr);
+    //-------------- NSData to NSString -------------
+    
     // to crc32 checksum
     uLong crc = crc32(0L, Z_NULL, 0);
     NSUInteger result = crc32_z(crc, [UUIDData bytes], (unsigned int)[UUIDData length]);
-
+    
     // int to hex
     NSString *CRC32HexString = [[NSString stringWithFormat:@"%02lx", (unsigned long)result] uppercaseString];
     NSLog(@"ResultString = %@", CRC32HexString);
@@ -45,13 +50,14 @@
 }
 
 - (NSMutableDictionary *) getDeviceSerialDictionary : (NSString *) Model
-                                        inputString : (NSString *) InputString
+                                           orgunits : (NSString *) Orgunits
                                        timeInterval : (NSTimeInterval) timeInterval {
+    
     NSMutableDictionary *Dict = [[NSMutableDictionary alloc] init];
 
     // Serial
     NSMutableString *SerialString = [[NSMutableString alloc] init];
-    [SerialString appendString:[self StringToCrc32Format:InputString]];
+    [SerialString appendString:[self StringToCrc32Format:Orgunits]];
     [SerialString appendString:@"0"];
     [SerialString appendString:[self getHexTimeStamp:timeInterval]];
     

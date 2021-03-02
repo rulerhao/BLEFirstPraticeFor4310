@@ -25,6 +25,27 @@ NS_ASSUME_NONNULL_BEGIN
 @property(readwrite, nonatomic) WKWebView *WKWeb_View;
 @property(readwrite, nonatomic) NSString *Access_Token;
 @property(readwrite, nonatomic) NSString *Refresh_Token;
+@property(readwrite, nonatomic) NSString *Orgunits;
+@property(readwrite, nonatomic) NSString *OTP;
+
+@property(readwrite, nonatomic) NSString *Device_Type;
+@property(readwrite, nonatomic) NSString *Device_ID;
+
+- (void) connectDeviceToServer : (NSData *) characteristic;
+
+- (void) signUpDevice;
+
+// 取得裝置資訊
+- (void)
+takeDevicesInformation          : (NSString *)  Access_Token
+deviceUUID                      : (NSString *)  Device_UUID
+wKWebView                       : (WKWebView *) WKWebView;
+
+// 更新裝置資訊
+- (void) refreshDevicesInformation          : (NSString *)  Access_Token
+                            status          : (NSInteger)   Status
+                        deviceUUID          : (NSString *)  Device_UUID
+                         wKWebView          : (WKWebView *) WKWebView;
 
 @end
 

@@ -20,6 +20,8 @@ extern BLEFor4310 *BLE;
 extern OAuth2Main *OAuth;
 extern MQTTMain *MqttMain;
 
+extern NSUInteger Mode;
+
 extern NSString *Now_Time;
 extern NSString *Now_Navigation_Name;
 
