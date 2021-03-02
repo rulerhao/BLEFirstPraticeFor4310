@@ -184,11 +184,23 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         // ---------------------- 判別這次手機發出的模式 ----------------------
         NSData *Mode_Identifier = [[characteristic value] subdataWithRange:NSMakeRange(0, 1)];
         
+<<<<<<< HEAD
         // ---------------------- 如果是首次進入 ----------------------
         if(!Previous_Stored_Deivce_Cell.Characteristic) {
             NSLog(@"首次進入喔");
             /* Write 04 to get device memory */
             [self write04ToKS4310:peripheral];
+=======
+        // ---------------------- 前兩個字元 ----------------------
+        NSString *Characteristic_Head_String = [[CalculateFunc getHEX:[characteristic value]]substringWithRange:NSMakeRange(0, 2)];
+        /**
+         * 在首次進入時會 write 04 並且會獲得記憶體回傳的 04........ update value
+         * 一般情況下會持續收到 00....... update value
+         * write 05 後會收到0555AA後再 write 04 並會因此收到記憶體回傳的 04....... update value
+         */
+        if([Characteristic_Head_String isEqual:@"00"]) {
+            
+>>>>>>> main
         }
         // ---------------------- Mode_Identifier == @"00" ----------------------
         if([Mode_Identifier isEqual:ks4310Setting.Sense_Identifier]) {
