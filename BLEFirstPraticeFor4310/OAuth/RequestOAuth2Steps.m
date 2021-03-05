@@ -124,6 +124,7 @@ takeOTP         : (NSString *)  Access_Token
 wKWebView       : (WKWebView *) WKWebView {
     NSLog(@"takeOTP");
     
+    NSString *Device_Name = [[UIDevice currentDevice] name];
     NSString *Device_Type = OAuth.Device_Type;
     // Vendor UUID
     NSString *Device_UUID = OAuth.Device_ID;
@@ -139,6 +140,7 @@ wKWebView       : (WKWebView *) WKWebView {
     
     NSMutableDictionary *Dict = [[NSMutableDictionary alloc] init];
 
+    [Dict setValue:Device_Name forKey:@"device_name"];
     [Dict setValue:Device_Type forKey:@"device_type"];
     [Dict setValue:Device_UUID forKey:@"device_uuid"];
     
@@ -213,6 +215,55 @@ wKWebView       : (WKWebView *) WKWebView {
 
     [OAuth.WKWeb_View loadRequest: request];
 }
+
+// 更新手機資訊
+- (void) refreshPhoneInformation : (NSString *) Access_Token
+                          status : (NSInteger) Status
+                       client_ID : (NSString *) Client_ID
+                       wKWebView : (WKWebView *) WKWebView {
+    NSLog(@"Refresh phone status");
+    // URL
+    OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
+    
+    NSURL *URL = [[NSURL alloc] initWithString:[oAuthParameters refreshPhoneInformationURLWithParameters:Client_ID]];
+
+    NSLog(@"sign up url = %@", URL);
+
+    // Authorization
+    NSString *authValue = [NSString stringWithFormat:@"Bearer %@", Access_Token];
+
+    // Body
+    
+    NSMutableDictionary *Dict = [[NSMutableDictionary alloc] init];
+    
+    [Dict setValue:[NSNumber numberWithInteger:Status] forKey:@"status"];
+    
+    NSDictionary *PostDict = [[NSDictionary alloc] initWithDictionary:Dict];
+
+    NSLog(@"PostDict = %@", PostDict);
+
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:PostDict options:0 error:nil];
+    NSString *urlString =  [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+
+    NSLog(@"stringData = %@", urlString);
+    NSData *requestBodyData = [urlString dataUsingEncoding:NSUTF8StringEncoding];
+
+    NSString *requestBodyDataLength = [NSString stringWithFormat:@"%lu", (unsigned long)[requestBodyData length]];
+
+    // Set Request
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:URL];
+    [request setHTTPMethod:@"PATCH"];
+    [request setHTTPBody:requestBodyData];
+    [request setValue:requestBodyDataLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:authValue forHTTPHeaderField:@"Authorization"];
+    [request setHTTPShouldHandleCookies:true];
+
+    [OAuth.WKWeb_View loadRequest: request];
+}
+
+
 // 取得裝置資訊
 - (void)
 takeDevicesInformation          : (NSString *)  Access_Token

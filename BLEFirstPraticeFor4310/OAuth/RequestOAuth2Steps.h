@@ -50,7 +50,12 @@ wKWebView                       : (WKWebView *) WKWebView;
                             status          : (NSInteger)   Status
                         deviceUUID          : (NSString *)  Device_UUID
                          wKWebView          : (WKWebView *) WKWebView;
-
+// 更新手機狀態
+- (void) refreshPhoneInformation          : (NSString *)  Access_Token
+                            status        : (NSInteger)   Status
+                            client_ID    : (NSString *) Client_ID
+                         wKWebView        : (WKWebView *) WKWebView;
+    
 // 機構裝置列表及過濾 過濾用法，用來搜尋特定型號序號
 - (void)
 getDeviceUUIDThroughModelAndSerial : (NSString *) Access_Token

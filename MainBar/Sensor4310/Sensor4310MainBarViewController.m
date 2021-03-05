@@ -106,23 +106,26 @@
     // ---------------------- 該次的 Cell ----------------------
     // 監測模式
     if (Mode == 0) {
-        StoredDevicesCell *Previous_Stored_Deivce_Cell = [[StoredDevicesCell alloc] init];
-        Previous_Stored_Deivce_Cell = [Stored_Devices objectAtIndex:[indexPath row]];
+        NSDictionary *BLEMessageCell = [[NSDictionary alloc] init];
+        
+        StoredDevicesCell *Stored_Deivce_Cell = [[StoredDevicesCell alloc] init];
+        Stored_Deivce_Cell = [Stored_Devices objectAtIndex:[indexPath row]];
+        
 
-        if([[[Previous_Stored_Deivce_Cell Peripheral] name] isEqual:@"KS-4310"]) {
+        if([[[Stored_Deivce_Cell Peripheral] name] isEqual:@"KS-4310"]) {
             // ---------------------- 判別這次手機發出的模式 ----------------------
-            NSData *Mode_Identifier = [[Previous_Stored_Deivce_Cell Characteristic] subdataWithRange:NSMakeRange(0, 1)];
+            NSData *Mode_Identifier = [[Stored_Deivce_Cell Characteristic] subdataWithRange:NSMakeRange(0, 1)];
             // ---------------------- Mode_Identifier == @"00" ----------------------
             if([Mode_Identifier isEqual:ks4310Setting.Sense_Identifier]) {
-                Serial_TextView.text = [Previous_Stored_Deivce_Cell.Device_EPROM uppercaseString] ;
+                Serial_TextView.text = [Stored_Deivce_Cell.Device_EPROM uppercaseString] ;
                 
                 Movement_TextView.text = @"Normal";
                 
-                float T1 = [convert_Characteristic getTemperature_1:[Previous_Stored_Deivce_Cell Characteristic]];
+                float T1 = [convert_Characteristic getTemperature_1:[Stored_Deivce_Cell Characteristic]];
                 NSLog(@"Temp1 = %f", T1);
                 Temperature_TextView.text = [[NSNumber numberWithFloat:T1] stringValue];
                 
-                NSUInteger Battery = [convert_Characteristic getBattery_Volume:[Previous_Stored_Deivce_Cell Characteristic]];
+                NSUInteger Battery = [convert_Characteristic getBattery_Volume:[Stored_Deivce_Cell Characteristic]];
                 Battery_TextView.text = [[NSNumber numberWithLong:Battery] stringValue ];
             }
             // ---------------------- Mode_Identifier == @"04" ----------------------

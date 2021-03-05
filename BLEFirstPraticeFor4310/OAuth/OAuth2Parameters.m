@@ -367,6 +367,12 @@
     return Parameters;
 }
 
+// 更新手機狀態
+- (NSString *) refreshPhoneInformationURLWithParameters : (NSString *) Client_ID {
+    NSString *Origin_URL = [[NSString alloc] initWithFormat:@"%@%@%@", @"https://healthng.oucare.com/api/v1/ouhub/clients/", Client_ID, @"/status"];
+    return Origin_URL;
+}
+
 // 機構裝置列表及過濾 過濾用法，用來搜尋特定型號序號
 // Log In 的 parameters
 - (NSMutableArray *) getDeviceUUIDThroughModelAndSerialBodyParameters : (NSString *) model

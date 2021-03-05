@@ -64,11 +64,10 @@
     Serial_TextView.text = Serial;
     
     if([Breath_NSNumber intValue] == 0) Movement_TextView.text = @"Abnormal";
-    else Movement_TextView.text = @"Normal";;
+    else Movement_TextView.text = @"Normal";
     
     Temperature_TextView.text = [T1_NSNumber stringValue];
     Battery_TextView.text = [Battery_NSNumber stringValue];
-    
     return cell;
 }
 

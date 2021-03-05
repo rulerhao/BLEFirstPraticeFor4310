@@ -25,6 +25,16 @@
 }
 - (void)viewDidAppear:(BOOL)animated {
     NSLog(@"LoginViewAppearLoad");
+    NSLog(@"DeviceCurrentName = %@", [[UIDevice currentDevice] name]);
+    NSMutableDictionary *DictTest = [[NSMutableDictionary alloc] init];
+//    NSLog(@"I PHONE BOUNDS = %@", [[UIScreen mainScreen] bounds]);
+//    UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
+//    CGFloat topPadding = window.safeAreaInsets.top;
+//    CGFloat bottomPadding = window.safeAreaInsets.bottom;
+//    NSLog(@"window.safeAreaInsetstest1 = %@", window.safeAreaInsets);
+//    NSLog(@"window.safeAreaInsetstest2_height = %f", window.safeAreaLayoutGuide.layoutFrame.size.height);
+//    NSLog(@"window.safeAreaInsetstest2_width = %f", window.safeAreaLayoutGuide.layoutFrame.size.width);
+    
     // 當重複讀取時關閉他們
     if(BLE) {
         BLE = nil;
@@ -37,18 +47,21 @@
     }
         
 }
+
 // ---------------------- TextField -------------------
 // 按return時觸發
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return true;
 }
+
 // 按下時觸發
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     NSLog(@"touchesBegan");
     // 當按下非keyboard時觸發關閉keyboard
     [self.view endEditing:true];
 }
+
 // ---------------------- Log In Button -------------------
 - (IBAction)LogInButtonTouchDown:(id)sender {
     NSString *Account = self.Account_Text_View.text;
@@ -58,6 +71,7 @@
     
     // ------------------ Run BLEFor4310 ---------------
     BLE = [BLEFor4310 new];
+    
     OAuth = [OAuth2Main new];
     
     [OAuth InitEnter:self];

@@ -47,6 +47,9 @@ movementStateRefresh    : (NSData *)            characteristic_Value
 storedDeviceCell        : (StoredDevicesCell *) Stored_Device_Cell
 movementScanTime        : (NSInteger)           MovementScanTime;
     
+- (BOOL)
+    getMovementNormal       : (NSMutableArray *)    Movement_Recode_Array
+ScanTime                : (NSUInteger)          ScanTime;
 @end
 
 NS_ASSUME_NONNULL_END

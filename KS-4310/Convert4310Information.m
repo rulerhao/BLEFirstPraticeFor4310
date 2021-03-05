@@ -509,4 +509,55 @@ movementScanTime        : (NSInteger)           MovementScanTime {
     NSLog(@"now_Stored_Movement_State_Inside = %@", now_Stored_Movement_State);
     return now_Stored_Movement_State;
 }
+
+- (BOOL)
+    getMovementNormal       : (NSMutableArray *)    Movement_Recode_Array
+    ScanTime                : (NSUInteger)          ScanTime {
+    /**
+     * 檢查時間內如果連續三分之一呼吸不正常則設 Movement Abnormal = true;
+     */
+    BOOL Continue_Normal = false;
+    NSUInteger Total_Continue_Normal_Count = 0;
+    
+    NSUInteger ContinueScanLength = ScanTime / 3;
+    
+    if([Movement_Recode_Array count] > ContinueScanLength) {
+        for(NSUInteger j = [Movement_Recode_Array count] - 1; j >= [Movement_Recode_Array count] - ContinueScanLength;j--) {
+            if([[Movement_Recode_Array objectAtIndex:j] isEqualToNumber:[NSNumber numberWithBool:true]]) {
+                Total_Continue_Normal_Count++;
+            }
+            else {
+                Total_Continue_Normal_Count = 0;
+                break;
+            }
+            if(Total_Continue_Normal_Count >= ContinueScanLength) {
+                Continue_Normal = true;
+            }
+        }
+    }
+    /**
+     * 檢查時間內如果有超過三分之二呼吸不正常則設為 Movement Abnormal = true;
+     */
+    // TODO: 修改為每次進入再增加而不是每次都從零開始重算 進而增加效能
+    
+    BOOL Total_Normal = false;
+    NSUInteger Total_Normal_Count = 0;
+    
+    for(NSUInteger j = 0; j < [Movement_Recode_Array count];j++) {
+        if([[Movement_Recode_Array objectAtIndex:j] isEqualToNumber:[NSNumber numberWithBool:true]]) {
+            Total_Normal_Count++;
+        }
+    }
+    if(Total_Normal_Count >= ScanTime * 2 / 3) {
+        Total_Normal = true;
+    }
+    
+    if(Continue_Normal && Total_Normal) {
+        return true;
+    }
+    
+    else {
+        return false;
+    }
+}
 @end

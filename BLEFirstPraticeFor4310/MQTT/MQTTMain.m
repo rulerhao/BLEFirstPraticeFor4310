@@ -63,6 +63,7 @@
     NSLog(@"TestOTPForDisconnect = %@", OTP);
     //vln_IYImYM_B8NaX
 
+    
     [MySession setClientId:Client_ID];
     [MySession setUserName:User_Name];
     [MySession setPassword:OTP];
@@ -87,6 +88,20 @@ handleEvent:(MQTTSession *)     session
     Session = session;
     if (eventCode == MQTTSessionEventConnected)
     {
+        // 監測模式
+        if(Mode == 0) {
+            // 更新手機狀態 -- 監測中
+            RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
+            [requestOAuth2Steps refreshPhoneInformation:OAuth.Access_Token
+                                                 status:1
+                                              client_ID:self.Client_ID
+                                              wKWebView:OAuth.WKWeb_View];
+        }
+        // 訂閱模式
+        else if(Mode == 1) {
+            
+        }
+        
         NSLog(@"MQTTStatus : Connected");
         // Subscribe part
         NSLog(@"SessionBeforeSubscribe = %@", session);
@@ -105,12 +120,6 @@ handleEvent:(MQTTSession *)     session
                 NSLog(@"SessionAfterSubscribe = %@", session);
 //                Session = session;
                 NSLog(@"MQTTStatusOK:%@",gQoss);
-//                NSDictionary *Information_Dictionary = [NSDictionary dictionaryWithObject:Session
-//                                                                                   forKey:@"Session"];
-//                [[NSNotificationCenter defaultCenter]
-//                    postNotificationName:@"getMQTTSubscribing" //Notification以一個字串(Name)下去辨別
-//                    object:self->View_Controller_For_Notify
-//                    userInfo:Information_Dictionary];
             }
         }];
         [session subscribeToTopic:ClientTopic
@@ -163,6 +172,10 @@ handleEvent:(MQTTSession *)     session
     NSLog(@"PublishData-Device_UUID = %@", Device_UUID);
     NSLog(@"PublishData-ClientID = %@", self.Client_ID);
 
+    RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
+    //[requestOAuth2Steps refreshDevicesInformation:OAuth.Access_Token status:1 deviceUUID:Device_UUID wKWebView:OAuth.WKWeb_View];
+    
+                                 
     NSData *PublishData = [publishDataFor4320 getPublishData:Device_Type
                                                Device_Serial:[Device_Serial uppercaseString]
                                                  Device_UUID:Device_UUID
@@ -205,15 +218,17 @@ handleEvent:(MQTTSession *)     session
         Message *message = [Message parseFromData:data error:nil];
         
         NSMutableDictionary *MessageDict = [[NSMutableDictionary alloc] init];
-        //[MessageDict setObject:<#(nonnull id)#> forKey:<#(nonnull id<NSCopying>)#>]
+        
         // Model
         NSString *Model = [[[message.postMeasureRequest.recordArray objectAtIndex:0] deviceProperty] model];
         [MessageDict setValue:Model forKey:@"Model"];
         NSLog(@"ModelForMessage = %@", Model);
+        
         // Serial
         NSString *Serial = [[[message.postMeasureRequest.recordArray objectAtIndex:0] deviceProperty] serial];
         [MessageDict setValue:Serial forKey:@"Serial"];
         NSLog(@"SerialForMessage = %@", Serial);
+        
         // UUID
         NSString *UUID = [[[message.postMeasureRequest.recordArray objectAtIndex:0] deviceProperty] uuid];
         [MessageDict setValue:UUID forKey:@"UUID"];
@@ -234,11 +249,13 @@ handleEvent:(MQTTSession *)     session
         NSNumber *T3_Number = [[NSNumber alloc] initWithFloat:T3];
         [MessageDict setValue:T3_Number forKey:@"T3"];
         NSLog(@"Temp3ForMessage = %f", T3);
+        
         // Battery
         int Battery = [[[[[message.postMeasureRequest.recordArray objectAtIndex:0] sensorArray] objectAtIndex:3] batteryProperty] value];
         NSNumber *Battery_Number = [[NSNumber alloc] initWithInt:Battery];
         [MessageDict setValue:Battery_Number forKey:@"Battery"];
         NSLog(@"BatteryForMessage = %d", Battery);
+        
         // Breath normal
         BOOL Breath = [[[[[message.postMeasureRequest.recordArray objectAtIndex:0] sensorArray] objectAtIndex:4] breathProperty] value];
         [MessageDict setValue:[NSNumber numberWithBool:Breath] forKey:@"Breath"];

@@ -21,6 +21,7 @@ storedMovementState         : (nullable NSMutableArray *)   Stored_Movement_Stat
 deviceName                  : (nullable NSString *)         Device_Name
 deviceID                    : (nullable NSString *)         Device_ID
 deviceSex                   : (nullable NSString *)         Device_Sex
+deviceModel                 : (nullable NSString *)         Device_Model
 deviceEPROM                 : (nullable NSString *)         Device_EPROM
 deviceUUID                  : (nullable NSString *)         Device_UUID
 deviceStatus                : (nullable NSString *)         Device_Status
@@ -33,6 +34,7 @@ deviceStatus                : (nullable NSString *)         Device_Status
     self.Device_Name = Device_Name;
     self.Device_ID = Device_ID;
     self.Device_Sex = Device_Sex;
+    self.Device_Model = Device_Model;
     self.Device_EPROM = Device_EPROM;
     self.Device_UUID = Device_UUID;
     self.Device_Status = Device_Status;
@@ -46,6 +48,7 @@ deviceStatus                : (nullable NSString *)         Device_Status
 @synthesize Device_Name;
 @synthesize Device_ID;
 @synthesize Device_Sex;
+@synthesize Device_Model;
 @synthesize Device_EPROM;
 @synthesize Device_UUID;
 @synthesize Device_Status;

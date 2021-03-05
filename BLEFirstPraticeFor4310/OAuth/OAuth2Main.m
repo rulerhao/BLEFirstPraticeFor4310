@@ -52,6 +52,7 @@ setupWebView : (WKWebView *) WKWeb_View {
 //                       wKWebView : WKWeb_View];
 }
 
+#pragma mark WebView Delegate
 - (void)
 webView             :(WKWebView *)      webView
 didFinishNavigation :(WKNavigation *)   navigation {
@@ -64,19 +65,20 @@ didFinishNavigation :(WKNavigation *)   navigation {
         RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
         [requestOAuth2Steps takeCode:webView];
     }
+    
     else if([[URL_Components path]  isEqual: @"/oauth/authorize"]) {
         HTMLProcess *htmlProcess = [HTMLProcess alloc];
         NSString *Return_String = [htmlProcess getHTMLString   : self
                                                webView         : webView];
         NSLog(@"Return_String = %@", Return_String);
-        
     }
+    
     // 在取得 Access Token 後
     // 這裡有兩個可能會進入
     // 1. 是在完成以 code 來取得 Access token 和 Refresh token
     // 2. 是在完成以 refresh token 來取得 Access token 和 Refresh token
     else if ([[URL_Components path]  isEqual: @"/oauth/token"]) {
-        //get_HTMLString_Notification_Center = [NSNotificationCenter defaultCenter];
+        // get_HTMLString_Notification_Center = [NSNotificationCenter defaultCenter];
         NSLog(@"URL_Components = %@",URL_Components);
         [[NSNotificationCenter defaultCenter]
             addObserver:self
@@ -87,16 +89,14 @@ didFinishNavigation :(WKNavigation *)   navigation {
         [htmlProcess getHTMLString   : self
                      webView         : webView];
     }
+    // 取得 OTP 後
     else if ([[URL_Components path]  isEqual: @"/api/v1/ouhub/otp"]) {
         NSLog(@"GetOTP");
         HTMLProcess *htmlProcess = [HTMLProcess alloc];
         [htmlProcess getHTMLString   : self
                      webView         : webView];
     }
-    else if([[URL_Components path]  isEqual: @"/api/v1/devices/d35e9666-6149-11eb-9f01-02420a00080a"]) {
-        NSLog(@"Finally Enter Here");
-    }
-    // 如果是註冊後回傳
+    // 如果是註冊後
     else if([[URL_Components path] isEqual:[[NSString alloc] initWithFormat:@"%@%@%@", @"/api/v1/orgunits/", self.Orgunits, @"/devices/registration"]]) {
         NSLog(@"Finish registration");
         [webView evaluateJavaScript:@"document.documentElement.outerHTML"
@@ -115,28 +115,25 @@ didFinishNavigation :(WKNavigation *)   navigation {
                     NSDictionary *Json_Dictionary = [Json_Process NSStringToJSONDict:JSON_String];
                     NSLog(@"New_Json_Dictionary = %@", Json_Dictionary);
                     
+                    NSString *Device_Model = [Json_Dictionary valueForKey:@"model"];
                     NSString *Device_UUID = [Json_Dictionary valueForKey:@"uuid"];
                     NSString *Device_Serial = [Json_Dictionary valueForKey:@"serial"];
+                    NSString *Device_Status = [Json_Dictionary valueForKey:@"status"];
                     
                     for(int i = 0; i < BLE.Stored_Data.count; i++) {
                         StoredDevicesCell *storedDevicesCell = [StoredDevicesCell alloc];
                         storedDevicesCell = [BLE.Stored_Data objectAtIndex:i];
                         if(!storedDevicesCell.Device_UUID) {
-                            [storedDevicesCell  cell                      : storedDevicesCell.Peripheral
-                                                characteristic            : storedDevicesCell.Characteristic
-                                                deviceInformation         : storedDevicesCell.Device_Information
-                                                babyInformation           : storedDevicesCell.Baby_Information
-                                                storedMovementState       : storedDevicesCell.Stored_Movement_State
-                                                deviceName                : storedDevicesCell.Device_Name
-                                                deviceID                  : storedDevicesCell.Device_ID
-                                                deviceSex                 : storedDevicesCell.Device_Sex
-                                                deviceEPROM               : Device_Serial
-                                                deviceUUID                : Device_UUID
-                                                deviceStatus              : @"1"];
+                            NSLog(@"***** Put Model, Serial, UUID and Serial in Stored_Data which were get by registration *****");
+                            storedDevicesCell.Device_Model = Device_Model;
+                            storedDevicesCell.Device_EPROM = Device_Serial;
+                            storedDevicesCell.Device_UUID = Device_UUID;
+                            storedDevicesCell.Device_Status = Device_Status;
                             [BLE.Stored_Data replaceObjectAtIndex:i withObject:storedDevicesCell];
                             // write 入EPROM內
+                            NSLog(@"***** Write Serial to EPROM which were get by registration *****");
                             NSData *data = [self hexStringToData:[NSString stringWithFormat:@"%@%@%@", @"05", Device_Serial, @"AA"]];
-                            NSLog(@"TestWRiteData = %@", data);
+                            NSLog(@"Write Serial to EPROM = %@", data);
                             [BLE write05ToKS4310EPROM:storedDevicesCell.Peripheral data:data];
                             break;
                         }
@@ -147,6 +144,7 @@ didFinishNavigation :(WKNavigation *)   navigation {
     }
     // 透過 Serial 取得裝置 UUID 和 Serial 的回傳
     else if ([[URL_Components path] isEqual:[[NSString alloc] initWithFormat:@"%@%@%@", @"/api/v1/orgunits/", self.Orgunits, @"/devices"]]) {
+        NSLog(@"***** Return value -- get device information by serial *****");
         [webView evaluateJavaScript:@"document.documentElement.outerHTML"
                   completionHandler:^(id result, NSError *error) {
             NSLog(@"Evaluateerror = %@", error);
@@ -154,55 +152,49 @@ didFinishNavigation :(WKNavigation *)   navigation {
             
             if (error == nil) {
                 if (result != nil) {
-                    NSString *TestJson = result;
-                    NSInteger Left_Side_Position = [TestJson rangeOfString:@"items"].location + 8;
-                    NSInteger Right_Side_Position = [TestJson rangeOfString:@"_links"].location - 4;
-                    NSString *Device_UUID_And_Serial = [TestJson substringWithRange:NSMakeRange(Left_Side_Position, Right_Side_Position - Left_Side_Position + 1)];
-                    NSLog(@"Device_UUID_And_Serial = %@", Device_UUID_And_Serial);
-                    JSONProcess *Json_Process = [JSONProcess alloc];
-                    NSDictionary *Json_Dictionary = [Json_Process NSStringToJSONDict:Device_UUID_And_Serial];
-                    NSLog(@"New_Json_Dictionary = %@", Json_Dictionary);
+                    NSString *HTML_String = result;
+                    HTMLProcess *html_Process = [HTMLProcess alloc];
+                    NSDictionary *Device_Information_Json = [html_Process htmlStringToJsonDictionary:HTML_String];
+                    NSLog(@"Return value -- get device information by serial -- Device_Information_Json = %@", Device_Information_Json);
+                    NSDictionary *Device_Items_Json_Dictionary = [Device_Information_Json valueForKey:@"items"];
+                    NSLog(@"Items_Json_Dictionary = %@", Device_Items_Json_Dictionary);
+                    
                     // 如果此 Serial 是已註冊
-                    if(Json_Dictionary != nil) {
+                    if(Device_Items_Json_Dictionary.count != 0) {
                         NSLog(@"這個裝置的 Serial 是已註冊的");
-                        JSONProcess *Json_Process = [JSONProcess alloc];
-                        NSDictionary *Json_Dictionary = [Json_Process NSStringToJSONDict:Device_UUID_And_Serial];
-                        
-                        NSString *Device_UUID = [Json_Dictionary valueForKey:@"uuid"];
-                        NSString *Device_Serial = [Json_Dictionary valueForKey:@"serial"];
-                        NSLog(@"New_Json_Dictionary_UUID = %@", Device_UUID);
-                        NSLog(@"New_Json_Dictionary_Serial = %@", Device_Serial);
+                        NSString *Device_Model = [[Device_Items_Json_Dictionary valueForKey:@"model"] objectAtIndex:0];
+                        NSString *Device_UUID = [[Device_Items_Json_Dictionary valueForKey:@"uuid"] objectAtIndex:0];
+                        NSString *Device_Serial = [[Device_Items_Json_Dictionary valueForKey:@"serial"] objectAtIndex:0];
+                        NSString *Device_Status = [[Device_Items_Json_Dictionary valueForKey:@"status"] objectAtIndex:0];
+                        NSLog(@"這個裝置的 Serial 是已註冊的 -- Model = %@", Device_Model);
+                        NSLog(@"這個裝置的 Serial 是已註冊的 -- UUID = %@", Device_UUID);
+                        NSLog(@"這個裝置的 Serial 是已註冊的 -- Serial = %@", Device_Serial);
+                        NSLog(@"這個裝置的 Serial 是已註冊的 -- status = %@", Device_Status);
                         
                         // 在取得裝置 EPROM 後更新儲存
                         for(int i = 0 ; i < BLE.Stored_Data.count; i++) {
                             StoredDevicesCell *storedDevicesCell = [StoredDevicesCell alloc];
                             storedDevicesCell = [BLE.Stored_Data objectAtIndex:i];
                             NSLog(@"WHYNORUNIN EPROM = %@", storedDevicesCell.Device_EPROM);
+                            NSLog(@"Device_Serial = %@", storedDevicesCell.Device_EPROM);
                             if([[storedDevicesCell.Device_EPROM uppercaseString] isEqual:Device_Serial]) {
-                                [storedDevicesCell  cell                      : storedDevicesCell.Peripheral
-                                                    characteristic            : storedDevicesCell.Characteristic
-                                                    deviceInformation         : storedDevicesCell.Device_Information
-                                                    babyInformation           : storedDevicesCell.Baby_Information
-                                                    storedMovementState       : storedDevicesCell.Stored_Movement_State
-                                                    deviceName                : storedDevicesCell.Device_Name
-                                                    deviceID                  : storedDevicesCell.Device_ID
-                                                    deviceSex                 : storedDevicesCell.Device_Sex
-                                                    deviceEPROM               : storedDevicesCell.Device_EPROM
-                                                    deviceUUID                : Device_UUID
-                                                    deviceStatus              : @"1"];
+                                NSLog(@"Device UUID FOr already register = %@", [[BLE.Stored_Data objectAtIndex:i] Device_UUID]);
+                                storedDevicesCell.Device_Model = Device_Model;
+                                storedDevicesCell.Device_EPROM = Device_Serial;
+                                storedDevicesCell.Device_UUID = Device_UUID;
+                                storedDevicesCell.Device_Status = Device_Status;
                                 [BLE.Stored_Data replaceObjectAtIndex:i withObject:storedDevicesCell];
-                                StoredDevicesCell *storedDevicesCellTestestesteste = [StoredDevicesCell alloc];
-                                storedDevicesCellTestestesteste = [BLE.Stored_Data objectAtIndex:i];
-                                NSLog(@"TestUUID = %@", storedDevicesCellTestestesteste.Device_UUID);
                                 break;
                             }
                         }
                     }
                     // 如果此 Serial 是未註冊
                     else {
-                        NSLog(@"這個裝置的 Serial 是未註冊的");
+                        NSLog(@"***** This KS-4310 device have not registerd. *****");
                         // 開始註冊
-                        [OAuth signUpDevice];
+                        [OAuth signUpDevice:self.Access_Token
+                                   orgunits:self.Orgunits
+                                  wkWebView:self.WKWeb_View];
                     }
                 }
             } else {
@@ -210,6 +202,7 @@ didFinishNavigation :(WKNavigation *)   navigation {
             }
         }];
     }
+
     else {
         __block NSString *Return_HTML_String = nil;
         [webView evaluateJavaScript:@"document.documentElement.outerHTML"
@@ -399,15 +392,16 @@ getHTMLStringNotification:(NSNotification *)notification {
     NSString *HTTP_String_Key = [[userInfo allKeys] objectAtIndex:0];
     NSMutableArray *HTTP_Information = [[userInfo allValues] objectAtIndex:0];
     NSString *HTTP_String_Value = [HTTP_Information objectAtIndex:0];
+    NSLog(@"HTTP_String_Value = %@", HTTP_String_Value);
     WKWebView *WKWeb_View = [HTTP_Information objectAtIndex:1];
     NSLog(@"HTTP_String_Key = %@", HTTP_String_Key);
     
     HTMLProcess *htmlProcess = [HTMLProcess alloc];
     NSString *HTTP_String_JSON = [htmlProcess htmlStringToJSONFormatString:HTTP_String_Value];
-    
+    NSLog(@"HTTP_String_JSON = %@", HTTP_String_JSON);
     JSONProcess *Json_Process = [JSONProcess alloc];
     NSDictionary *Json_Dictionary = [Json_Process NSStringToJSONDict:HTTP_String_JSON];
-
+    NSLog(@"Json_Dictionary = %@", Json_Dictionary);
     if([HTTP_String_Key isEqual: @"/oauth/token"]) {
         self.Access_Token = [Json_Dictionary valueForKey:@"access_token"];
         self.Refresh_Token = [Json_Dictionary valueForKey:@"refresh_token"];
@@ -422,6 +416,7 @@ getHTMLStringNotification:(NSNotification *)notification {
                             wKWebView : WKWeb_View];
     }
     else if ([HTTP_String_Key  isEqual: @"/api/v1/ouhub/otp"]) {
+        NSLog(@"Get OTP json dictionary = %@", Json_Dictionary);
         NSString *Client_ID = [Json_Dictionary valueForKey:@"client_id"];
         NSString *User_Name = [Json_Dictionary valueForKey:@"username"];
         NSString *OTP = [Json_Dictionary valueForKey:@"otp"];
@@ -478,10 +473,16 @@ getHTMLStringNotification:(NSNotification *)notification {
     }];
 }
 
-- (void) signUpDevice {
+- (void) signUpDevice : (NSString *) Access_Token
+             orgunits : (NSString *) Orgunits
+            wkWebView : (WKWebView *) WKWebView{
+    NSLog(@"***** Register KS-4310 device *****");
     RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
     NSDate *start = [NSDate date];
-    [requestOAuth2Steps signUpDevices:self.Access_Token orgunits:self.Orgunits timeInterval:[start timeIntervalSince1970] wKWebView:self.WKWeb_View];
+    [requestOAuth2Steps signUpDevices:Access_Token
+                             orgunits:Orgunits
+                         timeInterval:[start timeIntervalSince1970]
+                            wKWebView:WKWebView];
 }
 
 #pragma mark -- METHODS
@@ -536,6 +537,9 @@ wKWebView                       : (WKWebView *) WKWebView {
                         deviceUUID          : (NSString *)  Device_UUID
                          wKWebView          : (WKWebView *) WKWebView {
     RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
-    [requestOAuth2Steps refreshDevicesInformation:Access_Token status:Status deviceUUID:Device_UUID wKWebView:WKWebView];
+    [requestOAuth2Steps refreshDevicesInformation:Access_Token
+                                           status:Status
+                                       deviceUUID:Device_UUID
+                                        wKWebView:WKWebView];
 }
 @end

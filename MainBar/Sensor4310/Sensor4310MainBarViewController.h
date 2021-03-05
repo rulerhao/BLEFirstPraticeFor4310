@@ -9,7 +9,6 @@
 #import "Sensor4310Setting.h"
 #import "BLEFor4310.h"
 #import "StoredDevicesCell.h"
-#import "Sensor4310Cell.h"
 
 @class Sensor4310Setting;
 @class BLEFor4310;

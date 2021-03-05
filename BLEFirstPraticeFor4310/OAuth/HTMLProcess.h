@@ -18,6 +18,7 @@ getHTMLString   : (id) WebView_Controller
 webView         : (WKWebView *)         WebView;
 
 - (NSString *) htmlStringToJSONFormatString : (NSString *) HTML_String;
+- (NSDictionary *) htmlStringToJsonDictionary : (NSString *) HTML_String;
 @end
 
 NS_ASSUME_NONNULL_END

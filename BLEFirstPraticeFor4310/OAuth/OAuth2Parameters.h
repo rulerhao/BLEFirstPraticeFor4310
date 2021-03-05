@@ -46,6 +46,9 @@ NS_ASSUME_NONNULL_BEGIN
     
 - (NSMutableArray *) refreshDevicesInformationBodyParameters : (NSString *) Code_Value;
 
+// 更新手機狀態
+- (NSString *) refreshPhoneInformationURLWithParameters : (NSString *) Client_ID;
+
 // Log In URL 的 Parameters
 - (NSString *) getDeviceUUIDThroughModelAndSerialURLWithParameters : (NSString *) Orgunits_String
                                                              model : (NSString *) Model

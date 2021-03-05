@@ -34,7 +34,8 @@ webView         : (WKWebView *)         WebView {
                 NSMutableArray *Information = [[NSMutableArray alloc] init];
                 [Information addObject: Return_HTML_String];
                 [Information addObject: WebView];
-                NSDictionary *HTML_String_Dict = [NSDictionary dictionaryWithObject:Information forKey:[[WebView URL] path]];
+                NSDictionary *HTML_String_Dict = [NSDictionary dictionaryWithObject:Information
+                                                                             forKey:[[WebView URL] path]];
                 [[NSNotificationCenter defaultCenter]
                     postNotificationName:@"NotificationName" //Notification以一個字串(Name)下去辨別
                     object:OAuth2Main
@@ -55,5 +56,18 @@ webView         : (WKWebView *)         WebView {
     NSString *HTTP_String_JSON = [HTML_String substringWithRange:JSON_Range];
     
     return HTTP_String_JSON;
+}
+
+- (NSDictionary *) htmlStringToJsonDictionary : (NSString *) HTML_String {
+    NSString *HTML_Pre_String = @"<html><head></head><body><pre style=\"word-wrap: break-word; white-space: pre-wrap;\">";
+    NSString *HTML_Post_String = @"</pre></body></html>";
+    NSInteger Left_Side_Position = [HTML_String rangeOfString:HTML_Pre_String].location + HTML_Pre_String.length;
+    NSInteger Right_Side_Position = [HTML_String rangeOfString:HTML_Post_String].location - 1;
+    NSString *Device_Information_Json_String = [HTML_String substringWithRange:NSMakeRange(Left_Side_Position, Right_Side_Position - Left_Side_Position + 1)];
+    NSLog(@"get htmlStringToJsonDictionary = %@", Device_Information_Json_String);
+    JSONProcess *Json_Process = [JSONProcess alloc];
+    NSDictionary *Device_Information_Json = [Json_Process NSStringToJSONDict:Device_Information_Json_String];
+    
+    return Device_Information_Json;
 }
 @end
