@@ -15,6 +15,7 @@
 #import "Sensor4310Page.h"
 #import "EncodeOrguitsUUIDAndTimeStamp.h"
 #import "WatcherViewController.h"
+#import "BLEFor4310.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

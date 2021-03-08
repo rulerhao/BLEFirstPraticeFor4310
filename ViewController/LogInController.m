@@ -37,6 +37,7 @@
     
     // 當重複讀取時關閉他們
     if(BLE) {
+        [BLE disable];
         BLE = nil;
     }
     if(OAuth) {

@@ -35,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)
 write05ToKS4310EPROM     : (CBPeripheral *) Peripheral
 data:(NSData *) Data;
+
+- (void) disable;
 @end
 
 NS_ASSUME_NONNULL_END

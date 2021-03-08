@@ -590,4 +590,9 @@ data                     : (NSData *)       Data
         }
     }
 }
+- (void) disable {
+    if(BLEConnectServerTimer) {
+        [BLEConnectServerTimer invalidate];
+    }
+}
 @end
