@@ -26,6 +26,7 @@
 @property (strong, nonatomic) UICollectionView *myCollectionView;
 @property (strong, nonatomic) UICollectionViewCell *myCollectionViewCell;
 @property (strong, nonatomic) NSMutableArray *StoredData;
+@property (strong, nonatomic) BLEFor4310 *BLEFor4310Test;
 @end
 
 @implementation Sensor4310MainBarViewController
@@ -42,7 +43,6 @@
 }
 
 - (void)controllerInit {
-
     sensor4310Setting = [[Sensor4310Setting alloc] init];
     convert_Characteristic = [[Convert4310Information alloc] init];
     ks4310Setting = [[KS4310Setting alloc] init];
@@ -65,7 +65,7 @@
                                         repeats:YES];
     }
     // 訂閱模式
-    else if(Mode == 1){
+    else if(Mode == 1) {
         Mqtt_Message_Watcher_Mode = [[NSMutableArray alloc] init];
         ReadSubscribeMessageTimer = [NSTimer scheduledTimerWithTimeInterval:1
                                          target:self
@@ -534,5 +534,9 @@
             }
         }
     }
+}
+
+- (void)deleteStoredDataCell{
+    [self.myCollectionView reloadData];
 }
 @end

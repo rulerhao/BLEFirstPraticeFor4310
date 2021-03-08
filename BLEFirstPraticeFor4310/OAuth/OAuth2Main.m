@@ -187,6 +187,7 @@ didFinishNavigation :(WKNavigation *)   navigation {
                                 break;
                             }
                         }
+                        
                     }
                     // 如果此 Serial 是未註冊
                     else {

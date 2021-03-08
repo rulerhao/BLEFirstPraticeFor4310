@@ -25,6 +25,7 @@
 
 - (void) mqttStart : (NSArray *) OAuth_Information
     viewController : (nullable UIViewController *) View_Controller {
+    NSLog(@"MQTTStart");
     //View_Controller_For_Notify = View_Controller;
     [self mqttConnect : OAuth_Information];
     self.MQTTMessage = [[NSMutableArray alloc] init];
@@ -32,6 +33,7 @@
 }
 
 - (void) mqttConnect : (NSArray *) OAuth_Information {
+    NSLog(@"MQTTConnect");
     MQTTSession *MySession;
 
     MQTTWebsocketTransport *Transport = [[MQTTWebsocketTransport alloc] init];

@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateCharacteristic:(CBPeripheral *)peripheral characteristic :(CBCharacteristic *)characteristic;
 - (void)synchronizeStoredDevices:(NSMutableArray *)stored_Devices;
 - (void)updateForBusy:(NSMutableArray *)stored_Devices;
+- (void) deleteStoredDataCell;
 @end
 
 @interface BLEFor4310 : NSObject <CBCentralManagerDelegate, CBPeripheralDelegate>

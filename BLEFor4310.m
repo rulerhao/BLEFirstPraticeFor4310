@@ -332,6 +332,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     uint8_t Index_Of_Disconnected_Device = [self getIndexOfStoredDevices:peripheral
                                                               storedData:self.Stored_Data];
     [self.Stored_Data removeObjectAtIndex:Index_Of_Disconnected_Device];
+    [self.delegate deleteStoredDataCell];
 }
 
 #pragma mark - Methods
@@ -396,6 +397,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
     stored_Cell.Device_Information = incoming_Characteristic_Value;
     [stored_Data replaceObjectAtIndex:index withObject:stored_Cell];
 }
+
 // ---------------------- 判斷新搜尋到的 Device 有沒有在已搜尋到的裝置中 ----------------------
 - (BOOL) searchSDDeviceContain : (CBPeripheral *)   peripheral
              stored_Peripheral : (NSMutableArray *) stored_Peripheral {
@@ -570,14 +572,17 @@ data                     : (NSData *)       Data
 
 // ------------- 連接裝置以用來知道是否註冊 如未註冊則註冊 -------------
 - (void) detectDevicesConnect :(NSTimer*)sender {
-    NSLog(@"Timer Run Once = %@", OAuth.Access_Token);
+    NSLog(@"Detect Devices Connect = %@", OAuth.Access_Token);
     
     if(OAuth.Access_Token) {
         for(int i = 0; i < BLE.Stored_Data.count; i++) {
             StoredDevicesCell *storedDevicesCell = [StoredDevicesCell alloc];
             storedDevicesCell = [BLE.Stored_Data objectAtIndex:i];
             NSString *EPROM_String = storedDevicesCell.Device_EPROM;
-            if(EPROM_String) {
+            NSString *UUID_String = storedDevicesCell.Device_UUID;
+            NSLog(@"Test for register -- 4310 EPROM = %@", EPROM_String);
+            NSLog(@"Test for register -- 4310 UUID String = %@", UUID_String);
+            if(!UUID_String) {
                 NSData* EPROM = [self hexStringToData:EPROM_String];
                 NSLog(@"EPROM in timer = %@", EPROM);
                 [OAuth connectDeviceToServer:EPROM];
