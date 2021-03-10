@@ -28,10 +28,15 @@ typedef NS_ENUM(NSInteger, FunctionButtonEnum){
     ButtonHaveNotThing = -1,
     BackViewController = 1,
     ExitViewController = 2,
-    InformationWebSite = 3
+    InformationWebSite = 3,
+    RegisterViewController = 4
 };
 
-- (void)viewDidLoad {
+- (void) viewDidLoad {
+    [super viewDidLoad];
+}
+
+- (void) controllerInit {
     functionBarImagesSetting = [[FunctionBarImagesSetting alloc] init];
     self.Button_Array_List = [[NSMutableArray alloc] init];
     Button_Type_List = [[NSMutableArray alloc] init];
@@ -91,13 +96,16 @@ typedef NS_ENUM(NSInteger, FunctionButtonEnum){
             NSInteger Button_Type = [[Button_Type_List objectAtIndex:i] integerValue];
             switch (Button_Type) {
                 case BackViewController:
-                    [RootNavigationView popViewControllerAnimated:NO];
+                    [self backViewController];
                     break;
                 case ExitViewController:
                     [self exitToRoot];
                     break;
                 case InformationWebSite:
                     [self openInformationWebsite];
+                    break;
+                case RegisterViewController:
+                    [self registerViewController];
                     break;
                 default:
                     break;
@@ -108,7 +116,8 @@ typedef NS_ENUM(NSInteger, FunctionButtonEnum){
 
 - (NSMutableArray *) Function_Button_Type_Filter {
     NSMutableArray *Button_Type_List = [[NSMutableArray alloc] init];
-    switch (currentController) {
+    NSLog(@"FunctionBar Go Way = %ld", (long)self.CurrentController);
+    switch (self.CurrentController) {
         case ViewController_Root:
             [Button_Type_List addObject:[NSNumber numberWithInteger:BackViewController]];
             [Button_Type_List addObject:[NSNumber numberWithInteger:InformationWebSite]];
@@ -123,10 +132,23 @@ typedef NS_ENUM(NSInteger, FunctionButtonEnum){
             [Button_Type_List addObject:[NSNumber numberWithInteger:ButtonHaveNotThing]];
             [Button_Type_List addObject:[NSNumber numberWithInteger:ExitViewController]];
             break;
+        case ViewController_Sensor4310:
+            [Button_Type_List addObject:[NSNumber numberWithInteger:BackViewController]];
+            [Button_Type_List addObject:[NSNumber numberWithInteger:InformationWebSite]];
+            [Button_Type_List addObject:[NSNumber numberWithInteger:ButtonHaveNotThing]];
+            [Button_Type_List addObject:[NSNumber numberWithInteger:RegisterViewController]];
+            [Button_Type_List addObject:[NSNumber numberWithInteger:ExitViewController]];
+        case ViewController_Registrater4310:
+            [Button_Type_List addObject:[NSNumber numberWithInteger:BackViewController]];
+            [Button_Type_List addObject:[NSNumber numberWithInteger:InformationWebSite]];
+            [Button_Type_List addObject:[NSNumber numberWithInteger:ButtonHaveNotThing]];
+            [Button_Type_List addObject:[NSNumber numberWithInteger:ButtonHaveNotThing]];
+            [Button_Type_List addObject:[NSNumber numberWithInteger:ExitViewController]];
+            break;
     }
     return Button_Type_List;
 }
-- (UIImage *) Function_Button_Image_Filter : (NSInteger) Type_Number{
+- (UIImage *) Function_Button_Image_Filter : (NSInteger) Type_Number {
     UIImage *ButtonImage;
     switch (Type_Number) {
         case BackViewController:
@@ -138,6 +160,8 @@ typedef NS_ENUM(NSInteger, FunctionButtonEnum){
         case ExitViewController:
             ButtonImage = [UIImage imageNamed:@"view_exit.png"];
             break;
+        case RegisterViewController:
+            ButtonImage = [UIImage imageNamed:@"view_dataNumber.png"];
         default:
             break;
     }
@@ -148,6 +172,10 @@ typedef NS_ENUM(NSInteger, FunctionButtonEnum){
     NSLog(@"touchesBegan");
 }
 @synthesize delegate;
+
+- (void) backViewController {
+    [RootNavigationView popViewControllerAnimated:NO];
+}
 
 - (void) exitToRoot {
     NSArray *array = [self.navigationController viewControllers];
@@ -167,5 +195,11 @@ typedef NS_ENUM(NSInteger, FunctionButtonEnum){
              NSLog(@"Opened url");
         }
     }];
+}
+
+- (void) registerViewController {
+    Register4310Page *register4310Page = [[Register4310Page alloc] init];
+    [register4310Page setModalPresentationStyle:UIModalPresentationFullScreen];
+    [RootNavigationView pushViewController:register4310Page animated:NO];
 }
 @end

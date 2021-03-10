@@ -23,6 +23,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
+
+- (void)viewDidDisappear:(BOOL)animated {
+    NSLog(@"viewDidDisappear");
+}
+
 - (instancetype) init {
     ImageSetting *imageSetting = [[ImageSetting alloc] init];
     

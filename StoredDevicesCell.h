@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *Device_EPROM;
     NSString *Device_UUID;
     NSString *Device_Status;
+    NSInteger Serial_Been_Register;
 }
 
 - (void)
@@ -34,10 +35,11 @@ storedMovementState         : (nullable NSMutableArray *)   Stored_Movement_Stat
 deviceName                  : (nullable NSString *)         Device_Name
 deviceID                    : (nullable NSString *)         Device_ID
 deviceSex                   : (nullable NSString *)         Device_Sex
-deviceModel                   : (nullable NSString *)         Device_Model
+deviceModel                 : (nullable NSString *)         Device_Model
 deviceEPROM                 : (nullable NSString *)         Device_EPROM
 deviceUUID                  : (nullable NSString *)         Device_UUID
-deviceStatus                : (nullable NSString *)         Device_Status;
+deviceStatus                : (nullable NSString *)         Device_Status
+serialBeenRegister          : (NSInteger)                   Serial_Been_Register;
 
 @property (readwrite, nonatomic) CBPeripheral *Peripheral;
 @property (readwrite, nonatomic) NSData *Characteristic;
@@ -51,6 +53,7 @@ deviceStatus                : (nullable NSString *)         Device_Status;
 @property (readwrite, nonatomic) NSString *Device_EPROM;
 @property (readwrite, nonatomic) NSString *Device_UUID;
 @property (readwrite, nonatomic) NSString *Device_Status;
+@property (readwrite, nonatomic) NSInteger Serial_Been_Register;
 
 @end
 

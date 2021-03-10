@@ -134,7 +134,8 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                        deviceModel:nil
                        deviceEPROM:nil
                         deviceUUID:nil
-                      deviceStatus:nil];
+                      deviceStatus:nil
+                serialBeenRegister:-1];
             [self.Stored_Data addObject:storedDeviceCell];
             NSLog(@"ADdobject_peripheral = %@", peripheral);
             [central connectPeripheral:peripheral options:nil];
@@ -200,8 +201,8 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
 
     // ---------------------- KS-4310 ----------------------
     if([[peripheral name] isEqual:@"KS-4310"]) {
-        NSLog(@"it'sKS-4310");
-        // ---------------------- 上的 Cell ----------------------
+        NSLog(@"it's KS-4310");
+        // ---------------------- 上次的 Cell ----------------------
         StoredDevicesCell *Previous_Stored_Deivce_Cell = [[StoredDevicesCell alloc] init];
         NSLog(@"Index_Of_Stored_Devices = %hhd", Index_Of_Stored_Devices);
         Previous_Stored_Deivce_Cell = [self.Stored_Data objectAtIndex:Index_Of_Stored_Devices];
@@ -222,8 +223,8 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         // ---------------------- Mode_Identifier == @"00" ----------------------
         if([Mode_Identifier isEqual:ks4310Setting.Sense_Identifier]) {
             // ---------------------- Movement ----------------------
-            // 如果上次的 Device Information 已經被給值
-            // 也就是說已經上傳過資訊至 Stored_Data
+            /* 如果上次的 Device Information 已經被給值
+               也就是說已經上傳過資訊至 Stored_Data      */
             if([Previous_Stored_Deivce_Cell Device_Information]) {
                 NSLog(@"Previous_Stored_Deivce_Cell = %@", Previous_Stored_Deivce_Cell);
                 // ---------------------- 更新 Movement state array ----------------------
@@ -305,7 +306,7 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
             
             // 在取得裝置 EPROM 後更新 Stored_Data
             NSLog(@"***** Set KS-4310 EPROM To Stored_Data Serial *****");
-            testStoredDeivicesCell.Device_EPROM = EPROM_String;
+            testStoredDeivicesCell.Device_EPROM = [EPROM_String uppercaseString];
             [self.Stored_Data replaceObjectAtIndex:Index_Of_Stored_Devices
                                         withObject:testStoredDeivicesCell];
             
@@ -350,7 +351,8 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
                         deviceModel                 : nil
                         deviceEPROM                 : nil
                         deviceUUID                  : nil
-                        deviceStatus                : nil];
+                        deviceStatus                : nil
+                        serialBeenRegister          : -1];
     
     [stored_Devices addObject:storedDevicesCell];
     NSLog(@"self.delegate in addNewDevice = %@", self.delegate);
@@ -519,6 +521,7 @@ write05ToKS4310     : (CBPeripheral *) Peripheral
          forCharacteristic : characteristic
                       type : CBCharacteristicWriteWithResponse];
 }
+
 // ---------------------- Write 05 to EPROM -----------------
 - (void)
 write05ToKS4310EPROM     : (CBPeripheral *) Peripheral
@@ -571,9 +574,7 @@ data                     : (NSData *)       Data
 }
 
 // ------------- 連接裝置以用來知道是否註冊 如未註冊則註冊 -------------
-- (void) detectDevicesConnect :(NSTimer*)sender {
-    NSLog(@"Detect Devices Connect = %@", OAuth.Access_Token);
-    
+- (void) detectDevicesConnect : (NSTimer*) sender {
     if(OAuth.Access_Token) {
         for(int i = 0; i < BLE.Stored_Data.count; i++) {
             StoredDevicesCell *storedDevicesCell = [StoredDevicesCell alloc];

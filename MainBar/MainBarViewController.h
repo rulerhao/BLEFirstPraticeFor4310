@@ -9,6 +9,7 @@
 #import <Masonry.h>
 #import "Sensor4310MainBarViewController.h"
 #import "OrganizationMainBarViewController.h"
+#import "Register4310ViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

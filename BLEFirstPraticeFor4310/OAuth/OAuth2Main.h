@@ -18,9 +18,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class OAuth2Main;
+
+@protocol OAuth2MainDelegate <NSObject>
+
+@optional
+- (void) synchronizeStoredDevices : (NSMutableArray *) Stored_Data;
+@end
+
 @interface OAuth2Main : UIView <WKUIDelegate, WKNavigationDelegate>
 
 - (void)InitEnter : (UIViewController *) View_Controller;
+
+@property(assign) id <OAuth2MainDelegate> delegate;
 
 @property(readwrite, nonatomic) WKWebView *WKWeb_View;
 @property(readwrite, nonatomic) NSString *Access_Token;

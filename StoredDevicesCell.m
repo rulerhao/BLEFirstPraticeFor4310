@@ -25,6 +25,7 @@ deviceModel                 : (nullable NSString *)         Device_Model
 deviceEPROM                 : (nullable NSString *)         Device_EPROM
 deviceUUID                  : (nullable NSString *)         Device_UUID
 deviceStatus                : (nullable NSString *)         Device_Status
+serialBeenRegister          : (NSInteger)                   Serial_Been_Register
 {
     self.Peripheral = Peripheral;
     self.Characteristic = Characteristic;
@@ -38,6 +39,7 @@ deviceStatus                : (nullable NSString *)         Device_Status
     self.Device_EPROM = Device_EPROM;
     self.Device_UUID = Device_UUID;
     self.Device_Status = Device_Status;
+    self.Serial_Been_Register = Serial_Been_Register;
 }
 
 @synthesize Peripheral;
@@ -52,5 +54,6 @@ deviceStatus                : (nullable NSString *)         Device_Status
 @synthesize Device_EPROM;
 @synthesize Device_UUID;
 @synthesize Device_Status;
+@synthesize Serial_Been_Register;
 
 @end

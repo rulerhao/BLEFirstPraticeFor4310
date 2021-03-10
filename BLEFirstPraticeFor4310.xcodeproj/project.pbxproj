@@ -47,6 +47,10 @@
 		63746DFC258886A40011D283 /* NetworkReachAbility.m in Sources */ = {isa = PBXBuildFile; fileRef = 63746DFB258886A40011D283 /* NetworkReachAbility.m */; };
 		6377EA4E25B1752D0081E866 /* FunctionBarImagesSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 6377EA4D25B1752D0081E866 /* FunctionBarImagesSetting.m */; };
 		6388C700259C631900052795 /* StoredDevicesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6388C6FF259C631900052795 /* StoredDevicesCell.m */; };
+		63AAF53525F713A3006E4637 /* Register4310Page.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AAF53425F713A3006E4637 /* Register4310Page.m */; };
+		63AAF53A25F71E54006E4637 /* Register4310ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AAF53925F71E54006E4637 /* Register4310ViewController.m */; };
+		63AAF53F25F7277C006E4637 /* Register4310Setting.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AAF53E25F7277C006E4637 /* Register4310Setting.m */; };
+		63AAF54525F740A0006E4637 /* BLEForRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 63AAF54425F740A0006E4637 /* BLEForRegister.m */; };
 		63AF37E62548FE1900D6F804 /* baby_card_girl_photo_background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37DB2548FE1900D6F804 /* baby_card_girl_photo_background2.png */; };
 		63AF37E72548FE1900D6F804 /* baby_card_boy_information_bar_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37DC2548FE1900D6F804 /* baby_card_boy_information_bar_background.png */; };
 		63AF37E82548FE1900D6F804 /* baby_card_warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 63AF37DD2548FE1900D6F804 /* baby_card_warning.png */; };
@@ -772,8 +776,6 @@
 		63F090F425903BB400424EFD /* Battery-2-Bak.png in Resources */ = {isa = PBXBuildFile; fileRef = 63F090F025903BB400424EFD /* Battery-2-Bak.png */; };
 		63F090F525903BB400424EFD /* Battery-4-Bak.png in Resources */ = {isa = PBXBuildFile; fileRef = 63F090F125903BB400424EFD /* Battery-4-Bak.png */; };
 		63FAF46B25C2BFEE000A60F0 /* Sensor4310Setting.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FAF46A25C2BFEE000A60F0 /* Sensor4310Setting.m */; };
-		63FC7F7C25CA857C00A3FE92 /* OAuthLogIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FC7F7B25CA857C00A3FE92 /* OAuthLogIn.m */; };
-		63FC7F8125CA860200A3FE92 /* OAuthMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FC7F8025CA860200A3FE92 /* OAuthMain.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -855,6 +857,14 @@
 		6377EA4D25B1752D0081E866 /* FunctionBarImagesSetting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FunctionBarImagesSetting.m; sourceTree = "<group>"; };
 		6388C6FE259C631900052795 /* StoredDevicesCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoredDevicesCell.h; sourceTree = "<group>"; };
 		6388C6FF259C631900052795 /* StoredDevicesCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StoredDevicesCell.m; sourceTree = "<group>"; };
+		63AAF53325F713A3006E4637 /* Register4310Page.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Register4310Page.h; sourceTree = "<group>"; };
+		63AAF53425F713A3006E4637 /* Register4310Page.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Register4310Page.m; sourceTree = "<group>"; };
+		63AAF53825F71E54006E4637 /* Register4310ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Register4310ViewController.h; sourceTree = "<group>"; };
+		63AAF53925F71E54006E4637 /* Register4310ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Register4310ViewController.m; sourceTree = "<group>"; };
+		63AAF53D25F7277C006E4637 /* Register4310Setting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Register4310Setting.h; sourceTree = "<group>"; };
+		63AAF53E25F7277C006E4637 /* Register4310Setting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Register4310Setting.m; sourceTree = "<group>"; };
+		63AAF54325F740A0006E4637 /* BLEForRegister.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLEForRegister.h; sourceTree = "<group>"; };
+		63AAF54425F740A0006E4637 /* BLEForRegister.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLEForRegister.m; sourceTree = "<group>"; };
 		63AF37DB2548FE1900D6F804 /* baby_card_girl_photo_background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_girl_photo_background2.png; path = res/baby_card_girl_photo_background2.png; sourceTree = SOURCE_ROOT; };
 		63AF37DC2548FE1900D6F804 /* baby_card_boy_information_bar_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_boy_information_bar_background.png; path = res/baby_card_boy_information_bar_background.png; sourceTree = SOURCE_ROOT; };
 		63AF37DD2548FE1900D6F804 /* baby_card_warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baby_card_warning.png; path = res/baby_card_warning.png; sourceTree = SOURCE_ROOT; };
@@ -1615,10 +1625,6 @@
 		63F090F125903BB400424EFD /* Battery-4-Bak.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Battery-4-Bak.png"; path = "../../BLEFirstPraticeFor4310/BLEFirstPraticeFor4310/Battery-4-Bak.png"; sourceTree = "<group>"; };
 		63FAF46925C2BFEE000A60F0 /* Sensor4310Setting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sensor4310Setting.h; sourceTree = "<group>"; };
 		63FAF46A25C2BFEE000A60F0 /* Sensor4310Setting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Sensor4310Setting.m; sourceTree = "<group>"; };
-		63FC7F7A25CA857C00A3FE92 /* OAuthLogIn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OAuthLogIn.h; sourceTree = "<group>"; };
-		63FC7F7B25CA857C00A3FE92 /* OAuthLogIn.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OAuthLogIn.m; sourceTree = "<group>"; };
-		63FC7F7F25CA860200A3FE92 /* OAuthMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OAuthMain.h; sourceTree = "<group>"; };
-		63FC7F8025CA860200A3FE92 /* OAuthMain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OAuthMain.m; sourceTree = "<group>"; };
 		87E46CD961BC891A64EBC105 /* Pods-BLEFirstPraticeFor4310.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLEFirstPraticeFor4310.debug.xcconfig"; path = "Target Support Files/Pods-BLEFirstPraticeFor4310/Pods-BLEFirstPraticeFor4310.debug.xcconfig"; sourceTree = "<group>"; };
 		B1C9614A219060EC16AA474F /* Pods_BLEFirstPraticeFor4310.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BLEFirstPraticeFor4310.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1645,6 +1651,10 @@
 		6327C6C625BFE626000D2BD4 /* Sensor4310 */ = {
 			isa = PBXGroup;
 			children = (
+				6327C6C025BFC396000D2BD4 /* Sensor4310Page.h */,
+				6327C6C125BFC396000D2BD4 /* Sensor4310Page.m */,
+				6314669F25A403A400A263CA /* Sense4310ViewController.h */,
+				631466A025A403A400A263CA /* Sense4310ViewController.m */,
 				63FAF46925C2BFEE000A60F0 /* Sensor4310Setting.h */,
 				63FAF46A25C2BFEE000A60F0 /* Sensor4310Setting.m */,
 				6327C6C725BFE63F000D2BD4 /* Sensor4310MainBarViewController.h */,
@@ -1658,6 +1668,7 @@
 		63323E1325BABC3E0051CE7D /* MainBar */ = {
 			isa = PBXGroup;
 			children = (
+				63AAF54225F7278E006E4637 /* Register4310 */,
 				6327C6C625BFE626000D2BD4 /* Sensor4310 */,
 				63323E1C25BABC820051CE7D /* Organization */,
 				63323E1825BABC7A0051CE7D /* MainBarViewController.h */,
@@ -1669,6 +1680,8 @@
 		63323E1C25BABC820051CE7D /* Organization */ = {
 			isa = PBXGroup;
 			children = (
+				63323E1E25BACB350051CE7D /* OrganizationPage.h */,
+				63323E1F25BACB350051CE7D /* OrganizationPage.m */,
 				63323E1425BABC5C0051CE7D /* OrganizationMainBarViewController.h */,
 				63323E1525BABC5C0051CE7D /* OrganizationMainBarViewController.m */,
 			);
@@ -1731,6 +1744,21 @@
 				6359F7F425E7926900742B80 /* WatcherViewController.m */,
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		63AAF54225F7278E006E4637 /* Register4310 */ = {
+			isa = PBXGroup;
+			children = (
+				63AAF53325F713A3006E4637 /* Register4310Page.h */,
+				63AAF53425F713A3006E4637 /* Register4310Page.m */,
+				63AAF53825F71E54006E4637 /* Register4310ViewController.h */,
+				63AAF53925F71E54006E4637 /* Register4310ViewController.m */,
+				63AAF53D25F7277C006E4637 /* Register4310Setting.h */,
+				63AAF53E25F7277C006E4637 /* Register4310Setting.m */,
+				63AAF54325F740A0006E4637 /* BLEForRegister.h */,
+				63AAF54425F740A0006E4637 /* BLEForRegister.m */,
+			);
+			path = Register4310;
 			sourceTree = "<group>";
 		};
 		63B153B8256F9F0700FD435F /* MQTT */ = {
@@ -1804,13 +1832,6 @@
 			children = (
 				6365CF0125CCE2580099F7C9 /* EncodeOrguitsUUIDAndTimeStamp.h */,
 				6365CF0225CCE2580099F7C9 /* EncodeOrguitsUUIDAndTimeStamp.m */,
-				63FC7F7925CA854700A3FE92 /* OAuth2 */,
-				6327C6C025BFC396000D2BD4 /* Sensor4310Page.h */,
-				6327C6C125BFC396000D2BD4 /* Sensor4310Page.m */,
-				6314669F25A403A400A263CA /* Sense4310ViewController.h */,
-				631466A025A403A400A263CA /* Sense4310ViewController.m */,
-				63323E1E25BACB350051CE7D /* OrganizationPage.h */,
-				63323E1F25BACB350051CE7D /* OrganizationPage.m */,
 				6366540A25B7BCF7006B17B8 /* TitleBar */,
 				6377EA5125B17C9A0081E866 /* FunctionBar */,
 				63323E1325BABC3E0051CE7D /* MainBar */,
@@ -2798,17 +2819,6 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
-		63FC7F7925CA854700A3FE92 /* OAuth2 */ = {
-			isa = PBXGroup;
-			children = (
-				63FC7F7F25CA860200A3FE92 /* OAuthMain.h */,
-				63FC7F8025CA860200A3FE92 /* OAuthMain.m */,
-				63FC7F7A25CA857C00A3FE92 /* OAuthLogIn.h */,
-				63FC7F7B25CA857C00A3FE92 /* OAuthLogIn.m */,
-			);
-			path = OAuth2;
-			sourceTree = "<group>";
-		};
 		73AE7946AF1BA1075DA1F951 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -3647,6 +3657,7 @@
 				6377EA4E25B1752D0081E866 /* FunctionBarImagesSetting.m in Sources */,
 				6388C700259C631900052795 /* StoredDevicesCell.m in Sources */,
 				631466A125A403A400A263CA /* Sense4310ViewController.m in Sources */,
+				63AAF53A25F71E54006E4637 /* Register4310ViewController.m in Sources */,
 				63DBA1C925AEDF94007AC413 /* TitleBarImageSetting.m in Sources */,
 				63CF83F12583507300438317 /* HTMLProcess.m in Sources */,
 				63CF83EE2583507300438317 /* JSONProcess.m in Sources */,
@@ -3665,6 +3676,7 @@
 				63DB0E4E251DC2E000FA3D39 /* AppDelegate.m in Sources */,
 				63CF83F32583507300438317 /* device.proto in Sources */,
 				6352680D2558D2A90071F655 /* ChangeBetweenWriteStringViewController.m in Sources */,
+				63AAF53F25F7277C006E4637 /* Register4310Setting.m in Sources */,
 				6342EE232589D80000280BCF /* LogInController.m in Sources */,
 				63CF83ED2583507300438317 /* URLProcess.m in Sources */,
 				63DB0E5F251DC2E200FA3D39 /* main.m in Sources */,
@@ -3673,7 +3685,6 @@
 				631466A825A4732600A263CA /* CollectionViewCell.m in Sources */,
 				63CF82692583503E00438317 /* MQTTSubscribeSetting.m in Sources */,
 				63CF83F42583507300438317 /* Message.pbobjc.m in Sources */,
-				63FC7F7C25CA857C00A3FE92 /* OAuthLogIn.m in Sources */,
 				63DBA1B825AEA5B4007AC413 /* ShowViewController.m in Sources */,
 				63DB0E51251DC2E000FA3D39 /* SceneDelegate.m in Sources */,
 				63DBA1B425AEA596007AC413 /* TitleBarViewController.m in Sources */,
@@ -3685,9 +3696,11 @@
 				633BBB1E252D8AD3003544A1 /* Convert4310Information.m in Sources */,
 				631E68772546AAEB00C1B051 /* CalFunc.m in Sources */,
 				63CF83F72583507300438317 /* Sensor.pbobjc.m in Sources */,
+				63AAF53525F713A3006E4637 /* Register4310Page.m in Sources */,
 				63CF82682583503E00438317 /* MQTTSetting.m in Sources */,
 				63148A2E25B033DD007D3175 /* FunctionBarViewController.m in Sources */,
 				635268112558E49F0071F655 /* InformationRunnable.m in Sources */,
+				63AAF54525F740A0006E4637 /* BLEForRegister.m in Sources */,
 				6327C6C225BFC396000D2BD4 /* Sensor4310Page.m in Sources */,
 				63323E1625BABC5D0051CE7D /* OrganizationMainBarViewController.m in Sources */,
 				630EFD1B258B08DE0027B07E /* MyNavigationController.m in Sources */,
@@ -3707,7 +3720,6 @@
 				632D1373252F099B00073BC9 /* cellData.m in Sources */,
 				63CF83F82583507300438317 /* message.proto in Sources */,
 				63FAF46B25C2BFEE000A60F0 /* Sensor4310Setting.m in Sources */,
-				63FC7F8125CA860200A3FE92 /* OAuthMain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

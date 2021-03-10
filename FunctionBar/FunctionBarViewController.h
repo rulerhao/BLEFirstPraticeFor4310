@@ -12,6 +12,7 @@
 #import "TitleBarImageSetting.h"
 #import "ImageSetting.h"
 #import "FunctionBarImagesSetting.h"
+#import "Register4310Page.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,8 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface FunctionBarViewController : UIViewController
 
 @property (assign) id <FunctionBarViewControllerDelegate> delegate;
-@property(readwrite, nonatomic) NSInteger CurrentController;
+@property (readwrite, nonatomic) NSInteger CurrentController;
 
+- (void) controllerInit;
 @end
 
 NS_ASSUME_NONNULL_END

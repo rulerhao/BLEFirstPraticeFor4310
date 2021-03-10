@@ -74,16 +74,21 @@
     [self.titleBarViewController didMoveToParentViewController:self];
     
     //--------------------- Function Bar ViewController -----------------------
+    NSLog(@"CurrentController in function bar1 = %ld", (long)self.CurrentController);
     self.functionBarViewController = [[FunctionBarViewController alloc] init];
+    NSLog(@"CurrentController in function bar2 = %ld", (long)self.CurrentController);
     [self.functionBarViewController.view setAutoresizingMask:UIViewAutoresizingNone];
+    NSLog(@"CurrentController in function bar3 = %ld", (long)self.CurrentController);
     [self.functionBarViewController.view setUserInteractionEnabled:YES];
-    [self addChildViewController:self.functionBarViewController];
-    
     [self.functionBarViewController setCurrentController:self.CurrentController];
+    NSLog(@"CurrentController in function bar4 = %ld", (long)self.CurrentController);
+    [self addChildViewController:self.functionBarViewController];
+    NSLog(@"CurrentController in function bar5 = %ld", (long)self.CurrentController);
     self.functionBarViewController.delegate = self;
     
     [self.view addSubview:self.functionBarViewController.view];
     [self.functionBarViewController didMoveToParentViewController:self];
+    [self.functionBarViewController controllerInit];
     
     //--------------------- mainView -----------------------
     self.mainBarViewController = [[MainBarViewController alloc] init];
@@ -110,41 +115,41 @@
 - (void)updateConstraints {
     //--------------------- Background ImageView -----------------------
     [self.backgroundImageView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top);
-        make.bottom.equalTo(self.view.mas_bottom);
-        make.left.equalTo(self.view.mas_left);
-        make.right.equalTo(self.view.mas_right);
+        make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
+        make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
     }];
     
     //Title Bar ViewController
     [self.titleBarViewController.view mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top);
-        make.bottom.equalTo(self.view.mas_top).offset(imageSetting.Kjump_Background_Title_Bar_Height);
-        make.left.equalTo(self.view.mas_left);
-        make.right.equalTo(self.view.mas_right);
+        make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(imageSetting.Kjump_Background_Title_Bar_Height);
+        make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
+        make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
     }];
     
     //Function Bar ViewController
-    [self.functionBarViewController.view mas_updateConstraints:^(MASConstraintMaker *make) {        make.top.equalTo(self.titleBarViewController.view.mas_bottom);
-        make.bottom.equalTo(self.titleBarViewController.view.mas_bottom).offset(imageSetting.Kjump_Background_Function_Bar_Height);
-        make.left.equalTo(self.view.mas_left);
-        make.right.equalTo(self.view.mas_right);
+    [self.functionBarViewController.view mas_updateConstraints:^(MASConstraintMaker *make) {        make.top.equalTo(self.titleBarViewController.view.mas_safeAreaLayoutGuideBottom);
+        make.bottom.equalTo(self.titleBarViewController.view.mas_safeAreaLayoutGuideBottom).offset(imageSetting.Kjump_Background_Function_Bar_Height);
+        make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
+        make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
     }];
     
     //--------------------- Main Bar View -----------------------
     [self.mainBarViewController.view mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.functionBarViewController.view.mas_bottom);
-        make.bottom.equalTo(self.functionBarViewController.view.mas_bottom).offset(imageSetting.Kjump_Background_Main_Bar_Height);
-        make.left.equalTo(self.view.mas_left);
-        make.right.equalTo(self.view.mas_right);
+        make.top.equalTo(self.functionBarViewController.view.mas_safeAreaLayoutGuideBottom);
+        make.bottom.equalTo(self.functionBarViewController.view.mas_safeAreaLayoutGuideBottom).offset(imageSetting.Kjump_Background_Main_Bar_Height);
+        make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
+        make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
     }];
     
     //--------------------- Ad Bar View -----------------------
     [self.adBarView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mainBarViewController.view.mas_bottom);
-        make.bottom.equalTo(self.view.mas_bottom);
-        make.left.equalTo(self.view.mas_left);
-        make.right.equalTo(self.view.mas_right);
+        make.top.equalTo(self.mainBarViewController.view.mas_safeAreaLayoutGuideBottom);
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
+        make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
     }];
 }
 #pragma mark - Delegate
@@ -164,11 +169,12 @@
 }
 
 // 按下時觸發
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+- (void) touchesBegan : (NSSet<UITouch *> *)touches
+            withEvent : (UIEvent *)event {
     NSLog(@"ShowtouchesBegan");
 }
 
-- (NSInteger)getCurrentController_MainBarViewControlelr {
+- (NSInteger) getCurrentController_MainBarViewControlelr {
     return self.CurrentController;
 }
 @end

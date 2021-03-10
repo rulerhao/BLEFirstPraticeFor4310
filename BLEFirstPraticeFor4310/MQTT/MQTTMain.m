@@ -98,6 +98,7 @@ handleEvent:(MQTTSession *)     session
                                                  status:1
                                               client_ID:self.Client_ID
                                               wKWebView:OAuth.WKWeb_View];
+            NSLog(@"ChangeStatus");
         }
         // 訂閱模式
         else if(Mode == 1) {

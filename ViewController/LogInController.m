@@ -23,17 +23,17 @@
     self.Password_Text_View.delegate = self;
     self.Time_Text_Field.text = Now_Time;
 }
+
 - (void)viewDidAppear:(BOOL)animated {
     NSLog(@"LoginViewAppearLoad");
     NSLog(@"DeviceCurrentName = %@", [[UIDevice currentDevice] name]);
     NSMutableDictionary *DictTest = [[NSMutableDictionary alloc] init];
-//    NSLog(@"I PHONE BOUNDS = %@", [[UIScreen mainScreen] bounds]);
-//    UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
-//    CGFloat topPadding = window.safeAreaInsets.top;
-//    CGFloat bottomPadding = window.safeAreaInsets.bottom;
-//    NSLog(@"window.safeAreaInsetstest1 = %@", window.safeAreaInsets);
-//    NSLog(@"window.safeAreaInsetstest2_height = %f", window.safeAreaLayoutGuide.layoutFrame.size.height);
-//    NSLog(@"window.safeAreaInsetstest2_width = %f", window.safeAreaLayoutGuide.layoutFrame.size.width);
+    NSLog(@"I PHONE BOUNDS = %@", [[UIScreen mainScreen] bounds]);
+    UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
+    CGFloat topPadding = window.safeAreaInsets.top;
+    CGFloat bottomPadding = window.safeAreaInsets.bottom;
+    NSLog(@"window.safeAreaInsetstes   t2_height = %f", window.safeAreaLayoutGuide.layoutFrame.size.height);
+    NSLog(@"window.safeAreaInsetstest2_width = %f", window.safeAreaLayoutGuide.layoutFrame.size.width);
     
     // 當重複讀取時關閉他們
     if(BLE) {
@@ -86,7 +86,7 @@
 }
 
 // ---------------------- 監測 Button -------------------
-- (IBAction)WatchButton:(id)sender {
+- (IBAction) WatchButton:(id)sender {
     NSString *Account = self.Account_Text_View.text;
     NSString *Password = self.Password_Text_View.text;
     NSLog(@"Account_Account = %@", Account);
@@ -103,9 +103,9 @@
 //    [RootNavigationView pushViewController:watcherViewController animated:NO];
     //    // ------------------ 跳到檢查畫面 ---------------
     Mode = 1;
-        Sensor4310Page *sensor4310Page = [[Sensor4310Page alloc] init];
-        [sensor4310Page setModalPresentationStyle:UIModalPresentationFullScreen];
-        [RootNavigationView pushViewController:sensor4310Page animated:NO];
+    Sensor4310Page *sensor4310Page = [[Sensor4310Page alloc] init];
+    [sensor4310Page setModalPresentationStyle:UIModalPresentationFullScreen];
+    [RootNavigationView pushViewController:sensor4310Page animated:NO];
 }
 
 @end

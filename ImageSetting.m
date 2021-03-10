@@ -14,8 +14,15 @@
 @implementation ImageSetting
 
 - (instancetype) init {
-    ScreenWidth = [[UIScreen mainScreen] bounds].size.width;
-    ScreenHeight = [[UIScreen mainScreen] bounds].size.height;
+    UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
+    NSLog(@"window.safeAreaInsetstest2_height = %f", window.safeAreaLayoutGuide.layoutFrame.size.height);
+    NSLog(@"window.safeAreaInsetstest2_width = %f", window.safeAreaLayoutGuide.layoutFrame.size.width);
+    
+//    ScreenWidth = [[UIScreen mainScreen] bounds].size.width;
+//    ScreenHeight = [[UIScreen mainScreen] bounds].size.height;
+    
+    ScreenWidth = window.safeAreaLayoutGuide.layoutFrame.size.width;
+    ScreenHeight = window.safeAreaLayoutGuide.layoutFrame.size.height;
     
     NSLog(@"ScreenHeight = %f", ScreenHeight);
     Edge_Length = 15;

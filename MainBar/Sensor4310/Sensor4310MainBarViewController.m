@@ -81,10 +81,11 @@
     NSLog(@"TestViewWithTagOutSide");
     
     NSLog(@"ContentViewOfCell = %lu", (unsigned long)[[cell subviews] count]);
-
+    //NSLog(@"ContentViews = %@", [cell subviews]);
     // 1 為 原本的 UIVIEW
     // 藉此判定是否要新增 Cell 中的 View
-    if ([[cell subviews] count] == 1) {
+    if ([[cell subviews] count] == 1 || [[cell subviews] count] == 0) {
+        NSLog(@"createCollectionViewCell");
         cell = [self createCollectionViewCell:cell];
     }
     else {
@@ -190,9 +191,11 @@
     if(Mode == 0)
         return Stored_Devices.count;
     // 訂閱模式
-    else if(Mode == 1)
-        return Mqtt_Message_Watcher_Mode.count;
+    else if(Mode == 1) {
+        NSLog(@"Mqtt_Message_Watcher_Mode.count = %lu", (unsigned long)Mqtt_Message_Watcher_Mode.count);
+        return Mqtt_Message_Watcher_Mode.count;}
     else
+        NSLog(@"Return 0");
         return 0;
 }
 
@@ -503,10 +506,13 @@
     return commandToSend;
 }
 
+// 每秒讀取一次 MQTT Message
 - (void) ReadSubscribeMessage : (NSTimer *) sender{
     NSLog(@"ReadSubscribeMessage");
+    NSLog(@"MQTTMessage %@", MqttMain.MQTTMessage);
     Mqtt_Message_Watcher_Mode = MqttMain.MQTTMessage;
     [self.myCollectionView reloadData];
+    NSLog(@"MQTT Message CollectionView Reload Data");
 }
 
 - (void) StatusWatcher : (NSTimer *) sender {

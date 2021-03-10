@@ -129,6 +129,7 @@ didFinishNavigation :(WKNavigation *)   navigation {
                             storedDevicesCell.Device_EPROM = Device_Serial;
                             storedDevicesCell.Device_UUID = Device_UUID;
                             storedDevicesCell.Device_Status = Device_Status;
+                            storedDevicesCell.Serial_Been_Register = 1;
                             [BLE.Stored_Data replaceObjectAtIndex:i withObject:storedDevicesCell];
                             // write 入EPROM內
                             NSLog(@"***** Write Serial to EPROM which were get by registration *****");
@@ -159,7 +160,7 @@ didFinishNavigation :(WKNavigation *)   navigation {
                     NSDictionary *Device_Items_Json_Dictionary = [Device_Information_Json valueForKey:@"items"];
                     NSLog(@"Items_Json_Dictionary = %@", Device_Items_Json_Dictionary);
                     
-                    // 如果此 Serial 是已註冊
+                    // ------------------ 如果此 Serial 是已註冊 ------------------
                     if(Device_Items_Json_Dictionary.count != 0) {
                         NSLog(@"這個裝置的 Serial 是已註冊的");
                         NSString *Device_Model = [[Device_Items_Json_Dictionary valueForKey:@"model"] objectAtIndex:0];
@@ -183,19 +184,47 @@ didFinishNavigation :(WKNavigation *)   navigation {
                                 storedDevicesCell.Device_EPROM = Device_Serial;
                                 storedDevicesCell.Device_UUID = Device_UUID;
                                 storedDevicesCell.Device_Status = Device_Status;
+                                storedDevicesCell.Serial_Been_Register = 1;
                                 [BLE.Stored_Data replaceObjectAtIndex:i withObject:storedDevicesCell];
                                 break;
                             }
                         }
                         
                     }
-                    // 如果此 Serial 是未註冊
-                    else {
+                    // ------------------ 如果此 Serial 是未註冊 -----------------
+                    else if([[Device_Information_Json valueForKey:@"_links"] count] != 0) {
+                        NSString *URL_String = [[[Device_Information_Json valueForKey:@"_links"] valueForKey:@"self"] valueForKey:@"href"];
+                        NSLog(@"Not registered = %@", URL_String);
+                        NSString *Serial_Title_String = @"serial%5D=";
+                        NSInteger Serial_Title_Length = [Serial_Title_String length];
+                        NSInteger Serial_Title_Location = [URL_String rangeOfString:Serial_Title_String].location;
+                        
+                        NSString *After_Serial_String = @"&amp;page";
+                        NSInteger After_Serial_String_Location = [URL_String rangeOfString:After_Serial_String].location;
+                        
+                        NSLog(@"Serial_String_Not_Register_Previous = %ld", Serial_Title_Location);
+                        NSLog(@"Serial_String_Not_Register_After = %ld", After_Serial_String_Location);
+                        NSInteger Serial_Length = After_Serial_String_Location - (Serial_Title_Location + Serial_Title_Length);
+                        NSString *Serial_String = [URL_String substringWithRange:NSMakeRange(Serial_Title_Location + Serial_Title_Length , Serial_Length)];
+                        NSLog(@"Serial_String_Not_Register = %@", Serial_String);
+                        for(int i = 0; i < BLE.Stored_Data.count; i++) {
+                            StoredDevicesCell *cell = [StoredDevicesCell alloc];
+                            cell = [BLE.Stored_Data objectAtIndex:i];
+                            NSLog(@"Serial_String_Not_Register_EPROM = %@", [cell Device_EPROM]);
+                            if([Serial_String isEqual: [cell Device_EPROM]]) {
+                                cell.Serial_Been_Register = 0;
+                                [BLE.Stored_Data replaceObjectAtIndex:i withObject:cell];
+                            }
+                        }
                         NSLog(@"***** This KS-4310 device have not registerd. *****");
+//                        StoredDevicesCell *cell = [StoredDevicesCell alloc];
+                        //cell = [BLE.Stored_Data objectAtIndex:<#(NSUInteger)#>]
                         // 開始註冊
-                        [OAuth signUpDevice:self.Access_Token
-                                   orgunits:self.Orgunits
-                                  wkWebView:self.WKWeb_View];
+//                        [OAuth signUpDevice:self.Access_Token
+//                                   orgunits:self.Orgunits
+//                                  wkWebView:self.WKWeb_View];
+                    }
+                    else {
                     }
                 }
             } else {

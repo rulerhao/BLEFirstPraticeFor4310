@@ -47,6 +47,9 @@
         case ViewController_Organization:
             [self addOrganizationMainBarViewController];
             break;
+        case ViewController_Registrater4310:
+            [self addRegisterMainBarViewController];
+            break;
         default:
             break;
     }
@@ -84,7 +87,6 @@
     self.organizationMainBarViewController.CurrentController = self.CurrentController;
     [self.organizationMainBarViewController.view setAutoresizingMask:UIViewAutoresizingNone];
     [self.organizationMainBarViewController.view setUserInteractionEnabled:YES];
-    //[self.organizationMainBarViewController.view setBackgroundColor:[UIColor blackColor]];
     [self.organizationMainBarViewController setCurrentController:self.CurrentController];
     
     [self addChildViewController:self.organizationMainBarViewController];
@@ -103,4 +105,25 @@
     
 }
 
+- (void) addRegisterMainBarViewController {
+    Register4310ViewController *register4310ViewController = [[Register4310ViewController alloc] init];
+    register4310ViewController.CurrentController = self.CurrentController;
+    [register4310ViewController.view setAutoresizingMask:UIViewAutoresizingNone];
+    [register4310ViewController.view setUserInteractionEnabled:YES];
+    [register4310ViewController setCurrentController:self.CurrentController];
+    
+    [self addChildViewController:register4310ViewController];
+    
+    [self.view addSubview:register4310ViewController.view];
+    [register4310ViewController didMoveToParentViewController:self];
+    
+    //--------------------- Constraints -----------------------
+    [register4310ViewController.view mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_top);
+        make.bottom.equalTo(self.view.mas_bottom);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+    }];
+    [register4310ViewController controllerInit];
+}
 @end
