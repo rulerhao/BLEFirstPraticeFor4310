@@ -22,6 +22,7 @@
  */
 
 - (void)InitEnter : (UIViewController *) View_Controller {
+    self.delegate = View_Controller;
     // 設定機構
     OAuth.Orgunits = @"7da0f976-f732-11ea-b7aa-0242ac160004";
     OAuth.Device_Type = @"ios";
@@ -439,6 +440,7 @@ getHTMLStringNotification:(NSNotification *)notification {
         NSLog(@"Access_Token = %@", self.Access_Token);
         NSLog(@"Refresh_Token123 = %@", self.Refresh_Token);
         
+        [self.delegate dismissAlertViewForWebNavigatin];
         //    暫時沒有使用 Refresh Token 來做 Refresh 的動作
 //        [self takeRefreshAccesssTokenThroughRefreshToken:Refresh_Token];
         RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];

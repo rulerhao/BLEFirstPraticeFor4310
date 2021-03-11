@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 - (void) synchronizeStoredDevices : (NSMutableArray *) Stored_Data;
+- (void) dismissAlertViewForWebNavigatin;
+
 @end
 
 @interface OAuth2Main : UIView <WKUIDelegate, WKNavigationDelegate>

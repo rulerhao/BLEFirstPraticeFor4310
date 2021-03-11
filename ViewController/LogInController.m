@@ -73,9 +73,9 @@
     // ------------------ Run BLEFor4310 ---------------
     BLE = [BLEFor4310 new];
     
-    OAuth = [OAuth2Main new];
-    
-    [OAuth InitEnter:self];
+//    OAuth = [OAuth2Main new];
+//
+//    [OAuth InitEnter:self];
     
 //    // ------------------ 跳到檢查畫面 ---------------
     Mode = 0;
@@ -93,9 +93,9 @@
     NSLog(@"Account_Password = %@", Password);
     
     // ------------------ Run BLEFor4310 ---------------
-    OAuth = [OAuth2Main new];
-    
-    [OAuth InitEnter:self];
+//    OAuth = [OAuth2Main new];
+//    
+//    [OAuth InitEnter:self];
     
 ////    // ------------------ 跳到監測畫面 ---------------
 //    WatcherViewController *watcherViewController = [[WatcherViewController alloc] init];

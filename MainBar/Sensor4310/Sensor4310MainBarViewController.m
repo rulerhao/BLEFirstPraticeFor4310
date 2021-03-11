@@ -7,7 +7,7 @@
 
 #import "Sensor4310MainBarViewController.h"
 
-@interface Sensor4310MainBarViewController () <BLEFor4310Delegate>
+@interface Sensor4310MainBarViewController () <BLEFor4310Delegate, OAuth2MainDelegate>
 {
     Sensor4310Setting *sensor4310Setting;
     StoredDevicesCell *storedDevicesCell;
@@ -54,6 +54,8 @@
 
     [self updateConstraints];
     
+    // status 0 for start
+    [self alertViewForWebNavigating:0];
     //[self initCollectionViewCell];
     NSLog(@"ModeTestForSensorViewController = %d" , Mode);
     // 監測模式
@@ -276,6 +278,11 @@
 - (void) viewInit {
     //--------------------- Init -----------------------
     BLE.delegate = self;
+    
+    OAuth = [OAuth2Main new];
+    
+    [OAuth InitEnter:self];
+    
     storedDevicesCell = [[StoredDevicesCell alloc] init];
     Stored_Devices = [[NSMutableArray alloc] init];
     //--------------------- View -----------------------
@@ -515,6 +522,7 @@
     NSLog(@"MQTT Message CollectionView Reload Data");
 }
 
+#pragma mark - alert view
 - (void) StatusWatcher : (NSTimer *) sender {
     for(int i = 0; i < BLE.Stored_Data.count; i++) {
         StoredDevicesCell *storedDevicesCell = [StoredDevicesCell alloc];
@@ -531,7 +539,7 @@
                                                                    style:UIAlertActionStyleDefault
                    handler:^(UIAlertAction * action) {
                 }];
-                
+
                 [alert addAction:okAction];
                 
                 [self presentViewController:alert
@@ -540,6 +548,30 @@
             }
         }
     }
+}
+
+// 還未取得 Bearer Token 時的警報畫面
+- (void) alertViewForWebNavigating : (NSInteger) status {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"登入中"
+                                                                   message:@"尚未取得Bearer Token"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    // OK按鍵的部分
+    UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"好吧 先離開"
+                                                       style:UIAlertActionStyleDefault
+       handler:^(UIAlertAction * action) {
+        // 回上頁
+    }];
+
+    [alert addAction:okAction];
+    
+    [self presentViewController:alert
+                       animated:YES
+                     completion:nil];
+}
+
+- (void) dismissAlertViewForWebNavigatin {
+    NSLog(@"dissmiss Alert View");
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)deleteStoredDataCell{
