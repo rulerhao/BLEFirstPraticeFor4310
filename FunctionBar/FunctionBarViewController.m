@@ -145,9 +145,17 @@ typedef NS_ENUM(NSInteger, FunctionButtonEnum){
             [Button_Type_List addObject:[NSNumber numberWithInteger:ButtonHaveNotThing]];
             [Button_Type_List addObject:[NSNumber numberWithInteger:ExitViewController]];
             break;
+        case ViewController_Sensor4310Test:
+            [Button_Type_List addObject:[NSNumber numberWithInteger:BackViewController]];
+            [Button_Type_List addObject:[NSNumber numberWithInteger:InformationWebSite]];
+            [Button_Type_List addObject:[NSNumber numberWithInteger:ButtonHaveNotThing]];
+            [Button_Type_List addObject:[NSNumber numberWithInteger:RegisterViewController]];
+            [Button_Type_List addObject:[NSNumber numberWithInteger:ExitViewController]];
+            break;
     }
     return Button_Type_List;
 }
+
 - (UIImage *) Function_Button_Image_Filter : (NSInteger) Type_Number {
     UIImage *ButtonImage;
     switch (Type_Number) {
@@ -167,6 +175,7 @@ typedef NS_ENUM(NSInteger, FunctionButtonEnum){
     }
     return ButtonImage;
 }
+
 // 按下時觸發
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     NSLog(@"touchesBegan");
@@ -198,8 +207,9 @@ typedef NS_ENUM(NSInteger, FunctionButtonEnum){
 }
 
 - (void) registerViewController {
-    Register4310Page *register4310Page = [[Register4310Page alloc] init];
-    [register4310Page setModalPresentationStyle:UIModalPresentationFullScreen];
-    [RootNavigationView pushViewController:register4310Page animated:NO];
+//    Register4310Page *register4310Page = [[Register4310Page alloc] init];
+//    [register4310Page setModalPresentationStyle:UIModalPresentationFullScreen];
+//    [RootNavigationView pushViewController:register4310Page animated:NO];
+    [self.delegate registerButtonBeClicked];
 }
 @end

@@ -23,20 +23,24 @@
 logIn       :   (NSString *)    requestURLString
 wKWebView   :   (WKWebView *)   WKWebView {
     NSURL *url = [[NSURL alloc] initWithString: requestURLString];
+    
     OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
     NSString *Body_String = [oAuthParameters Parameters_Merge:[oAuthParameters logInBodyParameters] ];
+    
     NSData *Body = [Body_String dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSLog(@"BodyTest = %@", Body);
     NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[Body length]];
     NSLog(@"WKWebViewDelegate = %@", [WKWebView UIDelegate]);
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     NSLog(@"WKWebView = %@", WKWebView);
+    
     [request setURL:url];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:Body];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPShouldHandleCookies:true];
+    
     NSLog(@"Request = %@", request);
     [WKWebView loadRequest: request];
 }
@@ -167,6 +171,60 @@ wKWebView       : (WKWebView *) WKWebView {
     [request setHTTPShouldHandleCookies:true];
 
     [OAuth.WKWeb_View loadRequest: request];
+}
+
+
+// Take OTP with device information
+- (void)
+takeOTPTest         : (NSString *)  Access_Token
+device_Name : (NSString *) Device_Name
+device_Type : (NSString *) Device_Type
+device_UUID : (NSString *) Device_UUID
+wKWebView           : (WKWebView *) WKWebView {
+    NSLog(@"takeOTP");
+//    NSString *Device_Name = [[UIDevice currentDevice] name];
+//    NSString *Device_Type = OAuth.Device_Type;
+//    // Vendor UUID
+//    NSString *Device_UUID = OAuth.Device_ID;
+    // URL
+    NSURL *URL = [[NSURL alloc] initWithString:@"https://healthng.oucare.com/api/v1/ouhub/otp"];
+
+    NSLog(@"sign up url = %@", URL);
+
+    // Authorization
+    NSString *authValue = [NSString stringWithFormat:@"Bearer %@", Access_Token];
+
+    // Body
+    
+    NSMutableDictionary *Dict = [[NSMutableDictionary alloc] init];
+
+    [Dict setValue:Device_Name forKey:@"device_name"];
+    [Dict setValue:Device_Type forKey:@"device_type"];
+    [Dict setValue:Device_UUID forKey:@"device_uuid"];
+    
+    NSDictionary *PostDict = [[NSDictionary alloc] initWithDictionary:Dict];
+
+    NSLog(@"PostDict = %@", PostDict);
+
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:PostDict options:0 error:nil];
+    NSString *urlString =  [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+
+    NSLog(@"stringData = %@", urlString);
+    NSData *requestBodyData = [urlString dataUsingEncoding:NSUTF8StringEncoding];
+
+    NSString *requestBodyDataLength = [NSString stringWithFormat:@"%lu", (unsigned long)[requestBodyData length]];
+
+    // Set Request
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:URL];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:requestBodyData];
+    [request setValue:requestBodyDataLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:authValue forHTTPHeaderField:@"Authorization"];
+    [request setHTTPShouldHandleCookies:true];
+
+    [WKWebView loadRequest: request];
 }
 
 // 更新裝置資訊

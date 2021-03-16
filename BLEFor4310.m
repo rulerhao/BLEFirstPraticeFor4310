@@ -15,7 +15,6 @@
     KS4310Setting *ks4310Setting;
     Convert4310Information *convert4310Information;
     NSTimer *BLEConnectServerTimer;
-
 }
 @end
 
@@ -325,7 +324,6 @@ centralManagerDidUpdateState:(CBCentralManager *)central {
         }
     }
 }
-
 //---------------------- Core Bluetooth Delegate - Device 斷線------------------
 -(void)     centralManager : (CBCentralManager *) central
    didDisconnectPeripheral : (CBPeripheral *) peripheral

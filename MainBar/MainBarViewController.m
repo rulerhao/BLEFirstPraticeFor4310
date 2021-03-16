@@ -12,6 +12,7 @@
 @property(nonatomic, strong) ShowViewController *showViewController;
 @property(nonatomic, strong) Sensor4310MainBarViewController *sensor4310MainBarViewController;
 @property(nonatomic, strong) OrganizationMainBarViewController *organizationMainBarViewController;
+@property(nonatomic, strong) Sensor4310TestController *sensor4310TestController;
 
 @end
 
@@ -50,6 +51,8 @@
         case ViewController_Registrater4310:
             [self addRegisterMainBarViewController];
             break;
+        case ViewController_Sensor4310Test:
+            [self addSensor4310TestMainBarViewController];
         default:
             break;
     }
@@ -125,5 +128,37 @@
         make.right.equalTo(self.view.mas_right);
     }];
     [register4310ViewController controllerInit];
+}
+
+- (void) addSensor4310TestMainBarViewController {
+    self.sensor4310TestController = [[Sensor4310TestController alloc] init];
+    self.sensor4310TestController.CurrentController = self.CurrentController;
+    [self.sensor4310TestController.view setAutoresizingMask:UIViewAutoresizingNone];
+    [self.sensor4310TestController.view setUserInteractionEnabled:YES];
+    [self.sensor4310TestController setCurrentController:self.CurrentController];
+    
+    [self addChildViewController:self.sensor4310TestController];
+    
+    [self.view addSubview:self.sensor4310TestController.view];
+    [self.sensor4310TestController didMoveToParentViewController:self];
+    
+    //--------------------- Constraints -----------------------
+    [self.sensor4310TestController.view mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_top);
+        make.bottom.equalTo(self.view.mas_bottom);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+    }];
+    [self.sensor4310TestController controllerInit];
+}
+
+- (void) registerButtonBeClicked {
+    for(int i = 0; i < self.childViewControllers.count; i++) {
+        if([[self.childViewControllers objectAtIndex:i] class] == Sensor4310TestController.class) {
+            // TODO: Change sensor page to register page or change register page to sensor page.
+            NSLog(@"HaveSensro4310TestController");
+            [self.sensor4310TestController registerButtonBeClicked];
+        }
+    }
 }
 @end

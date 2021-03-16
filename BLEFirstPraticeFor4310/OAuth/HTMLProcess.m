@@ -19,8 +19,8 @@
 
 // 取得HTML所以字串
 - (nullable NSString *)
-getHTMLString   : (id)                  OAuth2Main
-webView         : (WKWebView *)         WebView {
+notifyWhenGetHTMLString   : (id)                  OAuth2Main
+webView                   : (WKWebView *)         WebView {
     __block NSString *Return_HTML_String = nil;
     
     [WebView evaluateJavaScript:@"document.documentElement.outerHTML"
@@ -31,15 +31,13 @@ webView         : (WKWebView *)         WebView {
             if (result != nil) {
                 Return_HTML_String = [NSString stringWithFormat:@"%@", result];
                 NSLog(@"Return_HTML_String = %@", Return_HTML_String);
-                NSMutableArray *Information = [[NSMutableArray alloc] init];
-                [Information addObject: Return_HTML_String];
-                [Information addObject: WebView];
-                NSDictionary *HTML_String_Dict = [NSDictionary dictionaryWithObject:Information
-                                                                             forKey:[[WebView URL] path]];
+                NSMutableDictionary *HTML_Info_Dict = [[NSMutableDictionary alloc] init];
+                [HTML_Info_Dict setValue:Return_HTML_String forKey:@"HTMLString"];
+                [HTML_Info_Dict setValue:WebView forKey:@"WebView"];
                 [[NSNotificationCenter defaultCenter]
-                    postNotificationName:@"NotificationName" //Notification以一個字串(Name)下去辨別
+                    postNotificationName:@"getHTMLString" //Notification以一個字串(Name)下去辨別
                     object:OAuth2Main
-                    userInfo:HTML_String_Dict];
+                    userInfo:HTML_Info_Dict];
             }
         } else {
             NSLog(@"evaluateJavaScript error : %@", error.localizedDescription);

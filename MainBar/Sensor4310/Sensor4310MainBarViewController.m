@@ -42,7 +42,7 @@
     NSLog(@"WidthOfContainer = %f", self.view.frame.size.width);
 }
 
-- (void)controllerInit {
+- (void) controllerInit {
     sensor4310Setting = [[Sensor4310Setting alloc] init];
     convert_Characteristic = [[Convert4310Information alloc] init];
     ks4310Setting = [[KS4310Setting alloc] init];

@@ -35,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(assign) id <OAuth2MainDelegate> delegate;
 
 @property(readwrite, nonatomic) WKWebView *WKWeb_View;
+
 @property(readwrite, nonatomic) NSString *Access_Token;
 @property(readwrite, nonatomic) NSString *Refresh_Token;
 @property(readwrite, nonatomic) NSString *Orgunits;

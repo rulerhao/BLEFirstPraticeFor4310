@@ -64,7 +64,7 @@
 }
 
 // ---------------------- Log In Button -------------------
-- (IBAction)LogInButtonTouchDown:(id)sender {
+- (IBAction) LogInButtonTouchDown:(id)sender {
     NSString *Account = self.Account_Text_View.text;
     NSString *Password = self.Password_Text_View.text;
     NSLog(@"Account_Account = %@", Account);
@@ -106,6 +106,18 @@
     Sensor4310Page *sensor4310Page = [[Sensor4310Page alloc] init];
     [sensor4310Page setModalPresentationStyle:UIModalPresentationFullScreen];
     [RootNavigationView pushViewController:sensor4310Page animated:NO];
+}
+
+- (IBAction) sensor4310TestBeClicked : (id) sender {
+    NSLog(@"sensor4310TestBeClicked");
+    NSString *Account = self.Account_Text_View.text;
+    NSString *Password = self.Password_Text_View.text;
+    NSLog(@"Account_Account = %@", Account);
+    NSLog(@"Account_Password = %@", Password);
+
+    Sensor4310TestPage *sensor4310TestPage = [[Sensor4310TestPage alloc] init];
+    [sensor4310TestPage setModalPresentationStyle:UIModalPresentationFullScreen];
+    [RootNavigationView pushViewController:sensor4310TestPage animated:NO];
 }
 
 @end

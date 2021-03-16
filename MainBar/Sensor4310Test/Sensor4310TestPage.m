@@ -1,25 +1,23 @@
 //
-//  Sensor4310ViewController.m
+//  Sensor4310TestPage.m
 //  BLEFirstPraticeFor4310
 //
-//  Created by louie on 2021/1/26.
+//  Created by louie on 2021/3/12.
 //
 
-#import "Sensor4310Page.h"
+#import "Sensor4310TestPage.h"
+@interface Sensor4310TestPage ()
 
-@interface Sensor4310Page () <ShowViewControllerDelegate>
-
-@property(nonatomic, strong) ShowViewController *showViewController;
+@property(strong, nonatomic) ShowViewController *showViewController;
 
 @end
+@implementation Sensor4310TestPage
 
-@implementation Sensor4310Page
-
-- (void)viewDidLoad {
+- (void) viewDidLoad {
     [super viewDidLoad];
     
-    NSLog(@"NowController = Sensor4310Page");
-    self.CurrentController = ViewController_Sensor4310;
+    NSLog(@"NowController = Sensor4310TestPage");
+    self.CurrentController = ViewController_Sensor4310Test;
     
     [self viewInit];
     
@@ -39,8 +37,7 @@
     
     NSLog(@"self.CurrentControllerInSensor4310 = %ld", self.CurrentController);
     [self.showViewController setCurrentController:self.CurrentController];
-    self.showViewController.delegate = self;
-
+    
     [self addChildViewController:self.showViewController];
     [self.view addSubview:self.showViewController.view];
     [self.showViewController didMoveToParentViewController:self];
@@ -58,7 +55,4 @@
     }];
 }
 
-- (NSInteger)getCurrentController_ShowViewController {
-    return self.CurrentController;
-}
 @end

@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // 取得HTML所以字串
 - (nullable NSString *)
-getHTMLString   : (id) WebView_Controller
+notifyWhenGetHTMLString   : (id) WebView_Controller
 webView         : (WKWebView *)         WebView;
 
 - (NSString *) htmlStringToJSONFormatString : (NSString *) HTML_String;

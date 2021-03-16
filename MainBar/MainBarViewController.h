@@ -10,6 +10,7 @@
 #import "Sensor4310MainBarViewController.h"
 #import "OrganizationMainBarViewController.h"
 #import "Register4310ViewController.h"
+#import "Sensor4310TestController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,7 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign) id <MainBarViewControllerDelegate> delegate;
 @property(readwrite, nonatomic) NSInteger CurrentController;
-- (void)controllerInit;
+- (void) controllerInit;
+- (void) registerButtonBeClicked;
 
 @end
 

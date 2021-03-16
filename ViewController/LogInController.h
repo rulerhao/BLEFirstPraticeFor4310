@@ -16,7 +16,9 @@
 #import "EncodeOrguitsUUIDAndTimeStamp.h"
 #import "WatcherViewController.h"
 #import "BLEFor4310.h"
-
+#import "Sensor4310TestPage.h"
+#import "OAuthTest.h"
+ 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LogInController : UIViewController <UITextFieldDelegate>

@@ -31,6 +31,13 @@ wKWebView                                  : (WKWebView *) WKWebView;
 takeOTP         : (NSString *)  Access_Token
 wKWebView       : (WKWebView *) WKWebView;
 
+// Take OTP with device information
+- (void)
+takeOTPTest : (NSString *) Access_Token
+device_Name : (NSString *) Device_Name
+device_Type : (NSString *) Device_Type
+device_UUID : (NSString *) Device_UUID
+wKWebView : (WKWebView *) WKWebView;
 
 // 註冊裝置
 - (void)

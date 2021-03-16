@@ -153,7 +153,10 @@
     }];
 }
 #pragma mark - Delegate
-
+- (void) registerButtonBeClicked {
+    NSLog(@"RegisterButtonBeClickedInShowViewController");
+    [self.mainBarViewController registerButtonBeClicked];
+}
 #pragma mark - Methods
 
 - (void) functionName:(UIButton *) sender {

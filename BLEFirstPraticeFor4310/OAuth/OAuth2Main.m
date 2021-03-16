@@ -8,7 +8,7 @@
 #import "OAuth2Main.h"
 
 
-@interface OAuth2Main ()
+@interface OAuth2Main () 
 {
     UIViewController *View_Controller_For_Notify;
     //NSNotificationCenter *get_HTMLString_Notification_Center;
@@ -29,12 +29,15 @@
     OAuth.Device_ID = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     
     View_Controller_For_Notify = View_Controller;
+    
     self.WKWeb_View = [[WKWebView alloc] init];
     [self setupWebView : self.WKWeb_View];
+    
     OAuth2Parameters *oAuthParameters = [OAuth2Parameters alloc];
     NSString *RequestURL = [oAuthParameters logInURLWithParameters];
-    RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
+    
     if([[Reachability reachabilityWithHostName:@"https://healthng.oucare.com/site/login"] currentReachabilityStatus] == 1) {
+        RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
         [requestOAuth2Steps     logIn : RequestURL
                             wKWebView : self.WKWeb_View];
         // 當登錄完成後做 get code 動作
@@ -48,9 +51,6 @@ setupWebView : (WKWebView *) WKWeb_View {
     [WKWeb_View setUIDelegate:self];
     [WKWeb_View setNavigationDelegate:self];
     [WKWeb_View setAllowsBackForwardNavigationGestures:YES];
-    // Constraint
-//    [self setupWKWebViewConstain : Base_View
-//                       wKWebView : WKWeb_View];
 }
 
 #pragma mark WebView Delegate
@@ -69,7 +69,7 @@ didFinishNavigation :(WKNavigation *)   navigation {
     
     else if([[URL_Components path]  isEqual: @"/oauth/authorize"]) {
         HTMLProcess *htmlProcess = [HTMLProcess alloc];
-        NSString *Return_String = [htmlProcess getHTMLString   : self
+        NSString *Return_String = [htmlProcess notifyWhenGetHTMLString   : self
                                                webView         : webView];
         NSLog(@"Return_String = %@", Return_String);
     }
@@ -87,14 +87,14 @@ didFinishNavigation :(WKNavigation *)   navigation {
             name:@"NotificationName"
             object:nil];
         HTMLProcess *htmlProcess = [HTMLProcess alloc];
-        [htmlProcess getHTMLString   : self
+        [htmlProcess notifyWhenGetHTMLString   : self
                      webView         : webView];
     }
     // 取得 OTP 後
     else if ([[URL_Components path]  isEqual: @"/api/v1/ouhub/otp"]) {
         NSLog(@"GetOTP");
         HTMLProcess *htmlProcess = [HTMLProcess alloc];
-        [htmlProcess getHTMLString   : self
+        [htmlProcess notifyWhenGetHTMLString   : self
                      webView         : webView];
     }
     // 如果是註冊後
@@ -307,6 +307,7 @@ decisionHandler                     : (void (^)(WKNavigationResponsePolicy))    
             
         }
         // Log in回傳的
+        // 在此取得登入後的 code
         else if([[URL_Components path]  isEqual: @"/"]){
             if([[URL_Query substringWithRange:NSMakeRange(0, 4)] isEqual:@"code"]) {
                 NSString *Code = [URL_Query substringFromIndex:5];

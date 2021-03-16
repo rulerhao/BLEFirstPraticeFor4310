@@ -21,9 +21,10 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol FunctionBarViewControllerDelegate <NSObject>
 
 @optional
-- (void)backButtonBeClciked;
-- (void)exitButtonBeClciked;
-- (void)informationWebSiteButtonBeClciked;
+- (void) backButtonBeClciked;
+- (void) exitButtonBeClciked;
+- (void) informationWebSiteButtonBeClciked;
+- (void) registerButtonBeClicked;
 @end
 
 @interface FunctionBarViewController : UIViewController

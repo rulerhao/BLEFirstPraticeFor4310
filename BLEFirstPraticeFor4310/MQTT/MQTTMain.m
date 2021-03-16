@@ -178,7 +178,6 @@ handleEvent:(MQTTSession *)     session
     RequestOAuth2Steps *requestOAuth2Steps = [RequestOAuth2Steps alloc];
     //[requestOAuth2Steps refreshDevicesInformation:OAuth.Access_Token status:1 deviceUUID:Device_UUID wKWebView:OAuth.WKWeb_View];
     
-                                 
     NSData *PublishData = [publishDataFor4320 getPublishData:Device_Type
                                                Device_Serial:[Device_Serial uppercaseString]
                                                  Device_UUID:Device_UUID
